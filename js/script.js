@@ -259,7 +259,10 @@ const updateAnimation = (timestamp) => {
                     // Wait for quote zoom out, then bring in hero
                     setTimeout(() => {
                         heroSection.classList.add("show");
-                        document.body.style.overflow = "auto";
+                        document.documentElement.style.overflowY = "auto";
+                        document.documentElement.style.overflowX = "hidden";
+                        document.body.style.overflowY = "auto";
+                        document.body.style.overflowX = "hidden";
                         
                         setTimeout(() => {
                             splashScreen.style.display = 'none'; 
@@ -351,6 +354,12 @@ if (techTrack) {
     techTrack.addEventListener("mouseleave", deactivateBlur);
 }
 
+const cvNav = document.querySelector(".cv-nav");
+if (cvNav) {
+    cvNav.addEventListener("mouseenter", activateBlur);
+    cvNav.addEventListener("mouseleave", deactivateBlur);
+}
+
 // --- Theme Toggle Logic ---
 const themeToggleBtn = document.getElementById('themeToggle');
 const themeToggleIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
@@ -383,3 +392,40 @@ setTheme(savedTheme);
 if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', toggleTheme);
 }
+
+// --- Scroll Zoom Logic ---
+const heroScrollRig = document.getElementById("heroScrollRig");
+const heroContentGroup = document.getElementById("heroContentGroup");
+
+window.addEventListener("scroll", () => {
+    if (!heroScrollRig || !heroContentGroup) return;
+
+    const rigRect = heroScrollRig.getBoundingClientRect();
+    const scrollDistance = heroScrollRig.offsetHeight - window.innerHeight;
+    
+    let scrollProgress = 0;
+    if (scrollDistance > 0) {
+        scrollProgress = Math.max(0, Math.min(1, -rigRect.top / scrollDistance));
+    }
+
+    // Scale up to 81x. Keep translateZ for hardware acceleration, 
+    // but without will-change: transform it should re-rasterize or keep crispness.
+    const scaleFactor = 1 + Math.pow(scrollProgress, 3) * 80; 
+    
+    // Opacity fades out towards the end (from 50% scroll to 80% scroll)
+    let opacityProgress = 1;
+    if (scrollProgress > 0.5) {
+        opacityProgress = 1 - ((scrollProgress - 0.5) / 0.3);
+        opacityProgress = Math.max(0, Math.min(1, opacityProgress));
+    }
+
+    heroContentGroup.style.transform = `scale(${scaleFactor})`;
+    heroContentGroup.style.opacity = opacityProgress;
+    
+    // Optional: Hide the tech scroller fully before max scale to avoid ugly stretching
+    const techWrapper = document.querySelector('.tech-carousel-wrapper');
+    if (techWrapper) {
+        let techOpacity = 1 - (scrollProgress * 2.5); // fades out by 40% scroll depth
+        techWrapper.style.opacity = Math.max(0, techOpacity);
+    }
+});

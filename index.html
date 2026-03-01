@@ -37,7 +37,8 @@
     </div>
 
     <!-- Main Hero Section -->
-    <main class="hero-section" id="heroSection">
+    <div class="hero-scroll-rig" id="heroScrollRig">
+        <main class="hero-section" id="heroSection">
         
         <!-- Global Blur Overlay (Moved inside stacking context) -->
         <div class="content-overlay" id="blurOverlay"></div>
@@ -72,8 +73,20 @@
             </ul>
         </nav>
 
+        <!-- CV Download Navigation -->
+        <nav class="sidebar-nav cv-nav">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="https://rxresu.me/molelekishoez/remote-jobs-cv" target="_blank" class="nav-link cv-link">
+                        <span class="nav-text">Resume</span>
+                        <i class="fa-solid fa-download nav-icon"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
         <!-- Central Group (Allows perfect vertical centering) -->
-        <div class="hero-content-group">
+        <div class="hero-content-group" id="heroContentGroup">
             
             <!-- Hero Content Wrapper -->
             <div class="hero-layout-wrapper">
@@ -116,9 +129,16 @@
                     </div>
                 </div>
             </div>
+        </main>
+    </div>
 
+    <!-- About Section Placeholder -->
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <h2>About Me</h2>
+            <p>This is a placeholder for the about section.</p>
         </div>
-    </main>
+    </section>
 
     <script type="importmap">
         {
