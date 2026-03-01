@@ -47,6 +47,29 @@ const laptopScreenScene = {
 
 let animationStartTime = null;
 
+// --- Audio Setup ---
+const startupAudio = new Audio('./audio sounds/startup sound.mp3');
+const quoteAudio = new Audio('./audio sounds/initial quote appearance sound.mp3');
+const menuAudio = new Audio('./audio sounds/menu open.mp3');
+const hoverAudio = new Audio('./audio sounds/button hover.mp3');
+
+// Preload audio files
+startupAudio.load();
+quoteAudio.load();
+menuAudio.load();
+hoverAudio.load();
+
+// Playback handlers
+const playHoverSound = () => {
+    hoverAudio.currentTime = 0;
+    hoverAudio.play().catch(e => console.log('Audio playback prevented:', e));
+};
+
+const playMenuSound = () => {
+    menuAudio.currentTime = 0;
+    menuAudio.play().catch(e => console.log('Audio playback prevented:', e));
+};
+
 // --- Three.js Setup Functions ---
 
 const getWindowSize = () => ({
@@ -251,8 +274,9 @@ const updateAnimation = (timestamp) => {
                 laptopScreen.style.display = 'none';
                 
                 quoteContainer.classList.add("show");
+                quoteAudio.play().catch(e => console.log('Audio playback prevented:', e));
                 
-                // Let quote sit for 3 seconds, then zoom through it
+                // Let quote sit for 3.5 seconds, then zoom through it
                 setTimeout(() => {
                     quoteContainer.classList.add("zoom-into");
                     
@@ -285,6 +309,7 @@ const onReadyStateChange = (event) => {
         setTimeout(()=>{
             load3DModels().then(() => {
                 initAllScenes();
+                startupAudio.play().catch(e => console.log('Audio playback prevented:', e));
                 requestAnimationFrame(updateAnimation);
             });
         }, 500); // give the page half a second after being ready.
@@ -296,6 +321,7 @@ document.addEventListener("readystatechange", onReadyStateChange);
 if (document.readyState === "complete") {
   load3DModels().then(() => {
       initAllScenes();
+      startupAudio.play().catch(e => console.log('Audio playback prevented:', e));
       requestAnimationFrame(updateAnimation);
   });
 }
@@ -333,13 +359,14 @@ function updateGreeting() {
 
 updateGreeting();
 
-// --- Blur Overlay Logic ---
+// --- Blur Overlay Logic & Menu Audio ---
 const blurOverlay = document.getElementById("blurOverlay");
 const sidebarNav = document.querySelector(".sidebar-nav");
 const techTrack = document.querySelector(".tech-track");
 
 function activateBlur() {
     if (blurOverlay) blurOverlay.classList.add("active");
+    playMenuSound();
 }
 
 function deactivateBlur() {
@@ -361,6 +388,12 @@ if (cvNav) {
     cvNav.addEventListener("mouseenter", activateBlur);
     cvNav.addEventListener("mouseleave", deactivateBlur);
 }
+
+// Bind hover audio to common interactive elements
+const interactiveElements = document.querySelectorAll('.nav-link, .tech-item, .theme-toggle');
+interactiveElements.forEach(el => {
+    el.addEventListener('mouseenter', playHoverSound);
+});
 
 // --- Theme Toggle Logic ---
 const themeToggleBtn = document.getElementById('themeToggle');
