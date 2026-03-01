@@ -350,3 +350,36 @@ if (techTrack) {
     techTrack.addEventListener("mouseenter", activateBlur);
     techTrack.addEventListener("mouseleave", deactivateBlur);
 }
+
+// --- Theme Toggle Logic ---
+const themeToggleBtn = document.getElementById('themeToggle');
+const themeToggleIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
+
+function setTheme(themeName) {
+    document.documentElement.setAttribute('data-theme', themeName);
+    localStorage.setItem('theme', themeName);
+    
+    if (themeToggleIcon) {
+        if (themeName === 'light') {
+            themeToggleIcon.className = 'fa-solid fa-sun';
+        } else {
+            themeToggleIcon.className = 'fa-solid fa-moon';
+        }
+    }
+}
+
+function toggleTheme() {
+    if (document.documentElement.getAttribute('data-theme') === 'light') {
+        setTheme('dark');
+    } else {
+        setTheme('light');
+    }
+}
+
+// Set up initial theme
+const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+setTheme(savedTheme);
+
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', toggleTheme);
+}
