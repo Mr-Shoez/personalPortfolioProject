@@ -205,6 +205,47 @@
 
     </section>
 
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <div class="projects-content-group" id="projectsContentGroup">
+            <!-- Projects Header & Ghost Text -->
+            <div class="projects-section-header">
+                <span class="projects-subtitle">SEE MY WORK</span>
+                <h2 class="projects-title">
+                    <span class="projects-main-text">My Projects</span>
+                    <span class="projects-ghost-text">My Projects</span>
+                </h2>
+            </div>
+            
+            <!-- Bento Grid Container -->
+            <div class="bento-grid" id="bentoGrid">
+                <!-- Projects will be injected here via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cinematic Project Modal -->
+    <div id="projectModal" class="project-modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content-wrapper">
+            <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close Modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-image-container">
+                <img src="" alt="Project Image" id="modalImage">
+            </div>
+            <div class="modal-info">
+                <span class="modal-category" id="modalCategory">Category</span>
+                <h2 class="modal-title" id="modalTitle">Project Title</h2>
+                <p class="modal-description" id="modalDescription">Project description goes here.</p>
+                <div class="modal-tech-stack" id="modalTechStack">
+                    <!-- Tech pills injected here -->
+                </div>
+                <a href="#" class="modal-link-btn" id="modalLink" target="_blank">See Details <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
     <!-- Global Floating Tooltip Container -->
     <div id="globalTooltip" class="global-tooltip">
         <span id="globalTooltipText"></span>

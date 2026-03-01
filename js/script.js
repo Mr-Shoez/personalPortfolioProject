@@ -613,3 +613,161 @@ window.addEventListener("scroll", () => {
         });
     }
 });
+
+// 3. Zoom Logic for Projects Section
+const projectsContentGroup = document.getElementById("projectsContentGroup");
+if (projectsContentGroup) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                projectsContentGroup.classList.add('visible');
+                // Optional: stop observing once it's visible if you don't want it to animate out when scrolling past
+                // observer.unobserve(entry.target);
+            } else {
+                projectsContentGroup.classList.remove('visible'); // allow it to animate back out when scrolling away
+            }
+        });
+    }, {
+        threshold: 0.1 // Triggers when 10% of the element is visible
+    });
+    
+    observer.observe(projectsContentGroup);
+}
+
+// --- Projects Bento Grid Logic ---
+const bentoGrid = document.getElementById('bentoGrid');
+const projectModal = document.getElementById('projectModal');
+const modalCloseBtn = document.getElementById('modalCloseBtn');
+let projectsData = [];
+
+// Fetch JSON data
+async function loadProjects() {
+    try {
+        const response = await fetch('./data/projects.json');
+        if (!response.ok) throw new Error('Failed to load projects data');
+        
+        projectsData = await response.json();
+        renderBentoGrid(projectsData);
+    } catch (error) {
+        console.error("Error loading projects:", error);
+    }
+}
+
+// Render the grid
+function renderBentoGrid(projects) {
+    if (!bentoGrid) return;
+    bentoGrid.innerHTML = ''; // Clear skeleton/empty state if any
+
+    projects.forEach((project, index) => {
+        // Create Item Wrapper
+        const bentoItem = document.createElement('div');
+        bentoItem.className = `bento-item bento-${index + 1}`;
+        bentoItem.setAttribute('data-index', index);
+        
+        // Create Image
+        const img = document.createElement('img');
+        img.src = project.thumbnail;
+        img.alt = project.title;
+        img.className = 'bento-img';
+        
+        // Create Overlay content
+        const overlay = document.createElement('div');
+        overlay.className = 'bento-overlay';
+        
+        const title = document.createElement('h3');
+        title.className = 'bento-item-title';
+        title.textContent = project.title;
+        
+        const category = document.createElement('span');
+        category.className = 'bento-item-category';
+        category.textContent = project.category;
+        
+        overlay.appendChild(title);
+        overlay.appendChild(category);
+        
+        // Assemble
+        bentoItem.appendChild(img);
+        bentoItem.appendChild(overlay);
+        
+        // Add Click Event to open Modal
+        bentoItem.addEventListener('click', () => openProjectModal(index));
+        
+        bentoGrid.appendChild(bentoItem);
+    });
+}
+
+// Open Modal Logic
+function openProjectModal(index) {
+    if (!projectsData[index]) return;
+    const project = projectsData[index];
+    
+    // Inject Data
+    document.getElementById('modalImage').src = project.fullImage;
+    document.getElementById('modalImage').alt = project.title;
+    document.getElementById('modalCategory').textContent = project.category;
+    document.getElementById('modalTitle').textContent = project.title;
+    document.getElementById('modalDescription').textContent = project.description;
+    
+    if (project.link) {
+        document.getElementById('modalLink').href = project.link;
+        document.getElementById('modalLink').style.display = 'inline-flex';
+    } else {
+        document.getElementById('modalLink').style.display = 'none';
+    }
+    
+    // Inject Tech Stack Pills
+    const techStackContainer = document.getElementById('modalTechStack');
+    techStackContainer.innerHTML = '';
+    
+    if (project.technologies && project.technologies.length > 0) {
+        project.technologies.forEach(tech => {
+            const pill = document.createElement('span');
+            pill.className = 'modal-pill';
+            pill.textContent = tech;
+            techStackContainer.appendChild(pill);
+        });
+    }
+    
+    // Show Modal
+    projectModal.classList.add('active');
+    playHoverSound(); // Optionally play the nice UI sound
+}
+
+// Close Modal Logic
+function closeProjectModal() {
+    projectModal.classList.remove('active');
+}
+
+if (modalCloseBtn) {
+    modalCloseBtn.addEventListener('click', closeProjectModal);
+}
+
+// Cinematic intuitive close via hovering completely off the content modal
+// So if they mouse leave the wrapper entirely it falls back
+const modalContentWrapper = document.querySelector('.modal-content-wrapper');
+if (modalContentWrapper) {
+    modalContentWrapper.addEventListener('mouseleave', () => {
+        // Adding a slight delay makes it feel less aggressive when accidentally swiping off
+        setTimeout(() => {
+            // only close if the mouse isn't back on top of it.
+            // A simple implementation of cinematic close
+            if(projectModal.matches(':hover')) {
+                // If the user's mouse is over the backdrop (the modal wrapper), let it close.
+                // Wait, if it leaves the content block entirely, close it.
+                closeProjectModal();
+            }
+        }, 300);
+    });
+}
+
+// Also close if clicking the backdrop directly
+if (projectModal) {
+    projectModal.addEventListener('click', (e) => {
+        if (e.target === projectModal || e.target.classList.contains('modal-backdrop')) {
+            closeProjectModal();
+        }
+    });
+}
+
+// Initialize
+loadProjects();

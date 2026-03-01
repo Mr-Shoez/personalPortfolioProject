@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "title": "E-Commerce Platform",
+        "category": "Full Stack",
+        "description": "A fully functional e-commerce platform with a custom 3D product view using Three.js and a robust backend for order management.",
+        "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=400&h=400&auto=format&fit=crop",
+        "fullImage": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&h=800&auto=format&fit=crop",
+        "technologies": ["React", "Three.js", "Node.js", "MongoDB"],
+        "link": "#"
+    },
+    {
+        "id": 2,
+        "title": "Finance Dashboard",
+        "category": "Frontend",
+        "description": "An interactive analytics dashboard for financial data visualization with real-time updates and interactive charts.",
+        "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=400&h=400&auto=format&fit=crop",
+        "fullImage": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&h=800&auto=format&fit=crop",
+        "technologies": ["Vue.js", "D3.js", "Tailwind CSS"],
+        "link": "#"
+    },
+    {
+        "id": 3,
+        "title": "Social Media App",
+        "category": "Mobile App",
+        "description": "A cross-platform mobile application for community engagement with instant messaging and live feed capabilities.",
+        "thumbnail": "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?q=80&w=400&h=400&auto=format&fit=crop",
+        "fullImage": "https://images.unsplash.com/photo-1516259762381-22954d7d3ad2?q=80&w=1200&h=800&auto=format&fit=crop",
+        "technologies": ["React Native", "Firebase", "Redux"],
+        "link": "#"
+    },
+    {
+        "id": 4,
+        "title": "Smart Home IoT",
+        "category": "UI/UX",
+        "description": "Design system and interface prototype for a smart home device management application.",
+        "thumbnail": "https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=400&h=400&auto=format&fit=crop",
+        "fullImage": "https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=1200&h=800&auto=format&fit=crop",
+        "technologies": ["Figma", "Framer Motion", "React"],
+        "link": "#"
+    },
+    {
+        "id": 5,
+        "title": "Travel Blog",
+        "category": "Web Design",
+        "description": "A minimalist, high-performance travel blog platform optimized for SEO and readability.",
+        "thumbnail": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=400&h=600&auto=format&fit=crop",
+        "fullImage": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1200&h=800&auto=format&fit=crop",
+        "technologies": ["Next.js", "GraphQL", "Tailwind CSS"],
+        "link": "#"
+    },
+    {
+        "id": 6,
+        "title": "Task Manager",
+        "category": "Web Application",
+        "description": "A productivity tool with drag-and-drop Kanban boards and team collaboration features.",
+        "thumbnail": "https://images.unsplash.com/photo-1540350394557-8d14678e7f91?q=80&w=400&h=400&auto=format&fit=crop",
+        "fullImage": "https://images.unsplash.com/photo-1540350394557-8d14678e7f91?q=80&w=1200&h=800&auto=format&fit=crop",
+        "technologies": ["Angular", "TypeScript", "SCSS"],
+        "link": "#"
+    },
+    {
+        "id": 7,
+        "title": "AI Image Gen",
+        "category": "Machine Learning",
+        "description": "Interface for generating images from text using advanced stable diffusion models.",
+        "thumbnail": "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=400&h=400&auto=format&fit=crop",
+        "fullImage": "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200&h=800&auto=format&fit=crop",
+        "technologies": ["Python", "FastAPI", "React"],
+        "link": "#"
+    },
+    {
+        "id": 8,
+        "title": "Portfolio v1",
+        "category": "Archived",
+        "description": "The previous iteration of my personal portfolio, built focusing on brutalist design principles.",
+        "thumbnail": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=400&h=400&auto=format&fit=crop",
+        "fullImage": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=1200&h=800&auto=format&fit=crop",
+        "technologies": ["HTML", "CSS", "Vanilla JS"],
+        "link": "#"
+    }
+]
