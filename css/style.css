@@ -39,6 +39,28 @@ body, html {
     z-index: 9999;
 }
 
+#laptop,
+#laptop-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#screen-content {
+    /* Match the aspect ratio and size of the laptop screen inside the 3D model */
+    width: 416px;
+    height: 280px;
+    background-color: var(--bg-dark); /* match the black background so skeleton blends in */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    /* Optional: hide overflow to simulate screen edges */
+    overflow: hidden;
+}
+
 /* --- Skeleton Loader --- */
 .skeleton-loader {
     display: flex;
@@ -78,6 +100,9 @@ body, html {
         rgba(255, 255, 255, 0.05) 60%,
         rgba(255, 255, 255, 0)
     );
+}
+
+.skeleton-loader.active .skeleton-bar::after {
     animation: shimmer 1.5s infinite;
 }
 
@@ -95,8 +120,12 @@ body, html {
 /* --- Quote Animation --- */
 .quote-container {
     position: absolute;
+    width: 100vw;
+    left: 0;
+    box-sizing: border-box;
     text-align: center;
     opacity: 0;
+    transform-origin: center center;
     transform: translateY(20px); /* Animation in: Rise up */
     transition: opacity 1s ease, transform 1s ease;
     padding: 0 20px;
@@ -108,14 +137,12 @@ body, html {
 }
 
 .quote-text {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Inter', sans-serif;
     font-size: clamp(2rem, 5vw, 4rem);
-    font-weight: 400;
-    font-style: italic;
+    font-weight: 300;
     letter-spacing: 0.5px;
     margin: 0 0 15px 0;
     color: var(--text-light);
-    text-shadow: 0 4px 30px rgba(255, 255, 255, 0.4); /* High definition soft glow */
 }
 
 .quote-author {
@@ -125,16 +152,47 @@ body, html {
     letter-spacing: 4px;
     color: var(--text-muted);
     text-transform: uppercase;
-    margin: 0;
+    margin: 10px 0 0 0;
     opacity: 0.8;
+    text-align: right;
+    width: 100%;
+}
+
+.quote-dash {
+    color: var(--accent-primary);
 }
 
 /* Animation out: Zooming INTO the quote */
 .quote-container.zoom-into {
-    transform: scale(30); /* Enlarges dramatically to pass "through" the camera */
+    transform: scale(250); /* Force extreme expansion */
     opacity: 0;
-    /* Cubic bezier creates a smooth 'swoosh' effect */
-    transition: transform 1.5s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease 0.4s;
+    pointer-events: none;
+    /* transition: 
+       transform: specialized expo-in-out curve for a slow start, then massive rush forward
+       opacity: quick fade at the very end of the animation to hide clipping
+    */
+    transition: transform 2.5s cubic-bezier(0.9, 0, 0.1, 1), opacity 0.8s ease-in 1.4s;
+}
+
+/* =========================================
+   Global Blur Overlay (Triggered on hover)
+========================================= */
+.content-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 10, 10, 0.3);
+    backdrop-filter: blur(8px);
+    z-index: 50; /* Sits below sidebar (100) and focused elements */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.content-overlay.active {
+    opacity: 1;
 }
 
 /* =========================================
@@ -145,7 +203,6 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
     visibility: hidden;
     
     /* Initially hidden behind splash */
@@ -196,14 +253,14 @@ body, html {
     position: relative;
 }
 
-/* Connecting line between dots */
+/* Connecting horizontal line between icons */
 .nav-item:not(:last-child)::after {
     content: '';
     position: absolute;
-    left: 8px; /* Center with the 16px icon */
-    top: 24px; 
-    height: 20px;
-    width: 2px;
+    left: 4px; /* Align slightly off edge */
+    bottom: -15px; /* Position it exactly between the the two icons (gap is 30) */
+    width: 20px;
+    height: 1px; /* Horizontal line */
     background: rgba(255, 255, 255, 0.2);
 }
 
@@ -211,25 +268,27 @@ body, html {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: var(--text-light);
+    color: var(--text-muted);
     gap: 15px;
     white-space: nowrap;
+    transition: color 0.3s ease;
 }
 
 .nav-icon {
-    display: block;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background-color: transparent;
-    border: 2px solid var(--accent-primary);
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
     flex-shrink: 0;
-    transition: background-color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--accent-primary);
 }
 
 .nav-link:hover .nav-icon {
-    background-color: var(--accent-primary);
-    box-shadow: 0 0 10px var(--accent-primary);
+    transform: scale(1.1);
+    color: var(--accent-primary);
 }
 
 .nav-text {
@@ -250,19 +309,28 @@ body, html {
 /* =========================================
    Hero Section Layout
 ========================================= */
+.hero-content-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
 .hero-layout-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 60px;
-    max-width: 1200px;
+    gap: 50px; /* Scaled down slightly */
+    max-width: 1000px;
     width: 100%;
     padding: 0 100px; /* Space for sidebar */
+    margin-bottom: 60px; /* Spacing before carousel */
 }
 
 /* --- Hero Image --- */
 .hero-image-container {
-    width: clamp(250px, 30vw, 400px);
+    width: clamp(200px, 25vw, 250px); /* Scaled down max size */
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     border: 4px solid var(--accent-primary); /* The red/purple circle from sketch */
@@ -293,7 +361,7 @@ body, html {
 /* Lines 1, 3, 5 share this font size */
 .line-small {
     font-family: 'Inter', sans-serif;
-    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-size: clamp(0.9rem, 1.5vw, 1.2rem); /* Scaled down */
     font-weight: 300;
     color: var(--text-light);
     letter-spacing: 2px;
@@ -302,11 +370,12 @@ body, html {
 /* Lines 2 & 4 share this massive font size */
 .line-large {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 6vw, 6rem);
+    font-size: clamp(2.5rem, 4vw, 4rem); /* Scaled down */
     font-weight: 700;
-    line-height: +1.1;
+    line-height: 1;
     letter-spacing: -1px;
 }
+
 
 /* Specific text styling modifiers */
 .gradient-text {
@@ -322,4 +391,142 @@ body, html {
 
 .text-muted {
     color: var(--text-muted);
+}
+
+/* =========================================
+   Technology Carousel
+========================================= */
+.tech-carousel-wrapper {
+    width: 100%;
+    max-width: 800px;
+    position: relative;
+    padding-top: 15px; /* Space for the text to break the line */
+    z-index: 60; /* Needs to sit above the blur overlay when active */
+}
+
+.tech-header-line {
+    position: relative;
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+}
+
+.tech-header-text {
+    background-color: var(--bg-dark); /* Match page background to mask the line */
+    padding: 0 15px;
+    position: absolute;
+    top: -10px; /* Pull it up onto the line */
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.tech-scroller {
+    overflow: hidden;
+    /* Added huge top padding to allow the tooltip to render without clip, 
+       then pulled the track back up via negative margin to compensate */
+    padding: 75px 0 10px 0;
+    margin-top: -50px; 
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.tech-track {
+    display: flex;
+    gap: 50px;
+    width: max-content;
+    animation: scrollSlide 15s linear infinite;
+    transition: opacity 0.3s ease;
+}
+
+/* Dim entire track when any item is hovered */
+.tech-track:hover .tech-item {
+    opacity: 0.3;
+    filter: blur(2px);
+}
+
+.tech-item {
+    font-size: 2.5rem;
+    color: var(--text-muted);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Focus on hovered item: clear blur, increase opacity */
+.tech-track .tech-item:hover {
+    opacity: 1;
+    filter: blur(0);
+}
+
+/* Brand Colors on Hover */
+.tech-html:hover { color: #E34F26; }
+.tech-css:hover { color: #1572B6; }
+.tech-js:hover { color: #F7DF1E; }
+.tech-git:hover { color: #F05032; }
+.tech-github:hover { color: #FFFFFF; }
+
+/* Pause animation on hover */
+.tech-scroller:hover .tech-track {
+    animation-play-state: paused;
+}
+
+/* --- Custom Tooltip (Conversation box) --- */
+.tech-item::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Little triangle pointer for the conversation box */
+.tech-item::after {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.1) transparent transparent transparent;
+    opacity: 0;
+
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.tech-item:hover::before,
+.tech-item:hover::after {
+    opacity: 1;
+    
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+@keyframes scrollSlide {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-50% - 25px)); /* shift exactly half the width minus half gap */
+    }
 }

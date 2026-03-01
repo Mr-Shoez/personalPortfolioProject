@@ -11,73 +11,121 @@
     
     <!-- Splash Screen Overlay -->
     <div class="splash-screen" id="splashScreen">
-        <!-- Skeleton Loader -->
-        <div class="skeleton-loader" id="skeletonLoader">
-            <div class="skeleton-bar"></div>
-            <div class="skeleton-bar" style="width: 80%;"></div>
-            <div class="skeleton-bar short"></div>
+        <!-- 3D Laptop Containers -->
+        <div id="laptop-screen"></div>
+        <div id="laptop"></div>
+        
+        <div id="screen-content">
+            <!-- Skeleton Loader -->
+            <div class="skeleton-loader" id="skeletonLoader">
+                <div class="skeleton-bar"></div>
+                <div class="skeleton-bar" style="width: 80%;"></div>
+                <div class="skeleton-bar short"></div>
+            </div>
         </div>
 
         <!-- Quote Container -->
         <div class="quote-container" id="quoteContainer">
             <h1 class="quote-text">"Simplicity is the ultimate sophistication."</h1>
-            <p class="quote-author">&mdash; Leonardo da Vinci</p>
+            <p class="quote-author"><span class="quote-dash">&mdash;</span> Leonardo da Vinci</p>
         </div>
     </div>
 
     <!-- Main Hero Section -->
     <main class="hero-section" id="heroSection">
         
+        <!-- Global Blur Overlay (Moved inside stacking context) -->
+        <div class="content-overlay" id="blurOverlay"></div>
+
         <!-- Sidebar Navigation -->
         <nav class="sidebar-nav">
             <ul class="nav-menu">
                 <li class="nav-item">
                     <a href="#home" class="nav-link">
-                        <span class="nav-icon"></span>
+                        <i class="fa-solid fa-house nav-icon"></i>
                         <span class="nav-text">Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#about" class="nav-link">
-                        <span class="nav-icon"></span>
+                        <i class="fa-regular fa-user nav-icon"></i>
                         <span class="nav-text">About</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#projects" class="nav-link">
-                        <span class="nav-icon"></span>
+                        <i class="fa-regular fa-folder-open nav-icon"></i>
                         <span class="nav-text">Projects</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#contact" class="nav-link">
-                        <span class="nav-icon"></span>
+                        <i class="fa-regular fa-envelope nav-icon"></i>
                         <span class="nav-text">Contact</span>
                     </a>
                 </li>
             </ul>
         </nav>
 
-        <!-- Hero Content Wrapper -->
-        <div class="hero-layout-wrapper">
+        <!-- Central Group (Allows perfect vertical centering) -->
+        <div class="hero-content-group">
             
-            <!-- Circular Image -->
-            <div class="hero-image-container">
-                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&h=400&auto=format&fit=crop" alt="Profile Image" class="hero-profile-img">
+            <!-- Hero Content Wrapper -->
+            <div class="hero-layout-wrapper">
+                
+                <!-- Circular Image -->
+                <div class="hero-image-container">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&h=400&auto=format&fit=crop" alt="Profile Image" class="hero-profile-img">
+                </div>
+
+                <!-- 5-Line Text Content -->
+                <div class="hero-text-content">
+                    <p class="hero-line line-small"><span id="dynamicGreeting">Good morning</span>, my name is...</p>
+                    <h1 class="hero-line line-large gradient-text">Mosa Moleleki</h1>
+                    <p class="hero-line line-small">and I am a...</p>
+                    <h2 class="hero-line line-large text-primary">Front-End Web Developer</h2>
+                    <p class="hero-line line-small text-muted">based in Johannesburg.</p>
+                </div>
+
             </div>
 
-            <!-- 5-Line Text Content -->
-            <div class="hero-text-content">
-                <p class="hero-line line-small"><span id="dynamicGreeting">Good morning</span>, I am...</p>
-                <h1 class="hero-line line-large gradient-text">Mosa Moleleki</h1>
-                <p class="hero-line line-small">and I am a...</p>
-                <h2 class="hero-line line-large text-primary">Front-End Web Developer</h2>
-                <p class="hero-line line-small text-muted">based in Johannesburg.</p>
+            <!-- Tech Carousel Section -->
+            <div class="tech-carousel-wrapper">
+                <div class="tech-header-line">
+                    <span class="tech-header-text">technologies I use</span>
+                </div>
+                <div class="tech-scroller">
+                    <div class="tech-track">
+                        <!-- Duplicate items for infinite scroll effect -->
+                        <div class="tech-item tech-html" data-tooltip="HTML5"><i class="fa-brands fa-html5"></i></div>
+                        <div class="tech-item tech-css" data-tooltip="CSS3"><i class="fa-brands fa-css3-alt"></i></div>
+                        <div class="tech-item tech-js" data-tooltip="JavaScript"><i class="fa-brands fa-js"></i></div>
+                        <div class="tech-item tech-git" data-tooltip="Git"><i class="fa-brands fa-git-alt"></i></div>
+                        <div class="tech-item tech-github" data-tooltip="GitHub"><i class="fa-brands fa-github"></i></div>
+                        
+                        <div class="tech-item tech-html" data-tooltip="HTML5"><i class="fa-brands fa-html5"></i></div>
+                        <div class="tech-item tech-css" data-tooltip="CSS3"><i class="fa-brands fa-css3-alt"></i></div>
+                        <div class="tech-item tech-js" data-tooltip="JavaScript"><i class="fa-brands fa-js"></i></div>
+                        <div class="tech-item tech-git" data-tooltip="Git"><i class="fa-brands fa-git-alt"></i></div>
+                        <div class="tech-item tech-github" data-tooltip="GitHub"><i class="fa-brands fa-github"></i></div>
+                    </div>
+                </div>
             </div>
 
         </div>
     </main>
 
-    <script src="js/script.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "/scripts/three.module.min.js",
+                "three-buffer-geometry-utils": "/scripts/BufferGeometryUtils.min.js",
+                "three-css-3d-renderer": "/scripts/CSS3DRenderer.min.js",
+                "three-draco-loader": "/scripts/DRACOLoader.min.js",
+                "three-gltf-loader": "/scripts/GLTFLoader.min.js"
+            }
+        }
+    </script>
+    <script src="js/script.js" type="module"></script>
 </body>
 </html>
