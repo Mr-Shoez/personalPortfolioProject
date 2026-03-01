@@ -13,7 +13,7 @@ const laptopScreenContainer = document.getElementById("screen-content");
 
 // --- Constants & Config ---
 const DRACO_DECODER_URL = "https://www.gstatic.com/draco/versioned/decoders/1.5.6/";
-const LAPTOP_SCENE_CAMERA_INIT_Z_POSITION = 750;
+const LAPTOP_SCENE_CAMERA_INIT_Z_POSITION = window.innerWidth < 768 ? 1100 : 750;
 
 const DEVICE_CONFIG = {
     laptop: {
@@ -73,11 +73,27 @@ const quoteAudio = new Audio('./audio sounds/initial quote appearance sound.mp3'
 const menuAudio = new Audio('./audio sounds/menu open.mp3');
 const hoverAudio = new Audio('./audio sounds/button hover.mp3');
 
-// Preload audio files
-startupAudio.load();
-quoteAudio.load();
-menuAudio.load();
-hoverAudio.load();
+// Group audio and lower volume
+const allAudio = [startupAudio, quoteAudio, menuAudio, hoverAudio];
+allAudio.forEach(a => {
+    a.volume = 0.3;
+    a.load();
+});
+
+// --- Mute Toggle Logic ---
+const muteToggleBtn = document.getElementById("muteToggle");
+let isMuted = false;
+
+if (muteToggleBtn) {
+    muteToggleBtn.addEventListener("click", () => {
+        isMuted = !isMuted;
+        allAudio.forEach(a => a.volume = isMuted ? 0 : 0.3);
+        const icon = muteToggleBtn.querySelector("i");
+        if (icon) {
+            icon.className = isMuted ? "fa-solid fa-volume-xmark" : "fa-solid fa-volume-high";
+        }
+    });
+}
 
 // Playback handlers
 const playHoverSound = () => {
@@ -216,7 +232,8 @@ const initAllScenes = () => {
     laptopContainer.appendChild(laptopScene.renderer.domElement);
 
     laptopScene.camera = new THREE.PerspectiveCamera(70, width / height, 1, 1000);
-    laptopScene.camera.position.set(0, 0, LAPTOP_SCENE_CAMERA_INIT_Z_POSITION);
+    // Dynamically adjust Z to prevent clipping on mobile screens
+    laptopScene.camera.position.set(0, 0, width < 768 ? 1100 : 750);
 
     const pointLight1 = new THREE.PointLight(0xffffff, 3.5, 0, 0);
     pointLight1.position.set(0, 700, 750);
@@ -308,8 +325,9 @@ const updateAnimation = (timestamp) => {
     }
     const zoomEased = easeInExpo(zoomProgress); // slow to start, incredibly fast at the end
     
-    // Start at 750 (normal view), push well past into negatives to pass through face
-    const currentZ = LAPTOP_SCENE_CAMERA_INIT_Z_POSITION - (700 * zoomEased);
+    // Start at initial Z (normal view), push well past into negatives to pass through face
+    const initialZ = window.innerWidth < 768 ? 1100 : 750;
+    const currentZ = initialZ - ( initialZ * zoomEased );
     laptopScene.camera.position.z = currentZ;
 
     // Render loop calls
@@ -400,6 +418,10 @@ window.addEventListener("resize", () => {
         const { height, width } = getWindowSize();
         
         laptopScene.camera.aspect = width / height;
+        // Dynamically adjust initial Z if resized past breakpoint before zoom starts
+        if (!heroSection.classList.contains("show")) {
+            laptopScene.camera.position.setZ(width < 768 ? 1100 : 750);
+        }
         laptopScene.camera.updateProjectionMatrix();
         laptopScene.renderer.setSize(width, height);
         
@@ -451,6 +473,42 @@ if (techWrapper) {
     techWrapper.addEventListener("mouseleave", deactivateBlur);
 }
 
+// --- Tech Carousel Hover Slowdown & Tooltips ---
+const techTrack = document.querySelector('.tech-track');
+if (techTrack) {
+    techTrack.addEventListener('mouseenter', () => {
+        techTrack.getAnimations().forEach(anim => anim.playbackRate = 0.2);
+    });
+    techTrack.addEventListener('mouseleave', () => {
+        techTrack.getAnimations().forEach(anim => anim.playbackRate = 1);
+    });
+}
+
+// --- Global Floating Tooltip Logic ---
+const globalTooltip = document.getElementById('globalTooltip');
+const globalTooltipText = document.getElementById('globalTooltipText');
+const techItems = document.querySelectorAll('.tech-item');
+
+if (globalTooltip && techItems.length > 0) {
+    techItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            const tooltipContent = item.getAttribute('data-tooltip');
+            if (tooltipContent) {
+                globalTooltipText.textContent = tooltipContent;
+                globalTooltip.classList.add('visible');
+                
+                // Position it explicitly above the hovered item
+                const rect = item.getBoundingClientRect();
+                globalTooltip.style.top = (rect.top - 10) + 'px';
+                globalTooltip.style.left = (rect.left + rect.width / 2) + 'px';
+            }
+        });
+        item.addEventListener('mouseleave', () => {
+            globalTooltip.classList.remove('visible');
+        });
+    });
+}
+
 const cvNav = document.querySelector(".cv-nav");
 if (cvNav) {
     cvNav.addEventListener("mouseenter", activateBlur);
@@ -496,39 +554,59 @@ if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', toggleTheme);
 }
 
-// --- Scroll Zoom Logic ---
+// --- Scroll Zoom Logic & Timeline Animation ---
 const heroScrollRig = document.getElementById("heroScrollRig");
 const heroContentGroup = document.getElementById("heroContentGroup");
+const aboutSlides = document.querySelectorAll('.about-slide');
 
 window.addEventListener("scroll", () => {
-    if (!heroScrollRig || !heroContentGroup) return;
+    // 1. Zoom Logic for Hero
+    if (heroScrollRig && heroContentGroup) {
+        const rigRect = heroScrollRig.getBoundingClientRect();
+        const scrollDistance = heroScrollRig.offsetHeight - window.innerHeight;
+        
+        let scrollProgress = 0;
+        if (scrollDistance > 0) {
+            scrollProgress = Math.max(0, Math.min(1, -rigRect.top / scrollDistance));
+        }
 
-    const rigRect = heroScrollRig.getBoundingClientRect();
-    const scrollDistance = heroScrollRig.offsetHeight - window.innerHeight;
-    
-    let scrollProgress = 0;
-    if (scrollDistance > 0) {
-        scrollProgress = Math.max(0, Math.min(1, -rigRect.top / scrollDistance));
+        const scaleFactor = 1 + Math.pow(scrollProgress, 3) * 80; 
+        
+        let opacityProgress = 1;
+        if (scrollProgress > 0.5) {
+            opacityProgress = 1 - ((scrollProgress - 0.5) / 0.3);
+            opacityProgress = Math.max(0, Math.min(1, opacityProgress));
+        }
+
+        heroContentGroup.style.transform = `scale(${scaleFactor})`;
+        heroContentGroup.style.opacity = opacityProgress;
+        
+        const techWrapper = document.querySelector('.tech-carousel-wrapper');
+        if (techWrapper) {
+            let techOpacity = 1 - (scrollProgress * 2.5);
+            techWrapper.style.opacity = Math.max(0, techOpacity);
+        }
     }
 
-    // Scale up to 81x. Keep translateZ for hardware acceleration, 
-    // but without will-change: transform it should re-rasterize or keep crispness.
-    const scaleFactor = 1 + Math.pow(scrollProgress, 3) * 80; 
-    
-    // Opacity fades out towards the end (from 50% scroll to 80% scroll)
-    let opacityProgress = 1;
-    if (scrollProgress > 0.5) {
-        opacityProgress = 1 - ((scrollProgress - 0.5) / 0.3);
-        opacityProgress = Math.max(0, Math.min(1, opacityProgress));
-    }
-
-    heroContentGroup.style.transform = `scale(${scaleFactor})`;
-    heroContentGroup.style.opacity = opacityProgress;
-    
-    // Optional: Hide the tech scroller fully before max scale to avoid ugly stretching
-    const techWrapper = document.querySelector('.tech-carousel-wrapper');
-    if (techWrapper) {
-        let techOpacity = 1 - (scrollProgress * 2.5); // fades out by 40% scroll depth
-        techWrapper.style.opacity = Math.max(0, techOpacity);
+    // 2. Timeline Fill Logic
+    if (aboutSlides.length > 0) {
+        const viewportHeight = window.innerHeight;
+        aboutSlides.forEach(slide => {
+            const rect = slide.getBoundingClientRect();
+            // Fill based on how far the slide has passed through the center of the viewport
+            let fillPercentage = 0;
+            // The active zone is when the top of the slide reaches the middle of the screen
+            if (rect.top <= viewportHeight / 2 && rect.bottom >= viewportHeight / 2) {
+                const passedCenterDistance = (viewportHeight / 2) - rect.top;
+                fillPercentage = Math.min(100, Math.max(0, (passedCenterDistance / rect.height) * 100));
+            } else if (rect.bottom < viewportHeight / 2) {
+                fillPercentage = 100; // passed completely into history
+            }
+            
+            const fillEl = slide.querySelector('.timeline-fill');
+            if (fillEl) {
+                fillEl.style.height = `${fillPercentage}%`;
+            }
+        });
     }
 });
