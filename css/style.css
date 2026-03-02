@@ -1758,14 +1758,42 @@ body, html {
     gap: 20px;
 }
 
+.socials-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
 .socials-title {
-    font-size: 1.2rem;
+    position: relative;
+    margin: 0;
+    display: inline-block;
+}
+
+.socials-main-text {
+    position: relative;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
     font-weight: 700;
     color: var(--accent-primary);
     text-transform: uppercase;
     letter-spacing: 2px;
     white-space: nowrap;
-    margin: 0;
+    z-index: 2;
+}
+
+.socials-ghost-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(3rem, 8vw, 5rem);
+    font-weight: 800;
+    color: var(--text-muted);
+    opacity: 0.05;
+    z-index: 1;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
 }
 
 /* The Animated Line */
@@ -1795,8 +1823,8 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 15px; /* Increased padding */
+    border-radius: 8px; /* Slightly larger border radius for bigger button */
     border: none;
     color: #ffffff;
     font-weight: 600;
@@ -1806,7 +1834,7 @@ body, html {
 }
 
 .social-icon {
-    width: 20px;
+    width: 32px; /* Increased size */
     height: auto;
 }
 
@@ -1848,7 +1876,7 @@ body, html {
 
 .social-btn:hover .social-tooltip {
     opacity: 1; /* group-hover:opacity-100 */
-    transform: translate(-50%, calc(-50% - 40px)); /* group-hover:-translate-y-10 plus center offset */
+    transform: translate(-50%, calc(-50% - 50px)); /* Increased offset for larger button */
 }
 
 /* Mobile Adjustments */
