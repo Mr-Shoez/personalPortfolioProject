@@ -723,13 +723,20 @@ async function loadProjects() {
 function renderBentoGrid(projects) {
     if (!bentoGrid) return;
     bentoGrid.innerHTML = ''; // Clear skeleton/empty state if any
+    
+    // Add the glow-container class to the parent grid so hover states activate
+    bentoGrid.classList.add('glow-container');
 
     projects.forEach((project, index) => {
-        // Create Item Wrapper
+        // Create Item Wrapper (now acts as the glow card exterior)
         const bentoItem = document.createElement('div');
-        bentoItem.className = `bento-item bento-${index + 1}`;
+        bentoItem.className = `bento-item glow-card bento-${index + 1}`;
         bentoItem.setAttribute('data-index', index);
         
+        // Inner Content Wrapper that contains everything inside the border
+        const bentoContent = document.createElement('div');
+        bentoContent.className = 'glow-content';
+
         // Create Image
         const img = document.createElement('img');
         img.src = project.thumbnail;
@@ -751,14 +758,30 @@ function renderBentoGrid(projects) {
         overlay.appendChild(title);
         overlay.appendChild(category);
         
-        // Assemble
-        bentoItem.appendChild(img);
-        bentoItem.appendChild(overlay);
+        // Assemble Content
+        bentoContent.appendChild(img);
+        bentoContent.appendChild(overlay);
+        
+        // Assemble Card
+        bentoItem.appendChild(bentoContent);
         
         // Add Click Event to open Modal
         bentoItem.addEventListener('click', () => openProjectModal(index));
         
         bentoGrid.appendChild(bentoItem);
+    });
+
+    // Striped "Flashlight" Effect Event Listener
+    // Tracks the mouse position over the grid and updates the local CSS variable positions
+    // for each card natively, so the glowing pseudo element perfectly follows the cursor.
+    bentoGrid.addEventListener("pointermove", (ev) => {
+        const glowCards = bentoGrid.querySelectorAll('.glow-card');
+        glowCards.forEach((card) => {
+            const rect = card.getBoundingClientRect();
+            // Calculate relative coordinates for each card
+            card.style.setProperty("--x", `${ev.clientX - rect.left}px`);
+            card.style.setProperty("--y", `${ev.clientY - rect.top}px`);
+        });
     });
 }
 

@@ -927,6 +927,78 @@ body, html {
     pointer-events: none;
 }
 
+/* =========================================
+   Glow Card Effect (Stripe Flashlight)
+========================================= */
+/* The parent wrapper of the glow cards should have .glow-container to track mouse interactions */
+.glow-card {
+    position: relative;
+    /* Faint base border color visible when not glowing */
+    background: var(--glass-border); 
+    border-radius: 16px; /* Can be overridden */
+}
+
+/* The actual "Border" and "Inner" glow */
+.glow-card::before,
+.glow-card::after {
+    content: "";
+    position: absolute;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.glow-card::before {
+    inset: 0; /* Full size to create the border glow behind content */
+    background: radial-gradient(
+        800px circle at var(--x, 0px) var(--y, 0px),
+        rgba(255, 255, 255, 0.25),
+        transparent 40%
+    );
+    z-index: 1; /* Below content */
+}
+
+/* Wait, we make glow-card transparent on mobile? Usually mouse doesn't work but we leave opacity 0 */
+
+.glow-card::after {
+    inset: 1px; /* Matches the content */
+    background: radial-gradient(
+        400px circle at var(--x, 0px) var(--y, 0px),
+        rgba(255, 255, 255, 0.08),
+        transparent 40%
+    );
+    z-index: 5; /* Above content for the inner surface glow */
+}
+
+/* Fade in the glowing borders when the grid/mouse tracks across */
+.glow-container:hover .glow-card::before,
+.glow-container:hover .glow-card::after {
+    opacity: 1;
+}
+/* Focus the brightness a bit more on exactly hovered cards */
+.glow-card:hover::before {
+    background: radial-gradient(
+        800px circle at var(--x, 0px) var(--y, 0px),
+        rgba(255, 255, 255, 0.5),
+        transparent 40%
+    );
+}
+
+/* Inner content wrapper */
+.glow-content {
+    position: absolute;
+    inset: 1px; /* 1px border gap */
+    background: var(--bg-dark); /* Solid core to hide the gradient behind it */
+    border-radius: calc(inherit - 1px);
+    overflow: hidden;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Bento Grid */
 .bento-grid {
     display: grid;
@@ -941,13 +1013,14 @@ body, html {
 }
 
 .bento-item {
-    position: relative;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
     border-radius: 16px;
-    overflow: hidden;
     cursor: pointer;
     transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+.bento-item .glow-content {
+    border-radius: 15px; /* Manually specify inner radius */
+    background: var(--glass-bg); /* Give it the original glass look */
 }
 
 .bento-item:hover {
