@@ -703,198 +703,152 @@ body, html {
 }
 
 /* =========================================
-   Horizontal Snaking Timeline
+   Z-Snake Timeline Layout
 ========================================= */
-.snake-timeline-container {
+.clean-timeline-container {
     width: 100%;
-    max-width: 1100px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 100px 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-.snake-row {
+/* Base Blocks */
+.st-node {
     position: relative;
-    height: 350px; /* Provides enough vertical scroll space to 'scrub' the horizontal line */
+    height: 250px;
+    display: flex;
+    align-items: center;
 }
 
-/* Base style for all physical path fragments */
-.snake-segment {
+.st-turn {
+    position: relative;
+    height: 120px; /* Provides vertical scrolling distance to animate the horizontal sweep */
+}
+
+/* Raw Tracking Lines */
+.st-line {
     position: absolute;
     background: var(--glass-line);
     z-index: 0;
 }
 
-/* Horizontal track in the row */
-.seg-h {
-    top: 250px;
-    left: 16.666%; 
-    right: 16.666%;
-    height: 2px;
-}
-
-/* Vertical track dropping in from the top (Only Row 1) */
-.seg-start {
-    top: 0; 
-    left: 16.666%; 
-    width: 2px; 
-    height: 250px; /* Connects down exactly to the horizontal line */
-}
-
-/* Vertical track dropping out on the right (End of Row 1 into Row 2) */
-.seg-right {
-    top: 250px; 
-    right: 16.666%; 
-    width: 2px; 
-    height: 350px; /* Spans the remaining 100px of this row + 250px of the next row */
-}
-
-/* Vertical track dropping out on the left (End of Row 2 into Row 3) */
-.seg-left {
-    top: 250px; 
-    left: 16.666%; 
-    width: 2px; 
-    height: 350px;
-}
-
-/* Special ending */
-.snake-row.end-row {
-    height: 300px; /* Doesn't need full drop height */
-}
-
-/* --- Fills --- */
-.segment-fill {
+.st-fill {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--accent-primary);
-    box-shadow: 0 0 10px var(--accent-primary);
+    background: var(--main-blue);
+    box-shadow: 0 0 10px var(--main-blue);
     z-index: 1;
 }
 
-.seg-ltr .segment-fill {
-    transform-origin: left;
-    transform: scaleX(0); /* JS Scroll driven */
+/* Node Vertical Track */
+.st-node .st-v {
+    top: 0; bottom: 0; width: 2px;
 }
 
-.seg-rtl .segment-fill {
-    transform-origin: right;
-    transform: scaleX(0); /* JS Scroll driven */
-}
-
-.seg-v .segment-fill {
+.st-node .st-v .st-fill {
     transform-origin: top;
-    transform: scaleY(0); /* JS Scroll driven */
+    transform: scaleY(0); /* Driven continuously by JS */
 }
 
-/* --- Items Holder --- */
-.snake-items {
-    position: absolute;
-    top: 0; 
-    left: 0; 
-    right: 0;
-    height: 250px; /* Items sit entirely above the horizontal line (which is at 250px) */
-    display: flex;
-    justify-content: space-between;
-    z-index: 5;
+/* Turn Segments */
+.st-top-left { top: 0; left: 0; height: 50%; width: 2px; }
+.st-bottom-right { bottom: 0; right: 0; height: 50%; width: 2px; }
+
+.st-top-right { top: 0; right: 0; height: 50%; width: 2px; }
+.st-bottom-left { bottom: 0; left: 0; height: 50%; width: 2px; }
+
+.st-h { top: 50%; width: 100%; height: 2px; }
+
+.st-ltr .st-fill { transform-origin: left; transform: scaleX(0); }
+.st-rtl .st-fill { transform-origin: right; transform: scaleX(0); }
+.st-turn .st-v .st-fill { transform-origin: top; transform: scaleY(0); }
+
+/* Left vs Right Node Configurations */
+.st-left {
+    justify-content: flex-start;
+}
+.st-left .st-v {
+    left: 0;
+}
+.st-left .st-content {
+    margin-left: 60px;
+    text-align: left;
+}
+.st-left .st-dot {
+    left: -7px; /* 16px wide dot centered on 2px line exactly at 0 */
 }
 
-.snake-items.ltr {
-    flex-direction: row;
-}
-
-.snake-items.rtl {
-    flex-direction: row-reverse;
-}
-
-/* --- Individual Node --- */
-.snake-item {
-    width: 33.333%;
-    height: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
+.st-right {
     justify-content: flex-end;
-    align-items: center;
-    padding-bottom: 40px; /* Space for the tick line under text */
-    text-align: center;
-    padding-left: 15px;
-    padding-right: 15px;
+}
+.st-right .st-v {
+    right: 0;
+}
+.st-right .st-content {
+    margin-right: 60px;
+    text-align: right;
+}
+.st-right .st-dot {
+    right: -7px;
 }
 
-/* Raw Text Styling (No Card Border per request) */
-.item-content {
-    opacity: 0.5; /* Default inactive */
-    transform: translateY(10px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+/* Interactivity and Content */
+.st-content {
+    opacity: 0.3;
+    transform: translateY(15px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    width: 60%; 
 }
 
-.item-content.visible {
+.st-content.visible {
     opacity: 1;
     transform: translateY(0);
 }
 
-.item-date {
-    color: var(--accent-primary);
+.st-dot {
+    position: absolute;
+    width: 16px; 
+    height: 16px; 
+    border-radius: 50%;
+    background: var(--bg-dark);
+    border: 3px solid var(--glass-line);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    transition: border-color 0.4s ease, background-color 0.4s ease, transform 0.4s ease;
+}
+
+.st-dot.filled {
+    border-color: var(--main-blue);
+    background: var(--bg-dark);
+    box-shadow: 0 0 15px var(--main-blue);
+    transform: translateY(-50%) scale(1.3);
+}
+
+/* Typography elements without cards */
+.st-date {
+    color: var(--main-blue);
     font-family: 'Inter', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 700;
     margin-bottom: 5px;
 }
 
-.item-topic {
+.st-topic {
     color: var(--text-light);
     font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
-.item-desc {
+.st-desc {
     color: var(--text-muted);
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-/* Tick line connecting text down to dot */
-.item-tick {
-    position: absolute;
-    bottom: 0px; 
-    left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 40px;
-    background: var(--glass-line);
-}
-.item-tick .segment-fill {
-    transform-origin: bottom; /* Fills upwards to the text! */
-    transform: scaleY(0);
-}
-
-/* The physical dot residing ON the horizontal segment */
-.item-dot {
-    position: absolute;
-    top: 100%; /* Corresponds exactly to 250px from parent height, matching seg-h */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--bg-dark);
-    border: 3px solid var(--glass-line);
-    transition: border-color 0.4s ease, background-color 0.4s ease, transform 0.4s ease;
-}
-
-.item-dot.filled {
-    border-color: var(--accent-primary);
-    background: var(--bg-dark);
-    box-shadow: 0 0 15px var(--accent-primary);
-    transform: translate(-50%, -50%) scale(1.3);
-}
-
-/* Special End Oval */
-.item-dot.oval {
-    width: 24px;
-    height: 12px;
-    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 /* =========================================
@@ -1390,55 +1344,40 @@ body, html {
     }
 
     /* --- About Timeline Mobile Stack --- */
-    .snake-timeline-container {
+    .clean-timeline-container {
         padding: 40px 20px;
     }
     
-    .snake-row {
-        height: auto; /* Let content dictate height */
-        display: flex;
-        flex-direction: column;
+    .st-node {
+        height: auto;
+        padding-bottom: 50px;
+        align-items: flex-start;
+        justify-content: flex-start;
     }
     
-    /* Hide the horizontal and tracking lines on mobile for simplicity */
-    .seg-h, .seg-start, .seg-right, .seg-left, .end-drop {
+    /* Hide the horizontal turning tracks entirely on mobile */
+    .st-turn {
         display: none;
     }
     
-    .snake-items {
-        position: relative;
-        height: auto;
-        flex-direction: column !important; /* Force all rows to stack vertically top-to-bottom */
+    /* Force vertical tracks entirely to the left edge */
+    .st-v {
+        left: 0 !important;
+        right: auto !important;
     }
     
-    .snake-item {
+    /* Align dot over the left track */
+    .st-dot {
+        left: -7px !important;
+        right: auto !important;
+    }
+    
+    /* Force content text to shift right from the track */
+    .st-content {
         width: 100%;
-        align-items: flex-start;
-        text-align: left;
-        padding: 0 0 40px 30px; /* Space for the left-aligned track */
-    }
-    
-    /* Draw a simple vertical line on the left inside snake-items */
-    .snake-items::before {
-        content: ''; 
-        position: absolute; 
-        left: 6px; /* align with dot */
-        top: 0; 
-        bottom: 0; 
-        width: 2px; 
-        background: var(--glass-line);
-        z-index: 0;
-    }
-    
-    /* Modify dot to sit on this left line */
-    .item-dot {
-        top: 20px; /* Align with text */
-        left: 7px; /* Align with line */
-        transform: translate(-50%, -50%);
-    }
-
-    .item-tick {
-        display: none; /* Removed the connection tick on mobile */
+        margin-left: 40px !important;
+        margin-right: 0 !important;
+        text-align: left !important;
     }
 
     /* --- Projects Mobile --- */

@@ -648,75 +648,47 @@ window.addEventListener("scroll", () => {
         }
     }
 
-    // 2. Horizontal Snaking Timeline Fill Logic
-    const snakeRows = document.querySelectorAll('.snake-row');
+    // 2. Continuous Z-Snake Timeline Fill Logic
+    const stElements = document.querySelectorAll('.st-node, .st-turn');
     const midScreen = window.innerHeight / 2;
-    
-    // Offset applied to make lines begin drawing slightly before hitting exact dead center, keeping it feeling responsive
     const triggerOffset = 50; 
+    
+    stElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        // Progress down the element
+        const progress = (midScreen + triggerOffset - rect.top) / rect.height;
+        const clamped = Math.max(0, Math.min(1, progress));
 
-    if (snakeRows.length > 0) {
-        snakeRows.forEach(row => {
-            const rect = row.getBoundingClientRect();
+        if (el.classList.contains('st-node')) {
+            // Fill vertical line smoothly
+            const fill = el.querySelector('.st-v .st-fill');
+            if (fill) fill.style.transform = `scaleY(${clamped})`;
             
-            // Progress within the horizontal row bounds
-            let rowProgress = (midScreen + triggerOffset - rect.top) / rect.height;
-            rowProgress = Math.max(0, Math.min(1, rowProgress));
-
-            // Animate horizontal segment mapping exactly to row scroll progress
-            const segH = row.querySelector('.seg-h .segment-fill');
-            if (segH) {
-                segH.style.transform = `scaleX(${rowProgress})`;
+            // Dot and text activation check (triggers halfway down the node)
+            const dot = el.querySelector('.st-dot');
+            const content = el.querySelector('.st-content');
+            if (progress >= 0.5) {
+                if (dot) dot.classList.add('filled');
+                if (content) content.classList.add('visible');
+            } else {
+                if (dot) dot.classList.remove('filled');
+                if (content) content.classList.remove('visible');
             }
-
-            // Animate vertical drop start (only Row 1)
-            const segStart = row.querySelector('.seg-start .segment-fill');
-            if (segStart) {
-                // seg-start is the top 250px of row 1, so it fills during the very first part of scrolling into row 1
-                let startProgress = (midScreen + triggerOffset - rect.top) / 250;
-                startProgress = Math.max(0, Math.min(1, startProgress));
-                segStart.style.transform = `scaleY(${startProgress})`;
-            }
-
-            // Animate vertical drop out to next row
-            // The drop to next row begins at 250px down the row and extends into the next row
-            const segDropOut = row.querySelector('.seg-right .segment-fill, .seg-left .segment-fill');
-            if (segDropOut) {
-                let dropProgress = (midScreen + triggerOffset - (rect.top + 250)) / 350;
-                dropProgress = Math.max(0, Math.min(1, dropProgress));
-                segDropOut.style.transform = `scaleY(${dropProgress})`;
-            }
-
-            // Check each item node dynamically
-            const items = row.querySelectorAll('.snake-item');
-            items.forEach(item => {
-                const dot = item.querySelector('.item-dot');
-                if (dot) {
-                    const dotRect = dot.getBoundingClientRect();
-                    // If the dot has reached midScreen
-                    if (dotRect.top < midScreen + triggerOffset) {
-                        dot.classList.add('filled');
-                        
-                        // Fill tick line up to text
-                        const tick = item.querySelector('.item-tick .segment-fill');
-                        if (tick) tick.style.transform = `scaleY(1)`;
-                        
-                        // Reveal Text
-                        const content = item.querySelector('.item-content');
-                        if (content) content.classList.add('visible');
-                    } else {
-                        dot.classList.remove('filled');
-                        
-                        const tick = item.querySelector('.item-tick .segment-fill');
-                        if (tick) tick.style.transform = `scaleY(0)`;
-                        
-                        const content = item.querySelector('.item-content');
-                        if (content) content.classList.remove('visible');
-                    }
-                }
-            });
-        });
-    }
+        } else if (el.classList.contains('st-turn')) {
+            // Sequence the corner turns: 20% drop, 60% sweep, 20% drop
+            const topFill = el.querySelector('.st-top-left .st-fill') || el.querySelector('.st-top-right .st-fill');
+            const hFill = el.querySelector('.st-h .st-fill');
+            const botFill = el.querySelector('.st-bottom-right .st-fill') || el.querySelector('.st-bottom-left .st-fill');
+            
+            let pTop = clamped / 0.2;
+            let pH = (clamped - 0.2) / 0.6;
+            let pBot = (clamped - 0.8) / 0.2;
+            
+            if (topFill) topFill.style.transform = `scaleY(${Math.max(0, Math.min(1, pTop))})`;
+            if (hFill) hFill.style.transform = `scaleX(${Math.max(0, Math.min(1, pH))})`;
+            if (botFill) botFill.style.transform = `scaleY(${Math.max(0, Math.min(1, pBot))})`;
+        }
+    });
 });
 
 // 3. Zoom Logic for Projects Section
