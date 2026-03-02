@@ -579,6 +579,12 @@ body, html {
     width: 130px; /* Always stay fully expanded */
 }
 
+.cv-nav .nav-text {
+    opacity: 1;
+    color: var(--text-light); /* Make the text visible and adaptable to the theme */
+    display: inline-block;
+}
+
 .cv-nav:hover {
     width: 130px;
 }
@@ -861,7 +867,8 @@ body, html {
 
 .projects-section-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-top: 200px;
+    margin-bottom: 200px;
     position: relative;
     z-index: 10;
 }
