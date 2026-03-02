@@ -1472,3 +1472,265 @@ body, html {
         font-size: 1.8rem;
     }
 }
+
+/* =========================================
+   Contact Section
+========================================= */
+.contact-section {
+    padding: 100px 20px;
+    background: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.contact-section-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    width: 100%;
+}
+
+.contact-subtitle {
+    display: block;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.contact-title {
+    position: relative;
+    display: inline-block;
+    margin: 0;
+}
+
+.contact-main-text {
+    position: relative;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: var(--accent-primary);
+    z-index: 2;
+}
+
+.contact-ghost-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-weight: 800;
+    color: var(--text-muted);
+    opacity: 0.05;
+    z-index: 1;
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+}
+
+.contact-content-body {
+    max-width: 800px;
+    margin: 0 auto 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contact-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    max-width: 600px;
+}
+
+/* Base button styling closely resembling the mockup's solid block approach */
+.lets-talk-btn {
+    background-color: #7b3fe4; /* using a solid purple block as seen in screenshot */
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 16px 40px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    border-radius: 4px; /* Optional slight rounding or set to 0 to match edge-to-edge square */
+}
+
+/* Light mode support: button remains visually distinct */
+[data-theme="light"] .lets-talk-btn {
+    background-color: #632fc2;
+}
+
+.lets-talk-btn:hover {
+    background-color: #632fc2;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(123, 63, 228, 0.2);
+}
+
+.lets-talk-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 10px rgba(123, 63, 228, 0.2);
+}
+
+.contact-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.contact-info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.contact-info-label {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #7b3fe4; /* Accent color matching button */
+    margin: 0;
+}
+
+.contact-info-value {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.contact-info-value a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contact-info-value a:hover {
+    color: #7b3fe4;
+}
+
+.contact-modal-wrapper {
+    max-width: 600px; /* Thinner standard web-practice modal */
+    background: #ffffff !important;
+}
+
+.contact-close-btn {
+    top: 20px;
+    right: 20px;
+    color: #000;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.contact-close-btn:hover {
+    color: var(--accent-primary);
+}
+
+.contact-modal-inner {
+    padding: 60px 50px;
+    text-align: left;
+}
+
+.contact-modal-subtitle {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin: 0 0 10px 0;
+}
+
+.contact-modal-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #7b3fe4; /* Purple as requested in the design */
+    margin: 0 0 40px 0;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #4a4a4a;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: #4a4a4a;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #7b3fe4;
+}
+
+.contact-submit-btn {
+    background-color: #7b3fe4; 
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 10px;
+}
+
+.contact-submit-btn:hover {
+    background-color: #632fc2;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .contact-info-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 25px;
+    }
+    .contact-modal-inner {
+        padding: 40px 25px;
+    }
+}

@@ -907,4 +907,40 @@ document.addEventListener('pointermove', (ev) => {
     }
 });
 
+// =========================================
+// Contact Modal Logic
+// =========================================
+const contactModal = document.getElementById('contactModal');
+const openContactBtn = document.getElementById('openContactBtn');
+const contactModalCloseBtn = document.getElementById('contactModalCloseBtn');
+
+function openContactModal() {
+    if (contactModal) {
+        contactModal.classList.add('active');
+        playHoverSound();
+    }
+}
+
+function closeContactModal() {
+    if (contactModal) {
+        contactModal.classList.remove('active');
+    }
+}
+
+if (openContactBtn) {
+    openContactBtn.addEventListener('click', openContactModal);
+}
+
+if (contactModalCloseBtn) {
+    contactModalCloseBtn.addEventListener('click', closeContactModal);
+}
+
+if (contactModal) {
+    contactModal.addEventListener('click', (e) => {
+        if (e.target === contactModal || e.target.classList.contains('modal-backdrop')) {
+            closeContactModal();
+        }
+    });
+}
+
 
