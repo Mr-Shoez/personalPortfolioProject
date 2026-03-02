@@ -1,0 +1,26 @@
+[
+    {
+        "date": "MARCH 2, 2026",
+        "topic": "The Art of Modern Interfaces",
+        "description": "Exploring how responsive design and micro-interactions elevate user experience from functional to delightful.",
+        "link": "#"
+    },
+    {
+        "date": "FEBRUARY 15, 2026",
+        "topic": "Mastering the DOM",
+        "description": "Deep dive into efficient DOM manipulation techniques for high-performance creative web applications.",
+        "link": "#"
+    },
+    {
+        "date": "JANUARY 28, 2026",
+        "topic": "CSS Architecture at Scale",
+        "description": "Strategies for organizing and maintaining massive CSS codebases without losing your mind or specificity.",
+        "link": "#"
+    },
+    {
+        "date": "JANUARY 10, 2026",
+        "topic": "The Future of Web Typography",
+        "description": "How variable fonts and CSS clamp are fundamentally changing the way we design editorial layouts for the web.",
+        "link": "#"
+    }
+]
