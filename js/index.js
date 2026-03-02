@@ -943,4 +943,25 @@ if (contactModal) {
     });
 }
 
+// =========================================
+// Socials Line Animation Observer
+// =========================================
+const socialsSection = document.getElementById('socials');
+const socialsLine = document.getElementById('socialsLine');
 
+if (socialsSection && socialsLine) {
+    const socialsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Add class to trigger CSS scaleX(1)
+                socialsLine.classList.add('animate');
+                // Optional: Stop observing after it animates once
+                socialsObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.5 // Trigger when 50% of the section is visible
+    });
+
+    socialsObserver.observe(socialsSection);
+}

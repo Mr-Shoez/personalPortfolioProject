@@ -1737,3 +1737,129 @@ body, html {
         padding: 40px 25px;
     }
 }
+
+/* =========================================
+   Socials Section
+========================================= */
+.socials-section {
+    width: 100%;
+    padding: 60px 20px;
+    background-color: var(--bg-dark); /* match the current theme */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.socials-container {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.socials-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    white-space: nowrap;
+    margin: 0;
+}
+
+/* The Animated Line */
+.socials-animated-line {
+    flex-grow: 1; /* take up remaining space */
+    height: 1px;
+    background-color: var(--accent-primary);
+    /* Initial state before scroll animation */
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.socials-animated-line.animate {
+    transform: scaleX(1);
+}
+
+.socials-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Base Social Button (Replicating Tailwind) */
+.social-btn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* drop-shadow-xl */
+    transition: all 0.5s ease; /* transition-all duration-500 */
+}
+
+.social-icon {
+    width: 20px;
+    height: auto;
+}
+
+/* GitHub Specific Button */
+.github-btn {
+    background: linear-gradient(to right, #1f2937, #000000); /* bg-gradient-to-r from-gray-800 to-black */
+}
+
+/* LinkedIn Specific Button */
+.linkedin-btn {
+    background: linear-gradient(to right, #1f2937, #0077b5); /* bg-[#0077b5] from-gray-800 */
+}
+
+/* Hover States for all Social Buttons */
+.social-btn:hover {
+    transform: translateY(-12px); /* hover:translate-y-3 */
+    border-radius: 50%; /* hover:rounded-[50%] */
+}
+
+/* Hover Gradient Changes */
+.github-btn:hover, .linkedin-btn:hover {
+    background: linear-gradient(to right, #331029, #310413); /* hover:from-[#331029] hover:to-[#310413] */
+}
+
+/* Tooltip (Replicating Tailwind group-hover spans) */
+.social-tooltip {
+    position: absolute;
+    top: 50%; /* Center relative to button */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    color: var(--text-light); /* use theme color instead of tailwind gray-700 */
+    font-size: 0.875rem; /* text-sm */
+    font-family: 'Inter', sans-serif;
+    pointer-events: none;
+    transition: all 0.7s ease; /* duration-700 */
+    white-space: nowrap;
+}
+
+.social-btn:hover .social-tooltip {
+    opacity: 1; /* group-hover:opacity-100 */
+    transform: translate(-50%, calc(-50% - 40px)); /* group-hover:-translate-y-10 plus center offset */
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .socials-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .socials-animated-line {
+        width: 100%;
+        height: 1px;
+    }
+}
