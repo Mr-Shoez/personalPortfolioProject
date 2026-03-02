@@ -770,19 +770,6 @@ function renderBentoGrid(projects) {
         
         bentoGrid.appendChild(bentoItem);
     });
-
-    // Striped "Flashlight" Effect Event Listener
-    // Tracks the mouse position over the grid and updates the local CSS variable positions
-    // for each card natively, so the glowing pseudo element perfectly follows the cursor.
-    bentoGrid.addEventListener("pointermove", (ev) => {
-        const glowCards = bentoGrid.querySelectorAll('.glow-card');
-        glowCards.forEach((card) => {
-            const rect = card.getBoundingClientRect();
-            // Calculate relative coordinates for each card
-            card.style.setProperty("--x", `${ev.clientX - rect.left}px`);
-            card.style.setProperty("--y", `${ev.clientY - rect.top}px`);
-        });
-    });
 }
 
 /**
@@ -867,3 +854,19 @@ if (projectModal) {
 
 // Initialize
 loadProjects();
+
+// =========================================
+// Global Glow Card Tracking (Stripe Effect)
+// =========================================
+document.addEventListener('pointermove', (ev) => {
+    const container = ev.target.closest('.glow-container');
+    if (container) {
+        const glowCards = container.querySelectorAll('.glow-card');
+        glowCards.forEach((card) => {
+            const rect = card.getBoundingClientRect();
+            // Assign localized x/y coordinates to the CSS variables
+            card.style.setProperty("--x", `${ev.clientX - rect.left}px`);
+            card.style.setProperty("--y", `${ev.clientY - rect.top}px`);
+        });
+    }
+});
