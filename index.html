@@ -406,6 +406,80 @@
     </section>
 
     <!-- ========================================= -->
+    <!-- Contact Section                           -->
+    <!-- ========================================= -->
+    <section id="contact" class="contact-section">
+        <div class="contact-section-header">
+            <span class="contact-subtitle">SAMPLE SUBTITLE</span>
+            <h2 class="contact-title">
+                <span class="contact-main-text">Let's Talk Design and<br>Innovation</span>
+                <span class="contact-ghost-text">CONTACT</span>
+            </h2>
+        </div>
+        
+        <div class="contact-content-body">
+            <p class="contact-description">Sed ut unde omnis iste natus volur tatem accus antium laudan tium totam rem aperiam inventore et architecto.</p>
+            <button class="lets-talk-btn" id="openContactBtn">Learn More</button>
+        </div>
+
+        <div class="contact-info-grid">
+            <div class="contact-info-item">
+                <h3 class="contact-info-label">Address</h3>
+                <p class="contact-info-value"><a href="https://maps.google.com/?q=Johannesburg,+South+Africa" target="_blank" rel="noopener noreferrer">Johannesburg,<br>South Africa</a></p>
+            </div>
+            <div class="contact-info-item">
+                <h3 class="contact-info-label">Email</h3>
+                <p class="contact-info-value"><a href="mailto:molelekishoez@gmail.com">molelekishoez@gmail.com</a></p>
+            </div>
+            <div class="contact-info-item">
+                <h3 class="contact-info-label">Phone</h3>
+                <p class="contact-info-value"><a href="tel:+27738349023">073 834 9023</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================= -->
+    <!-- Contact Modal Design                      -->
+    <!-- ========================================= -->
+    <div class="project-modal" id="contactModal">
+        <div class="modal-backdrop" id="contactModalBackdrop"></div>
+        <div class="modal-content-wrapper contact-modal-wrapper" style="background: #ffffff; color: #000000; display: block; height: auto;">
+            <button class="modal-close-btn contact-close-btn" id="contactModalCloseBtn" aria-label="Close Contact Modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="contact-modal-inner">
+                <h4 class="contact-modal-subtitle">GET IN TOUCH</h4>
+                <h2 class="contact-modal-title">Let's Have a Chat</h2>
+                
+                <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); alert('Message sent successfully!'); document.getElementById('contactModalCloseBtn').click();">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First name</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="Emily" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last name</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Smith" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="email@address.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Enter your message here..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="contact-submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================= -->
     <!-- Cinematic Project Modal                   -->
     <!-- ========================================= -->
     <div class="project-modal" id="projectModal">
