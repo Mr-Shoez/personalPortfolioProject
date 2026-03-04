@@ -875,8 +875,21 @@ body.about-page {
     }
 
     .about-hero-photo-wrap {
-        max-width: 280px;
+        max-width: 200px;
         margin: 0 auto;
+    }
+
+    /* Circle crop on mobile — desktop keeps the 3/4 portrait ratio */
+    .about-hero-photo {
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        object-position: center top;
+    }
+
+    .about-hero-photo-accent {
+        border-radius: 50%;
+        top: 10px;
+        left: -10px;
     }
 
     .about-stats-inner {

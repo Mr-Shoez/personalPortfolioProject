@@ -1,7 +1,7 @@
 /**
  * ============================================================
  *  Portfolio Script — index.js
- *  Copyright (c) 2024–2026 Mosa Moleleki ("Mr-Shoez" / "S.U.D.O")
+ *  Copyright (c) 2024–2026 Mosa Moleleki ("Mr-S-U-D-O" / "S.U.D.O")
  *  All Rights Reserved. Proprietary & Confidential.
  *  Unauthorised copying, modification, or distribution is prohibited.
  *  See LICENSE in the project root for full terms.
@@ -15,7 +15,7 @@ console.log(
   'color: #ff4444; font-size: 2rem; font-weight: 900; text-shadow: 0 0 8px #ff4444;'
 );
 console.log(
-  '%cThis is a proprietary, privately-owned portfolio.\n\nAll source code, design, and assets are copyright © 2024–2026 Mosa Moleleki.\nUnauthorised copying, cloning, or reproduction is strictly prohibited.\n\nTo request permission: Molelekishoez@gmail.com\nLicense: https://github.com/Mr-Shoez/personalPortfolioProject/blob/main/LICENSE',
+  '%cThis is a proprietary, privately-owned portfolio.\n\nAll source code, design, and assets are copyright © 2024–2026 Mosa Moleleki.\nUnauthorised copying, cloning, or reproduction is strictly prohibited.\n\nTo request permission: Molelekishoez@gmail.com\nLicense: https://github.com/Mr-S-U-D-O/personalPortfolioProject/blob/main/LICENSE',
   'color: #ffffff; font-size: 0.9rem; line-height: 1.8; background: #111; padding: 12px 16px; border-left: 4px solid #ff4444; border-radius: 4px;'
 );
 // ────────────────────────────────────────────────────────────────────────────

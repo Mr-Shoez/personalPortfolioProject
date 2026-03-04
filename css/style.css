@@ -1,7 +1,7 @@
 /**
  * ============================================================
  *  Portfolio Stylesheet — style.css
- *  Copyright (c) 2024–2026 Mosa Moleleki ("Mr-Shoez" / "S.U.D.O")
+ *  Copyright (c) 2024–2026 Mosa Moleleki ("Mr-S-U-D-O" / "S.U.D.O")
  *  All Rights Reserved.
  *
  *  PROPRIETARY AND CONFIDENTIAL.
@@ -1507,6 +1507,12 @@ body, html {
         align-items: center;
         text-align: center;
         gap: 5px;
+    }
+
+    /* Tighten headline so "Front-End Web Developer" stays on one line on small phones */
+    .line-large {
+        font-size: clamp(1.6rem, 6.5vw, 2.5rem);
+        letter-spacing: -0.5px;
     }
 
     .hero-image-container {
