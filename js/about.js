@@ -1,1 +1,135 @@
-console.log("%c⚠ STOP!","color: #ff4444; font-size: 2rem; font-weight: 900; text-shadow: 0 0 8px #ff4444;"),console.log("%cThis is a proprietary, privately-owned portfolio.\n\nAll source code, design, and assets are copyright © 2024–2026 Mosa Moleleki.\nUnauthorised copying, cloning, or reproduction is strictly prohibited.\n\nTo request permission: Molelekishoez@gmail.com\nLicense: https://github.com/Mr-Shoez/personalPortfolioProject/blob/main/LICENSE","color: #ffffff; font-size: 0.9rem; line-height: 1.8; background: #111; padding: 12px 16px; border-left: 4px solid #ff4444; border-radius: 4px;"),document.addEventListener("DOMContentLoaded",function(){if(window.ThemeSystem){function e(e){var t=document.querySelector(".about-hero-photo");t&&(t.src="light"===e?"my pictures/light mode.webp":"my pictures/dark mode.webp")}window.ThemeSystem.init(),e(window.ThemeSystem.get()),document.addEventListener("themechange",function(t){e(t.detail.theme)})}var t=document.querySelectorAll(".ap-fade");if(t.length>0){var o=new IntersectionObserver(function(e){e.forEach(function(e){e.isIntersecting&&(e.target.classList.add("visible"),o.unobserve(e.target))})},{threshold:.1});t.forEach(function(e){o.observe(e)})}var n=document.getElementById("backToTop");n&&(window.addEventListener("scroll",function(){window.scrollY>400?n.classList.add("visible"):n.classList.remove("visible")}),n.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"})}));var r=document.querySelectorAll(".about-edu-entry");if(r.length>0){var i=new IntersectionObserver(function(e){e.forEach(function(e,t){e.isIntersecting&&(setTimeout(function(){var t=e.target.querySelector(".about-edu-dot");t&&t.classList.add("filled")},150*t),i.unobserve(e.target))})},{threshold:.5});r.forEach(function(e){i.observe(e)})}var s=document.querySelectorAll(".skill-card");if(s.length>0){var a=new IntersectionObserver(function(e){e.forEach(function(e){e.isIntersecting&&(e.target.style.transitionDelay=e.target.dataset.delay||"0s",e.target.classList.add("visible"),a.unobserve(e.target))})},{threshold:.15});s.forEach(function(e,t){e.dataset.delay=.06*t+"s",e.classList.add("ap-fade"),a.observe(e)})}});
+/**
+ * About Page Module
+ * Handles interactions specific to the about page including hero image theme syncing,
+ * scroll animations for timeline entries, skills, and the Back to Top button.
+ */
+
+// Protective Console Messages
+console.log(
+  "%c⚠ STOP!",
+  "color: #ff4444; font-size: 2rem; font-weight: 900; text-shadow: 0 0 8px #ff4444;"
+);
+console.log(
+  "%cThis is a proprietary, privately-owned portfolio.\n\nAll source code, design, and assets are copyright © 2024–2026 Mosa Moleleki.\nUnauthorised copying, cloning, or reproduction is strictly prohibited.\n\nTo request permission: Molelekishoez@gmail.com\nLicense: https://github.com/Mr-Shoez/personalPortfolioProject/blob/main/LICENSE",
+  "color: #ffffff; font-size: 0.9rem; line-height: 1.8; background: #111; padding: 12px 16px; border-left: 4px solid #ff4444; border-radius: 4px;"
+);
+
+document.addEventListener("DOMContentLoaded", function () {
+  /**
+   * Hero Image Theme Syncing
+   * If the global ThemeSystem is available, sync the hero image photo
+   * depending on the active theme (light/dark mode variants).
+   */
+  if (window.ThemeSystem) {
+    function updateHeroImage(theme) {
+      const heroPhoto = document.querySelector(".about-hero-photo");
+      if (heroPhoto) {
+        heroPhoto.src = theme === "light" 
+          ? "my pictures/light mode.webp" 
+          : "my pictures/dark mode.webp";
+      }
+    }
+    
+    // Ensure ThemeSystem is initialized and set initial state
+    window.ThemeSystem.init();
+    updateHeroImage(window.ThemeSystem.get());
+    
+    // Listen for future theme changes
+    document.addEventListener("themechange", function (event) {
+      updateHeroImage(event.detail.theme);
+    });
+  }
+
+  /**
+   * Generic Fade-In Animations
+   * Applies a 'visible' class to elements with the '.ap-fade' class when
+   * they scroll into view.
+   */
+  const fadeElements = document.querySelectorAll(".ap-fade");
+  if (fadeElements.length > 0) {
+    const fadeObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            fadeObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    fadeElements.forEach((el) => fadeObserver.observe(el));
+  }
+
+  /**
+   * Back to Top Button Interaction
+   * Shows/hides a floating action button based on scroll position
+   * and scrolls smoothly to the top of the page when clicked.
+   */
+  const backToTopBtn = document.getElementById("backToTop");
+  if (backToTopBtn) {
+    window.addEventListener("scroll", function () {
+      if (window.scrollY > 400) {
+        backToTopBtn.classList.add("visible");
+      } else {
+        backToTopBtn.classList.remove("visible");
+      }
+    });
+
+    backToTopBtn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  /**
+   * Education Timeline Scroll Animations
+   * Fills in the dot of an education timeline entry sequentially
+   * when it scrolls into the viewport.
+   */
+  const eduEntries = document.querySelectorAll(".about-edu-entry");
+  if (eduEntries.length > 0) {
+    const eduObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              const dot = entry.target.querySelector(".about-edu-dot");
+              if (dot) dot.classList.add("filled");
+            }, 150 * index);
+            eduObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    eduEntries.forEach((el) => eduObserver.observe(el));
+  }
+
+  /**
+   * Skills Grid Scroll Animations
+   * Calculates specific transition delays for each skill card
+   * to create a staggered entrance effect when they become visible.
+   */
+  const skillCards = document.querySelectorAll(".skill-card");
+  if (skillCards.length > 0) {
+    const skillObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transitionDelay = entry.target.dataset.delay || "0s";
+            entry.target.classList.add("visible");
+            skillObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    
+    // Assign specific delays based on element index
+    skillCards.forEach((el, index) => {
+      el.dataset.delay = (0.06 * index) + "s";
+      el.classList.add("ap-fade"); // Re-use the ap-fade fade-in style
+      skillObserver.observe(el);
+    });
+  }
+});

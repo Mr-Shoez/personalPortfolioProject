@@ -1,4 +1,11 @@
+/* ==========================================================================
+   FONTS & GLOBAL IMPORTS
+   ========================================================================== */
 @import url(https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap);
+
+/* ==========================================================================
+   THEME VARIABLES & COLOR PALETTE
+   ========================================================================== */
 :root {
   --bg-dark: #0a0a0a;
   --text-light: #ffffff;
@@ -29,6 +36,9 @@
   --overlay-bg: rgba(255, 255, 255, 0.3);
   --ghost-opacity: 0.2;
 }
+/* ==========================================================================
+   BASE DOM STYLES & LAYOUT RESETS
+   ========================================================================== */
 body,
 html {
   margin: 0;
@@ -43,6 +53,9 @@ html {
     background-color 0.4s ease,
     color 0.4s ease;
 }
+/* ==========================================================================
+   SPLASH SCREEN & ANIMATED INTRO
+   ========================================================================== */
 .splash-screen {
   position: fixed;
   top: 0;
@@ -121,6 +134,9 @@ html {
   opacity: 0 !important;
   pointer-events: none;
 }
+/* ==========================================================================
+   INTRO QUOTE ANIMATION
+   ========================================================================== */
 .quote-container {
   position: absolute;
   width: 100vw;
@@ -226,6 +242,9 @@ html {
   opacity: 1;
   visibility: visible;
 }
+/* ==========================================================================
+   SIDEBAR & GLOBAL NAVIGATION
+   ========================================================================== */
 .sidebar-nav {
   position: fixed;
   left: 20px;
@@ -301,6 +320,9 @@ html {
   opacity: 1;
   transition-delay: 0.1s;
 }
+/* ==========================================================================
+   HERO SECTION (HOME PAGE)
+   ========================================================================== */
 .hero-content-group {
   display: flex;
   flex-direction: column;
@@ -370,6 +392,9 @@ html {
 .text-muted {
   color: var(--text-muted);
 }
+/* ==========================================================================
+   TECH STACK CAROUSEL COMPONENT
+   ========================================================================== */
 .tech-carousel-wrapper {
   width: 100%;
   max-width: 800px;
@@ -535,6 +560,9 @@ html {
 .cv-link {
   justify-content: flex-end;
 }
+/* ==========================================================================
+   UTILITY TOGGLES (MUTE / THEME)
+   ========================================================================== */
 .utility-toggles {
   position: fixed;
   top: 20px;
@@ -567,6 +595,9 @@ html {
   transform: scale(1.1);
   background: var(--tooltip-bg);
 }
+/* ==========================================================================
+   ABOUT SECTION PREVIEW (HOME PAGE)
+   ========================================================================== */
 .about-section {
   position: relative;
   background: var(--bg-dark);
@@ -616,6 +647,9 @@ html {
   user-select: none;
   pointer-events: none;
 }
+/* ==========================================================================
+   TIMELINE / SNAKE ANIMATION LOGIC
+   ========================================================================== */
 .clean-timeline-container {
   width: 100%;
   max-width: 900px;
@@ -813,6 +847,9 @@ html {
   box-shadow: 0 0 30px var(--accent-primary);
   transform: scale(1.05);
 }
+/* ==========================================================================
+   SKILLS & SERVICES SECTION
+   ========================================================================== */
 .skills-wrapper {
   max-width: 1000px;
   margin: 0 auto 50px auto;
@@ -894,6 +931,9 @@ html {
   opacity: 1;
   transform: translateY(0);
 }
+/* ==========================================================================
+   PROJECTS PREVIEW SECTION
+   ========================================================================== */
 .projects-section {
   position: relative;
   padding: 100px 0;
@@ -1124,6 +1164,9 @@ html {
   grid-column: 4;
   grid-row: 3;
 }
+/* ==========================================================================
+   PROJECT DETAILS MODAL
+   ========================================================================== */
 .project-modal {
   position: fixed;
   top: 0;
@@ -1423,6 +1466,9 @@ html {
     font-size: 1.8rem;
   }
 }
+/* ==========================================================================
+   CONTACT / LET'S TALK SECTION
+   ========================================================================== */
 .contact-section {
   padding: 100px 20px;
   background: var(--bg-dark);
@@ -1657,6 +1703,9 @@ html {
     padding: 40px 25px;
   }
 }
+/* ==========================================================================
+   SOCIALS BANNER SECTION
+   ========================================================================== */
 .socials-section {
   width: 100%;
   padding: 60px 20px;
@@ -1770,6 +1819,9 @@ html {
   opacity: 1;
   transform: translate(-50%, calc(-50% - 50px));
 }
+/* ==========================================================================
+   GLOBAL FOOTER
+   ========================================================================== */
 .site-footer {
   width: 100%;
   background-color: var(--bg-dark);

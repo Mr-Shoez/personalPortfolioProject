@@ -1,3 +1,6 @@
+/* ==========================================================================
+   BASE DOM STYLES & LAYOUT RESETS
+   ========================================================================== */
 html {
   overflow-y: auto !important;
   overflow-x: hidden;
@@ -12,6 +15,9 @@ body.blog-post-page {
   position: relative;
   padding-top: 50px;
 }
+/* ==========================================================================
+   SCROLL PROGRESS BAR
+   ========================================================================== */
 .post-progress-bar {
   position: fixed;
   top: 0;
@@ -26,6 +32,9 @@ body.blog-post-page {
   z-index: 9999;
   transition: width 0.1s ease-out;
 }
+/* ==========================================================================
+   BACK NAVIGATION WRAPPER
+   ========================================================================== */
 .back-home-wrapper {
   max-width: 1200px;
   margin: 40px auto 20px;
@@ -53,6 +62,9 @@ body.blog-post-page {
 [data-theme="light"] .back-home-btn:hover {
   background: rgba(0, 0, 0, 0.1);
 }
+/* ==========================================================================
+   POST HERO HEADER
+   ========================================================================== */
 .post-hero {
   max-width: 1200px;
   margin: 0 auto 60px;
@@ -90,6 +102,9 @@ body.blog-post-page {
   object-fit: cover;
   display: block;
 }
+/* ==========================================================================
+   POST LAYOUT & SIDEBAR
+   ========================================================================== */
 .post-layout {
   display: flex;
   max-width: 1200px;
@@ -107,6 +122,9 @@ body.blog-post-page {
   flex-direction: column;
   gap: 40px;
 }
+/* ==========================================================================
+   AUTHOR INFO BLOCK
+   ========================================================================== */
 .post-author {
   display: flex;
   align-items: center;
@@ -128,6 +146,9 @@ body.blog-post-page {
   font-size: 0.85rem;
   color: var(--text-muted);
 }
+/* ==========================================================================
+   TABLE OF CONTENTS & ANIMATED SNAKE
+   ========================================================================== */
 .post-toc {
   display: flex;
   flex-direction: column;
@@ -194,6 +215,9 @@ body.blog-post-page {
 [data-theme="light"] .snake-track {
   stroke: rgba(0, 0, 0, 0.06);
 }
+/* ==========================================================================
+   SHARE BUTTONS
+   ========================================================================== */
 .post-share {
   display: flex;
   gap: 15px;
@@ -219,6 +243,9 @@ body.blog-post-page {
   color: #fff;
   transform: translateY(-3px);
 }
+/* ==========================================================================
+   MAIN POST CONTENT TYPOGRAPHY & MEDIA
+   ========================================================================== */
 .post-content-wrapper {
   flex-grow: 1;
   min-width: 0;
@@ -285,6 +312,9 @@ body.blog-post-page {
   font-style: italic;
   font-size: 1.25rem;
 }
+/* ==========================================================================
+   BOTTOM NAVIGATION (NEXT/PREV POST)
+   ========================================================================== */
 .post-bottom-nav {
   display: flex;
   justify-content: space-between;
@@ -331,6 +361,9 @@ body.blog-post-page {
   font-weight: 600;
   color: var(--accent-primary);
 }
+/* ==========================================================================
+   RESPONSIVE QUERIES
+   ========================================================================== */
 @media (max-width: 992px) {
   .post-layout {
     flex-direction: column;

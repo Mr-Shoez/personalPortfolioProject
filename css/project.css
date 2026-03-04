@@ -7,6 +7,9 @@ body.project-detail-page {
   overflow-y: auto !important;
   overflow-x: hidden;
 }
+/* ==========================================================================
+   BASE DOM STYLES & LAYOUT RESETS
+   ========================================================================== */
 .project-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -21,6 +24,9 @@ body.project-detail-page {
   background: var(--accent-primary);
   z-index: 10000;
 }
+/* ==========================================================================
+   NAVIGATION (BACK TO HOME & PROGRESS BAR)
+   ========================================================================== */
 .back-home-btn {
   display: inline-flex;
   align-items: center;
@@ -45,6 +51,9 @@ body.project-detail-page {
 [data-theme="light"] .back-home-btn:hover {
   background: rgba(0, 0, 0, 0.1);
 }
+/* ==========================================================================
+   PROJECT HERO HEADER
+   ========================================================================== */
 .project-hero {
   margin-bottom: 4rem;
   position: relative;
@@ -112,6 +121,9 @@ body.project-detail-page {
   text-transform: uppercase;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
+/* ==========================================================================
+   META DATA GRID (ROLE, TIMEFRAME, LINKS)
+   ========================================================================== */
 .project-meta-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -194,6 +206,9 @@ body.project-detail-page {
   color: var(--text-light);
   font-weight: 400;
 }
+/* ==========================================================================
+   NARRATIVE CONTENT & SIDEBAR / TOC
+   ========================================================================== */
 .narrative-container {
   display: flex;
   max-width: 1200px;
@@ -284,6 +299,9 @@ body.project-detail-page {
   color: var(--text-muted);
   margin-bottom: 15px;
 }
+/* ==========================================================================
+   MAIN PROJECT CONTENT TYPOGRAPHY & MEDIA
+   ========================================================================== */
 .project-content-wrapper {
   flex-grow: 1;
   min-width: 0;
@@ -337,6 +355,9 @@ body.project-detail-page {
   margin: 2em 0;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
+/* ==========================================================================
+   TECH PILLS (TOOLS USED)
+   ========================================================================== */
 .tech-pills-container {
   display: flex;
   flex-wrap: wrap;
@@ -366,6 +387,9 @@ body.project-detail-page {
   background: rgba(0, 140, 255, 0.05);
   color: var(--accent-primary);
 }
+/* ==========================================================================
+   BOTTOM NAVIGATION (NEXT/PREV PROJECT)
+   ========================================================================== */
 .project-bottom-nav {
   display: flex;
   justify-content: space-between;
@@ -424,6 +448,9 @@ body.project-detail-page {
   max-width: 800px;
   font-size: 1.1rem;
 }
+/* ==========================================================================
+   FEATURES GRID SECTION
+   ========================================================================== */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -460,6 +487,9 @@ body.project-detail-page {
   font-size: 1.05rem;
   font-weight: 500;
 }
+/* ==========================================================================
+   BEFORE/AFTER COMPARISON SLIDER
+   ========================================================================== */
 .comparison-slider-wrapper {
   position: relative;
   width: 100%;
@@ -527,6 +557,9 @@ body.project-detail-page {
   z-index: 4;
   font-size: 1.2rem;
 }
+/* ==========================================================================
+   CHALLENGES & SOLUTIONS GRID
+   ========================================================================== */
 .challenges-grid {
   display: flex;
   flex-direction: column;
@@ -573,6 +606,9 @@ body.project-detail-page {
   font-size: 1.1rem;
   line-height: 1.6;
 }
+/* ==========================================================================
+   RESULTS / IMPACT SECTION
+   ========================================================================== */
 .results-container {
   display: flex;
   flex-direction: column;

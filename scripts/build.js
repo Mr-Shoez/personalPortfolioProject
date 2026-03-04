@@ -242,11 +242,11 @@ const articlesHTML = `<!DOCTYPE html>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.sudo.co.za/articles.html">
     <meta property="og:title" content="All Articles | Mosa Moleleki">
-    <link rel="stylesheet" href="css/style.min.css">
+    <link rel="stylesheet" href="css/min/style.min.css">
     <link rel="stylesheet" href="css/all.min.css">
-    <link rel="stylesheet" href="css/blog.min.css">
+    <link rel="stylesheet" href="css/min/blog.min.css">
     <!-- Universal Theme System (non-deferred to prevent flash) -->
-    <script src="js/theme.min.js"><\/script>
+    <script src="js/min/theme.min.js"><\/script>
 </head>
 <body>
     <!-- Theme Toggle -->
@@ -536,8 +536,8 @@ let htmlContent = `<!DOCTYPE html>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Global Styles -->
-    <link rel="stylesheet" href="/css/style.min.css">
-    <link rel="stylesheet" href="/css/blog.min.css">
+    <link rel="stylesheet" href="/css/min/style.min.css">
+    <link rel="stylesheet" href="/css/min/blog.min.css">
     
     <style>
         /* Sitemap Specific Overrides */
@@ -744,19 +744,22 @@ console.log('Starting minification process...');
 
 async function minifyFiles() {
     const cssDir = path.join(__dirname, '../css');
+    const cssMinDir = path.join(__dirname, '../css/min');
     const jsDir = path.join(__dirname, '../js');
+    const jsMinDir = path.join(__dirname, '../js/min');
 
     // Minify CSS
     if (fs.existsSync(cssDir)) {
-        const cssFiles = fs.readdirSync(cssDir).filter(f => f.endsWith('.min.css') && !f.endsWith('.min.css'));
+        if (!fs.existsSync(cssMinDir)) fs.mkdirSync(cssMinDir, { recursive: true });
+        const cssFiles = fs.readdirSync(cssDir).filter(f => f.endsWith('.css') && !f.endsWith('.min.css') && fs.statSync(path.join(cssDir, f)).isFile());
         cssFiles.forEach(file => {
             const inputPath = path.join(cssDir, file);
-            const minPath = path.join(cssDir, file.replace(/\.css$/, '.min.css'));
+            const minPath = path.join(cssMinDir, file.replace(/\.css$/, '.min.css'));
             try {
                 const inputCss = fs.readFileSync(inputPath, 'utf8');
                 const output = new CleanCSS({}).minify(inputCss);
                 fs.writeFileSync(minPath, output.styles, 'utf8');
-                console.log(`Minified CSS: ${file} -> ${path.basename(minPath)}`);
+                console.log(`Minified CSS: ${file} -> css/min/${path.basename(minPath)}`);
             } catch (err) {
                 console.error(`Error minifying ${file}:`, err);
             }
@@ -765,15 +768,18 @@ async function minifyFiles() {
 
     // Minify JS
     if (fs.existsSync(jsDir)) {
-        const jsFiles = fs.readdirSync(jsDir).filter(f => f.endsWith('.min.js') && !f.endsWith('.min.js'));
+        if (!fs.existsSync(jsMinDir)) fs.mkdirSync(jsMinDir, { recursive: true });
+        const jsFiles = fs.readdirSync(jsDir).filter(f => f.endsWith('.js') && !f.endsWith('.min.js') && fs.statSync(path.join(jsDir, f)).isFile());
         for (const file of jsFiles) {
             const inputPath = path.join(jsDir, file);
-            const minPath = path.join(jsDir, file.replace(/\.js$/, '.min.js'));
+            const minPath = path.join(jsMinDir, file.replace(/\.js$/, '.min.js'));
             try {
                 const inputJs = fs.readFileSync(inputPath, 'utf8');
-                const output = await terser.minify(inputJs, { module: file === 'index.min.js' });
-                fs.writeFileSync(minPath, output.code, 'utf8');
-                console.log(`Minified JS: ${file} -> ${path.basename(minPath)}`);
+                const output = await terser.minify(inputJs, { module: file === 'index.js' });
+                if (output.code) {
+                    fs.writeFileSync(minPath, output.code, 'utf8');
+                    console.log(`Minified JS: ${file} -> js/min/${path.basename(minPath)}`);
+                }
             } catch (err) {
                 console.error(`Error minifying ${file}:`, err);
             }

@@ -8,8 +8,10 @@ const filesToProcess = [
     '404.html',
     'scripts/blog-template.html',
     'scripts/project-template.html',
-    'scripts/build.js'
 ];
+
+const cssReplacements = ['style', 'about', 'project', 'blog', 'blog-post'];
+const jsReplacements = ['index', 'about', 'theme'];
 
 filesToProcess.forEach(file => {
     const fullPath = path.join(projectDir, file);
@@ -17,22 +19,23 @@ filesToProcess.forEach(file => {
     
     let content = fs.readFileSync(fullPath, 'utf8');
     
-    // Replace .css" or .css' with .min.css" or .min.css' (avoiding .min.min.css)
-    content = content.replace(/(?<!\.min)\.css(['"])/g, '.min.css$1');
+    cssReplacements.forEach(name => {
+        // relative paths
+        const regex = new RegExp(`href=["']\\/?css\\/(?:min\\/)?${name}\\.(?:min\\.)?css["']`, 'g');
+        content = content.replace(regex, `href="css/min/${name}.min.css"`);
+        // absolute paths
+        const regexSlash = new RegExp(`href=["']\\/css\\/(?:min\\/)?${name}\\.(?:min\\.)?css["']`, 'g');
+        content = content.replace(regexSlash, `href="/css/min/${name}.min.css"`);
+    });
     
-    // Replace .js" or .js' with .min.js" or .min.js'
-    content = content.replace(/(?<!\.min)\.js(['"])/g, '.min.js$1');
-    
-    // In build.js we don't want to replace the string replacements inside logic 
-    // BUT we already fixed build.js minification logic earlier. 
-    // Wait, build.js has logic like replace(/\.css$/) !
-    // Let's only replace inside html or quotes if it follows css/ or js/
-    // Actually, a safer regex for HTML and build.js injected HTML:
-    
-    content = content.replace(/href=(["'])([^"']*\/css\/[^"']+(?<!\.min))\.css\1/g, 'href=$1$2.min.css$1');
-    content = content.replace(/href=(["'])(css\/[^"']+(?<!\.min))\.css\1/g, 'href=$1$2.min.css$1');
-    content = content.replace(/src=(["'])([^"']*\/js\/[^"']+(?<!\.min))\.js\1/g, 'src=$1$2.min.js$1');
-    content = content.replace(/src=(["'])(js\/[^"']+(?<!\.min))\.js\1/g, 'src=$1$2.min.js$1');
+    jsReplacements.forEach(name => {
+        // relative paths
+        const regex = new RegExp(`src=["']\\/?js\\/(?:min\\/)?${name}\\.(?:min\\.)?js["']`, 'g');
+        content = content.replace(regex, `src="js/min/${name}.min.js"`);
+        // absolute paths
+        const regexSlash = new RegExp(`src=["']\\/js\\/(?:min\\/)?${name}\\.(?:min\\.)?js["']`, 'g');
+        content = content.replace(regexSlash, `src="/js/min/${name}.min.js"`);
+    });
     
     fs.writeFileSync(fullPath, content, 'utf8');
     console.log(`Updated links in ${file}`);

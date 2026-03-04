@@ -1,0 +1,20 @@
+# Ignore original unminified files as requested
+/css/*.css
+!/css/min/
+!/css/*.min.css
+
+/js/*.js
+!/js/min/
+!/js/*.min.js
+
+# Node
+node_modules/
+.npm/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
