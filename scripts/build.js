@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { marked } = require('marked');
 
 // Configuration
 const BASE_URL = 'https://yourportfolio.com'; // Adjust this when deploying
@@ -127,7 +128,24 @@ blogData.forEach(post => {
     let pageHtml = templateBlock;
     pageHtml = pageHtml.replace(/{{TITLE}}/g, post.topic);
     pageHtml = pageHtml.replace(/{{DATE}}/g, post.date);
-    pageHtml = pageHtml.replace(/{{CONTENT}}/g, post.content);
+    
+    // Read and parse Markdown content for the blog post
+    const mdFilePath = path.join(ROOT_DIR, 'data/posts', `${post.slug}.md`);
+    let markedHtml = '';
+    try {
+        if (fs.existsSync(mdFilePath)) {
+            const rawMd = fs.readFileSync(mdFilePath, 'utf8');
+            markedHtml = marked.parse(rawMd);
+        } else {
+            console.warn(`Warning: Markdown file not found for ${post.slug}`);
+            markedHtml = `<p>Content coming soon...</p>`;
+        }
+    } catch (err) {
+        console.error(`Error reading markdown for ${post.slug}:`, err);
+        markedHtml = `<p>Error loading content.</p>`;
+    }
+    
+    pageHtml = pageHtml.replace(/{{CONTENT}}/g, markedHtml);
     
     // SEO Replacements
     const pageUrl = `${BASE_URL}/posts/${post.slug}.html`;
@@ -305,14 +323,24 @@ if (projectTemplateBlock && projectsData.length > 0) {
     projectsData.forEach(proj => {
         let pageHtml = projectTemplateBlock;
         
+        // Load Markdown Content
+        let projContentHtml = '';
+        try {
+            const mdPath = path.join(__dirname, '../data/projects', `${proj.slug}.md`);
+            if (fs.existsSync(mdPath)) {
+                const mdRaw = fs.readFileSync(mdPath, 'utf8');
+                projContentHtml = marked.parse(mdRaw);
+            }
+        } catch (e) {
+            console.error(`Error processing markdown for ${proj.slug}:`, e);
+        }
+
         pageHtml = pageHtml.replace(/{{TITLE}}/g, proj.title || '');
         pageHtml = pageHtml.replace(/{{DESCRIPTION}}/g, proj.description || '');
         pageHtml = pageHtml.replace(/{{CATEGORY}}/g, proj.category || '');
         pageHtml = pageHtml.replace(/{{ROLE}}/g, proj.role || '');
         pageHtml = pageHtml.replace(/{{YEAR}}/g, proj.year || '');
-        pageHtml = pageHtml.replace(/{{OVERVIEW}}/g, proj.overview || '');
-        pageHtml = pageHtml.replace(/{{CHALLENGES}}/g, proj.challenges || '');
-        pageHtml = pageHtml.replace(/{{SOLUTIONS}}/g, proj.solutions || '');
+        pageHtml = pageHtml.replace(/{{CONTENT}}/g, projContentHtml);
         
         const pageUrl = `${BASE_URL}/projects/${proj.slug}.html`;
         const ogImage = proj.fullImage.startsWith('http') ? proj.fullImage : `${BASE_URL}/${proj.fullImage}`;
@@ -371,42 +399,242 @@ try {
 }
 
 // 6. Generate sitemap.html
+// First, build a tree structure from the paths
+const fileTree = {};
+sitePages.forEach(page => {
+    // If it's the root site, page is 'index.html'
+    const parts = page.split('/');
+    let current = fileTree;
+    for (let i = 0; i < parts.length; i++) {
+        const part = parts[i];
+        if (!current[part]) {
+            current[part] = { _path: null, _children: {} };
+        }
+        if (i === parts.length - 1) {
+            current[part]._path = page; // It's a file
+        }
+        current = current[part]._children;
+    }
+});
+
+function renderTreeBranch(node, level = 0) {
+    let html = '<ul class="tree-branch" style="--level: ' + level + ';">\n';
+    const keys = Object.keys(node).sort((a, b) => {
+        // Folders first, then files
+        const isFolderA = Object.keys(node[a]._children).length > 0;
+        const isFolderB = Object.keys(node[b]._children).length > 0;
+        if (isFolderA !== isFolderB) return isFolderA ? -1 : 1;
+        return a.localeCompare(b);
+    });
+
+    keys.forEach((key, index) => {
+        const item = node[key];
+        const isLast = index === keys.length - 1;
+        const hasChildren = Object.keys(item._children).length > 0;
+        
+        html += `  <li class="tree-item ${isLast ? 'is-last' : ''}">\n`;
+        html += `    <div class="tree-row">\n`;
+        html += `      <span class="tree-line"></span>\n`;
+        
+        if (hasChildren) {
+            html += `      <i class="fa-solid fa-folder tree-icon directory"></i>\n`;
+            html += `      <span class="tree-label">${key}</span>\n`;
+            html += `    </div>\n`;
+            html += renderTreeBranch(item._children, level + 1);
+        } else {
+            const ext = key.split('.').pop();
+            let iconClass = 'fa-file-code';
+            if (ext === 'html') iconClass = 'fa-file-code html-file';
+            else if (ext === 'xml') iconClass = 'fa-file-code xml-file';
+            
+            html += `      <i class="fa-solid ${iconClass} tree-icon file"></i>\n`;
+            html += `      <a href="/${item._path}" class="tree-label">${key}</a>\n`;
+            html += `    </div>\n`;
+        }
+        html += `  </li>\n`;
+    });
+    html += '</ul>\n';
+    return html;
+}
+
 let htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sitemap | Mosa Moleleki</title>
+    <title>Sitemap | File Tree</title>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #0d1117;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent: #2f81f7;
+            --border-color: #30363d;
+            --hover-bg: rgba(177, 186, 196, 0.12);
+            --folder-color: #d2a8ff;
+            --html-color: #e34c26;
+            --xml-color: #2ea043;
+        }
+        * { box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: #ffffff;
-            padding: 40px;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            padding: 40px 20px;
             max-width: 800px;
             margin: 0 auto;
+            line-height: 1.5;
         }
-        h1 { color: #008cff; }
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 10px; }
-        a {
-            color: #a3a3a3;
+        h1 { 
+            color: var(--text-primary); 
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        /* Tree Layout */
+        .file-tree-container {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            background: #161b22;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+        }
+        
+        .tree-branch {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+        }
+        
+        .tree-branch[style*="--level: 0"] > .tree-item > .tree-row > .tree-line {
+            display: none; /* No lines for root level */
+        }
+        
+        .tree-branch:not([style*="--level: 0"]) {
+            padding-left: 24px;
+            margin-left: -4px;
+            border-left: 1px dotted var(--border-color);
+        }
+        
+        .tree-item {
+            position: relative;
+        }
+        
+        .tree-row {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            border-radius: 4px;
+            margin: 2px 0;
+            transition: background 0.2s;
+            position: relative;
+        }
+        
+        .tree-row:hover {
+            background-color: var(--hover-bg);
+        }
+        
+        /* The horizontal branch line */
+        .tree-line {
+            position: absolute;
+            left: -24px;
+            top: 50%;
+            width: 20px;
+            border-top: 1px dotted var(--border-color);
+            z-index: 0;
+        }
+        
+        /* Hide bottom tail of vertical line for last items */
+        .tree-item.is-last > .tree-row::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 50%;
+            bottom: -200px; /* Cover any continuing border */
+            width: 4px;
+            background: #161b22; /* Match container background */
+            z-index: -1;
+        }
+        
+        .tree-icon {
+            margin-right: 10px;
+            font-size: 1.1em;
+            width: 16px;
+            text-align: center;
+            z-index: 1;
+        }
+        
+        .directory { color: var(--folder-color); }
+        .html-file { color: var(--html-color); }
+        .xml-file { color: var(--xml-color); }
+        
+        .tree-label {
+            color: var(--text-primary);
             text-decoration: none;
-            transition: color 0.3s;
+            cursor: pointer;
+            z-index: 1;
         }
-        a:hover { color: #008cff; }
+        
+        a.tree-label:hover {
+            color: var(--accent);
+            text-decoration: underline;
+        }
+        
+        .project-root {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        .project-root i {
+            color: var(--accent);
+        }
+        
+        /* Nav button to get back */
+        .back-nav {
+            margin-top: 40px;
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+        .back-nav:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <h1>Sitemap</h1>
-    <ul>
-`;
-
-sitePages.forEach(page => {
-    htmlContent += `        <li><a href="${page}">${page}</a></li>\n`;
-});
-
-htmlContent += `    </ul>
+    <h1><i class="fa-solid fa-sitemap"></i> Project Architecture</h1>
+    <div class="subtitle">Generated dynamically via build.js &bull; Directory Map</div>
+    
+    <div class="file-tree-container">
+        <div class="project-root">
+            <i class="fa-solid fa-globe"></i> yourportfolio.com
+        </div>
+        ${renderTreeBranch(fileTree, 0)}
+    </div>
+    
+    <a href="/index.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> Return to Home</a>
 </body>
 </html>`;
 

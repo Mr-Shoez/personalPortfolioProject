@@ -77,62 +77,60 @@
             </div>
         </section>
 
-        <!-- Project Overview -->
-        <section class="project-overview section-padding fade-element">
-            <div class="overview-content">
-                <span class="section-subtitle">OVERVIEW</span>
-                <h2>What is this project?</h2>
-                <p class="large-text">The very first iteration of my personal portfolio. Designed to be deliberately raw, it adopted brutalist design principles to stand out in a sea of standard corporate templates. It solved the problem of establishing an initial web presence while serving as an experimental playground for vanilla JavaScript and CSS grid layouts.</p>
-            </div>
-        </section>
-
         <!-- The Narrative: Asymmetric Layout -->
         <div class="narrative-container">
-            <!-- Animated Trailing Line -->
-            <div class="trailing-line-wrapper">
-                <div class="trailing-line"></div>
-                <div class="trailing-fill" id="trailingFill"></div>
-            </div>
+            <!-- Left Sticky Sidebar -->
+            <aside class="project-sidebar">
+                <!-- TOC -->
+                <div class="project-toc">
+                    <h4>On This Page</h4>
+                    <ul id="tocList">
+                        <!-- Injected by JS -->
+                    </ul>
+                </div>
 
-            <section class="asymmetric-section section-padding challenge-section fade-element">
-                <div class="sticky-side">
-                    <span class="section-subtitle">THE PROBLEM</span>
-                    <h2>The Challenge</h2>
+                <!-- Animated Trailing Line (Z-Snake) anchored to TOC -->
+                <div class="trailing-line-wrapper">
+                    <svg class="snake-line-svg" viewBox="0 0 100 1400" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="snakeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="var(--accent-primary)" />
+                                <stop offset="100%" stop-color="var(--accent-primary)" />
+                            </linearGradient>
+                        </defs>
+                        <!-- The Background Track -->
+                        <path class="snake-track" d="M 50 0 V 300 Q 50 350 10 350 H 10 Q -30 350 -30 400 V 600 Q -30 650 10 650 H 90 Q 130 650 130 700 V 1000 Q 130 1050 90 1050 H 10 Q -30 1050 -30 1100 V 1400" />
+                        <!-- The Animated Fill -->
+                        <path class="snake-fill" id="snakeFill" d="M 50 0 V 300 Q 50 350 10 350 H 10 Q -30 350 -30 400 V 600 Q -30 650 10 650 H 90 Q 130 650 130 700 V 1000 Q 130 1050 90 1050 H 10 Q -30 1050 -30 1100 V 1400" />
+                    </svg>
                 </div>
-                <div class="scrolling-side">
-                    <div class="content-card glass-panel">
-                        <i class="fa-solid fa-triangle-exclamation section-icon text-primary"></i>
-                        <p>Achieving complex, responsive grid layouts utilizing pure CSS without the aid of modern frameworks. Writing lightweight vanilla JavaScript to handle smooth scroll behaviors and simple animations while ensuring absolute maximum performance and zero dependencies.</p>
-                    </div>
-                </div>
-            </section>
 
-            <section class="asymmetric-section reverse section-padding solution-section fade-element">
-                <div class="sticky-side">
-                    <span class="section-subtitle">THE APPROACH</span>
-                    <h2>The Solution</h2>
-                </div>
-                <div class="scrolling-side">
-                    <div class="content-card glass-panel highlight-panel">
-                        <i class="fa-solid fa-lightbulb section-icon text-primary"></i>
-                        <p>Relied heavily on CSS Variables (Custom Properties) and CSS Grid to construct a rigid but fully responsive typographic layout. I wrote custom, minimalistic JavaScript observer classes to handle lazy-loading for images and trigger threshold-based scroll animations, resulting in a perfect 100/100 Lighthouse score.</p>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <!-- Technologies Used -->
-        <section class="project-tech section-padding fade-element">
-            <div class="tech-header text-center">
-                <span class="section-subtitle">TOOLS & STACK</span>
-                <h2>Technologies Used</h2>
-            </div>
-            <div class="tech-pills-container">
-                <span class="tech-pill">HTML</span>
+                <!-- Technologies Used -->
+                <div class="project-tech-sidebar fade-element">
+                    <h4>Tech Stack</h4>
+                    <div class="tech-pills-container">
+                        <span class="tech-pill">HTML</span>
                 <span class="tech-pill">CSS</span>
                 <span class="tech-pill">Vanilla JS</span>
-            </div>
-        </section>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Right Main Content -->
+            <article class="project-content-wrapper fade-element" id="projectContent">
+                <h2>Overview</h2>
+<p>The very first iteration of my personal portfolio. Designed to be deliberately raw, it adopted brutalist design principles to stand out in a sea of standard corporate templates. It solved the problem of establishing an initial web presence while serving as an experimental playground for vanilla JavaScript and CSS grid layouts.</p>
+<blockquote>
+<p>[!CAUTION] The Challenge
+Achieving complex, responsive grid layouts utilizing pure CSS without the aid of modern frameworks. Writing lightweight vanilla JavaScript to handle smooth scroll behaviors and simple animations while ensuring absolute maximum performance and zero dependencies.</p>
+</blockquote>
+<blockquote>
+<p>[!TIP] The Solution
+Relied heavily on CSS Variables (Custom Properties) and CSS Grid to construct a rigid but fully responsive typographic layout. I wrote custom, minimalistic JavaScript observer classes to handle lazy-loading for images and trigger threshold-based scroll animations, resulting in a perfect 100/100 Lighthouse score.</p>
+</blockquote>
+
+            </article>
+        </div>
 
         <!-- Bottom Navigation -->
         <nav class="project-bottom-nav">
@@ -163,26 +161,93 @@
                 }
             });
 
-            // 2. Trailing Line Animation
-            const trailingWrapper = document.querySelector('.trailing-line-wrapper');
-            if (trailingWrapper) {
-                gsap.to('#trailingFill', {
-                    height: '100%',
+            // 2. Generate TOC from Markdown Content
+            const content = document.getElementById('projectContent');
+            const headings = content.querySelectorAll('h2, h3');
+            const tocList = document.getElementById('tocList');
+            
+            if (headings.length === 0) {
+                document.querySelector('.project-toc').style.display = 'none';
+                document.querySelector('.trailing-line-wrapper').style.display = 'none';
+            } else {
+                headings.forEach((heading, index) => {
+                    const id = heading.id || `heading-${index}`;
+                    heading.id = id;
+
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `#${id}`;
+                    a.textContent = heading.textContent;
+                    if (heading.tagName.toLowerCase() === 'h3') {
+                        a.style.paddingLeft = '15px';
+                        a.style.fontSize = '0.85rem';
+                    }
+                    li.appendChild(a);
+                    tocList.appendChild(li);
+                });
+
+                // Highlight TOC on Scroll
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px 0px -80% 0px',
+                    threshold: 0
+                };
+
+                const tocLinks = tocList.querySelectorAll('a');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            tocLinks.forEach(link => {
+                                link.classList.remove('active');
+                                if (link.getAttribute('href') === `#${entry.target.id}`) {
+                                    link.classList.add('active');
+                                }
+                            });
+                        }
+                    });
+                }, observerOptions);
+
+                headings.forEach(h => observer.observe(h));
+
+                // Smooth scroll
+                tocLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = link.getAttribute('href').substring(1);
+                        const targetEl = document.getElementById(targetId);
+                        if (targetEl) {
+                            const yOffset = -100;
+                            const y = targetEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                            window.scrollTo({top: y, behavior: 'smooth'});
+                        }
+                    });
+                });
+            }
+
+            // 3. Trailing Line Animation (Snake SVG)
+            const snakeFill = document.getElementById('snakeFill');
+            if (snakeFill && headings.length > 0) {
+                const length = snakeFill.getTotalLength();
+                gsap.set(snakeFill, { strokeDasharray: length, strokeDashoffset: length });
+
+                gsap.to(snakeFill, {
+                    strokeDashoffset: 0,
                     ease: 'none',
                     scrollTrigger: {
                         trigger: '.narrative-container',
-                        start: 'top center',
+                        start: 'top 100px',
                         end: 'bottom center',
                         scrub: 0.5
                     }
                 });
             }
 
-            // 3. Fade Up Elements on Scroll
-            const fadeElements = document.querySelectorAll('.fade-element');
+            // 4. Fade Up Elements on Scroll (Including newly injected markdown elements)
+            const fadeElements = document.querySelectorAll('.fade-element, .project-content-wrapper > h2, .project-content-wrapper > p, .project-content-wrapper > blockquote');
             fadeElements.forEach(el => {
                 gsap.fromTo(el, 
-                    { opacity: 0, y: 50 },
+                    { opacity: 0, y: 40 },
                     {
                         opacity: 1, 
                         y: 0,
@@ -197,50 +262,43 @@
                 );
             });
 
-            // 4. Stagger Technology Pills
+            // 5. Stagger Tech Pills
             gsap.from('.tech-pill', {
                 opacity: 0,
-                y: 20,
-                stagger: 0.1,
-                duration: 0.6,
-                ease: 'back.out(1.7)',
+                y: 15,
+                stagger: 0.05,
+                duration: 0.5,
+                ease: 'back.out(1.5)',
                 scrollTrigger: {
-                    trigger: '.tech-pills-container',
-                    start: 'top 90%'
+                    trigger: '.project-tech-sidebar',
+                    start: 'top 80%'
                 }
             });
 
-            // Theme Toggle Logic
+            // 6. Theme Toggle Logic
             const themeToggleBtn = document.getElementById('themeToggle');
-            const toggleIcon = themeToggleBtn.querySelector('i');
+            const toggleIcon = themeToggleBtn ? themeToggleBtn.querySelector('i') : null;
             
-            function updateThemeIcon(isDark) {
-                if (isDark) {
-                    toggleIcon.classList.remove('fa-moon');
-                    toggleIcon.classList.add('fa-sun');
-                } else {
-                    toggleIcon.classList.remove('fa-sun');
-                    toggleIcon.classList.add('fa-moon');
+            function updateThemeIcon() {
+                if (toggleIcon) {
+                    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                    toggleIcon.className = currentTheme === 'light' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
                 }
             }
 
-            // Init based on localStorage or OS pref
-            let savedTheme = localStorage.getItem('theme');
-            let prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            let isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
-            
-            if (isDark) {
-                document.body.classList.add('dark-mode');
-            }
-            updateThemeIcon(isDark);
+            let savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon();
 
-            themeToggleBtn.addEventListener('click', () => {
-                document.body.classList.toggle('dark-mode');
-                
-                const isNowDark = document.body.classList.contains('dark-mode');
-                localStorage.setItem('theme', isNowDark ? 'dark' : 'light');
-                updateThemeIcon(isNowDark);
-            });
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('portfolio-theme', newTheme);
+                    updateThemeIcon();
+                });
+            }
         });
     </script>
 </body>

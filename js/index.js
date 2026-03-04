@@ -490,9 +490,56 @@ const updateAnimation = (timestamp) => {
 
 // --- Initialize ---
 
-const onReadyStateChange = (event) => {
-    if (event.target.readyState === "complete") {
-        setTimeout(()=>{
+const skipIntroSequence = () => {
+    // Hide all splash elements instantly
+    laptopContainer.style.display = 'none';
+    laptopScreen.style.display = 'none';
+    quoteContainer.style.display = 'none';
+    splashScreen.style.display = 'none';
+    
+    // Show main content immediately
+    heroSection.classList.add("show");
+    document.getElementById('globalUi')?.classList.add("show");
+    
+    // Enable scrolling
+    document.documentElement.style.overflowY = "auto";
+    document.documentElement.style.overflowX = "hidden";
+    document.body.style.overflowY = "auto";
+    document.body.style.overflowX = "hidden";
+    document.documentElement.style.height = "auto";
+    document.body.style.height = "auto";
+    
+    // Handle anchor target scroll
+    if (window.location.hash) {
+        setTimeout(() => {
+            const el = document.querySelector(window.location.hash);
+            if (el) el.scrollIntoView();
+        }, 100);
+    }
+};
+
+const shouldSkipIntro = () => {
+    const navEntries = performance.getEntriesByType("navigation");
+    const isReload = navEntries.length > 0 && navEntries[0].type === "reload";
+    
+    const hasSeenIntro = sessionStorage.getItem('introPlayed') === 'true';
+    const comingFromProject = window.location.hash === '#projects' && document.referrer.includes('/projects/');
+    const comingFromBlog = window.location.hash === '#blog' && (document.referrer.includes('/posts/') || document.referrer.includes('articles.html'));
+    const isHashNavigationOnly = window.location.hash && !isReload;
+
+    return (!isReload && hasSeenIntro) || (!isReload && (comingFromProject || comingFromBlog || isHashNavigationOnly));
+};
+
+let appInitialized = false;
+const initApp = () => {
+    if (appInitialized) return;
+    appInitialized = true;
+    
+    if (shouldSkipIntro()) {
+        skipIntroSequence();
+    } else {
+        sessionStorage.setItem('introPlayed', 'true');
+        setTimeout(() => {
             load3DModels().then(() => {
                 initAllScenes();
                 startupAudio.play().catch(e => console.log('Audio playback prevented:', e));
@@ -502,14 +549,16 @@ const onReadyStateChange = (event) => {
     }
 };
 
+const onReadyStateChange = (event) => {
+    if (event.target.readyState === "complete") {
+        initApp();
+    }
+};
+
 document.addEventListener("readystatechange", onReadyStateChange);
 // fallback just in case readystatechange misses it
 if (document.readyState === "complete") {
-  load3DModels().then(() => {
-      initAllScenes();
-      startupAudio.play().catch(e => console.log('Audio playback prevented:', e));
-      requestAnimationFrame(updateAnimation);
-  });
+    initApp();
 }
 
 // Window resize handler

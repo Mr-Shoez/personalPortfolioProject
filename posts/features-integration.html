@@ -52,83 +52,165 @@
     
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .blog-post-container {
-            max-width: 800px;
-            margin: 120px auto 60px auto;
-            padding: 0 2rem;
-            color: var(--text-color, #333);
-        }
-        .blog-post-header {
-            margin-bottom: 3rem;
-        }
-        .blog-post-title {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--primary-color, #4a00e0) 0%, #8e2de2 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .blog-post-date {
-            color: #888;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .blog-post-content {
-            line-height: 1.8;
-            font-size: 1.1rem;
-            margin-bottom: 4rem;
-        }
-        .blog-post-nav {
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid #eee;
-            padding-top: 2rem;
-            margin-top: 4rem;
-        }
-        .nav-btn {
-            text-decoration: none;
-            color: var(--primary-color, #4a00e0);
-            font-weight: 600;
-        }
-        .nav-btn.disabled {
-            color: #ccc;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-        .back-home {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            text-decoration: none;
-            color: #666;
-            transition: color 0.3s;
-        }
-        .back-home:hover {
-            color: var(--primary-color, #4a00e0);
-        }
-    </style>
+    <link rel="stylesheet" href="../css/blog-post.css">
 </head>
-<body>
-    <div class="blog-post-container">
-        <a href="../index.html#blog" class="back-home"><i class="fa-solid fa-arrow-left"></i> Back to Articles</a>
+<body class="blog-post-page">
+
+    <!-- Progress Bar -->
+    <div class="post-progress-bar" id="postProgressBar"></div>
+
+    <!-- Back Button -->
+    <a href="../articles.html" class="back-home-btn"><i class="fa-solid fa-arrow-left"></i> Back to Articles</a>
+
+    <!-- Hero Section -->
+    <header class="post-hero">
+        <h1 class="post-hero-title gradient-text">Features Integration</h1>
+        <div class="post-hero-meta">
+            <span class="post-date"><i class="fa-regular fa-calendar"></i> MARCH 2, 2026</span>
+            <span class="post-reading-time" id="readingTime"><i class="fa-regular fa-clock"></i> 5 min read</span>
+        </div>
+        <div class="post-hero-image-container">
+            <img src="https://yourportfolio.com/my pictures/dark mode.webp" alt="Features Integration" class="post-hero-img" onerror="this.src='../my pictures/dark mode.webp'; this.onerror=null;">
+        </div>
+    </header>
+
+    <!-- Asymmetric Layout -->
+    <div class="post-layout">
         
-        <header class="blog-post-header">
-            <h1 class="blog-post-title">Features Integration</h1>
-            <p class="blog-post-date">MARCH 2, 2026</p>
-        </header>
+        <!-- Sidebar -->
+        <aside class="post-sidebar">
+            <div class="post-author">
+                <img src="../my pictures/dark mode.webp" alt="Mosa Moleleki" class="post-author-img">
+                <div class="post-author-info">
+                    <h4>Mosa Moleleki</h4>
+                    <p>Front-End Developer</p>
+                </div>
+            </div>
 
-        <article class="blog-post-content">
-            <p>Full content for Features Integration will go here.</p>
-        </article>
+            <div class="post-toc">
+                <h4>Table of Contents</h4>
+                <ul id="tocList">
+                    <!-- Injected by JS -->
+                </ul>
+            </div>
 
-        <nav class="blog-post-nav">
-            <a href="online-feedbacks.html" class="nav-btn">&larr; Previous</a>
-            <span class="nav-btn disabled">Next &rarr;</span>
-        </nav>
+            <div class="post-share">
+                <a href="https://twitter.com/intent/tweet?url=https://yourportfolio.com/posts/features-integration.html&text=Features Integration" target="_blank" class="share-btn" aria-label="Share on Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://yourportfolio.com/posts/features-integration.html&title=Features Integration" target="_blank" class="share-btn" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <button class="share-btn" id="copyLinkBtn" aria-label="Copy Link"><i class="fa-solid fa-link"></i></button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="post-content-wrapper">
+            <article class="post-content" id="postContent">
+                <p>Full content for Features Integration will go here.</p>
+            </article>
+
+            <!-- Bottom Navigation -->
+            <nav class="post-bottom-nav">
+                <a href="online-feedbacks.html" class="nav-btn">&larr; Previous</a>
+                <span class="nav-btn disabled">Next &rarr;</span>
+            </nav>
+        </div>
+
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Progress Bar
+            const progressBar = document.getElementById('postProgressBar');
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                progressBar.style.width = scrolled + '%';
+            });
+
+            // 2. Generate TOC & Calculate Reading Time
+            const content = document.getElementById('postContent');
+            const headings = content.querySelectorAll('h2, h3');
+            const tocList = document.getElementById('tocList');
+            
+            // Reading time
+            const text = content.innerText || content.textContent;
+            const words = text.trim().split(/\s+/).length;
+            const wpm = 225; // Average reading speed
+            const time = Math.max(1, Math.ceil(words / wpm));
+            document.getElementById('readingTime').innerHTML = `<i class="fa-regular fa-clock"></i> ${time} min read`;
+
+            if (headings.length === 0) {
+                document.querySelector('.post-toc').style.display = 'none';
+            } else {
+                headings.forEach((heading, index) => {
+                    const id = heading.id || `heading-${index}`;
+                    heading.id = id;
+
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `#${id}`;
+                    a.textContent = heading.textContent;
+                    if (heading.tagName.toLowerCase() === 'h3') {
+                        a.style.paddingLeft = '15px';
+                        a.style.fontSize = '0.9rem';
+                    }
+                    li.appendChild(a);
+                    tocList.appendChild(li);
+                });
+
+                // 3. Highlight TOC on Scroll
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '0px 0px -80% 0px',
+                    threshold: 0
+                };
+
+                const tocLinks = tocList.querySelectorAll('a');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            tocLinks.forEach(link => {
+                                link.classList.remove('active');
+                                if (link.getAttribute('href') === `#${entry.target.id}`) {
+                                    link.classList.add('active');
+                                }
+                            });
+                        }
+                    });
+                }, observerOptions);
+
+                headings.forEach(h => observer.observe(h));
+
+                // Smooth scroll for TOC links
+                tocLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = link.getAttribute('href').substring(1);
+                        const targetEl = document.getElementById(targetId);
+                        if (targetEl) {
+                            const yOffset = -80;
+                            const y = targetEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                            window.scrollTo({top: y, behavior: 'smooth'});
+                        }
+                    });
+                });
+            }
+
+            // 4. Copy Link Button
+            const copyBtn = document.getElementById('copyLinkBtn');
+            if (copyBtn) {
+                copyBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(window.location.href).then(() => {
+                        const icon = copyBtn.querySelector('i');
+                        icon.className = 'fa-solid fa-check';
+                        setTimeout(() => {
+                            icon.className = 'fa-solid fa-link';
+                        }, 2000);
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>
