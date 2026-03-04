@@ -76,7 +76,7 @@
             <div class="meta-item links">
                 <h4>Links</h4>
                 <div class="meta-links">
-                    <a href="https://example.com/smarthome" target="_blank" rel="noopener noreferrer" class="project-link-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>
+                    <a href="https://www.sudo.co.za/smarthome" target="_blank" rel="noopener noreferrer" class="project-link-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>
                     
                 </div>
             </div>
@@ -122,8 +122,9 @@
             </aside>
 
             <!-- Right Main Content -->
-            <article class="project-content-wrapper fade-element" id="projectContent">
-                <h2>Overview</h2>
+            <article class="project-content-wrapper" id="projectContent">
+                <section class="project-main-narrative fade-element">
+                    <h2>Overview</h2>
 <p>This project involved designing the complete user interface for a next-generation smart home ecosystem. The core problem was the fragmentation and clunky UX of existing IoT apps. This design system provides a centralized, ultra-intuitive interface allowing users to control lighting, climate, and security with minimal friction and engaging micro-interactions.</p>
 <blockquote>
 <p>[!CAUTION] The Challenge
@@ -134,6 +135,103 @@ Designing an interface that is simple enough for non-technical users but powerfu
 Developed a comprehensive component library in Figma utilizing auto-layout and strict design tokens. I introduced a &#39;progressive disclosure&#39; pattern where advanced automation settings are tucked behind intuitive gestures. Advanced prototyping with Framer Motion was used to validate micro-interactions and the spatial model of the interface before any code was written.</p>
 </blockquote>
 
+                </section>
+
+                <!-- Key Features Section -->
+                <section class="project-features-section fade-element">
+                    <h2 class="section-title">Key Features</h2>
+                    <div class="features-grid">
+                        
+            <div class="feature-card">
+                <i class="fa-solid fa-check feature-icon"></i>
+                <span class="feature-text">Comprehensive Design Token System</span>
+            </div>
+
+            <div class="feature-card">
+                <i class="fa-solid fa-check feature-icon"></i>
+                <span class="feature-text">Spatial Management UI Patterns</span>
+            </div>
+
+            <div class="feature-card">
+                <i class="fa-solid fa-check feature-icon"></i>
+                <span class="feature-text">Animated Micro-interactions</span>
+            </div>
+
+            <div class="feature-card">
+                <i class="fa-solid fa-check feature-icon"></i>
+                <span class="feature-text">Accessibility-First Component Library</span>
+            </div>
+                    </div>
+                </section>
+
+                <!-- Comparative Visual Section (Before / After) -->
+                <section class="project-visual-comparison fade-element">
+                    <h2 class="section-title">Visual Evolution</h2>
+                    <p class="section-desc">Comparing the initial wireframes/concepts with the final polished implementation.</p>
+                    <div class="before-after-container">
+                        
+                <div class="comparison-slider-wrapper">
+                    <div class="comparison-slider">
+                        <img class="comparison-img before" src="../my pictures/iot_before.png" alt="Initial Version">
+                        <img class="comparison-img after" src="../my pictures/smart_home_iot.png" alt="Final Version">
+                        <div class="slider-handle">
+                            <i class="fa-solid fa-arrows-left-right"></i>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                </section>
+
+                <!-- Challenges & Solutions Section -->
+                <section class="project-challenges-section fade-element">
+                    <h2 class="section-title">Technical Challenges</h2>
+                    <div class="challenges-grid">
+                        
+            <div class="challenge-pair">
+                <div class="challenge-side">
+                    <span class="side-label issue">The Problem</span>
+                    <p>Creating a spatial model that felt intuitive across both mobile and tablet orientations.</p>
+                </div>
+                <div class="solution-side">
+                    <span class="side-label solution">The Solution</span>
+                    <p>Developed a modular card-based system with CSS Container Queries for truly context-aware layouts.</p>
+                </div>
+            </div>
+
+            <div class="challenge-pair">
+                <div class="challenge-side">
+                    <span class="side-label issue">The Problem</span>
+                    <p>Conveying complex device states (e.g., partial heating) through simple icons.</p>
+                </div>
+                <div class="solution-side">
+                    <span class="side-label solution">The Solution</span>
+                    <p>Iterated through 3 rounds of user testing to refine a bespoke animated SVG icon set.</p>
+                </div>
+            </div>
+                    </div>
+                </section>
+
+                <!-- Results & Impact Section -->
+                <section class="project-results-section fade-element">
+                    <h2 class="section-title">Project Outcomes</h2>
+                    <div class="results-container">
+                        
+            <div class="result-item">
+                <i class="fa-solid fa-rocket result-icon"></i>
+                <p class="result-text">Reduced task completion time for setup procedures by 45% in usability tests.</p>
+            </div>
+
+            <div class="result-item">
+                <i class="fa-solid fa-rocket result-icon"></i>
+                <p class="result-text">Design system successfully adopted for both iOS and Android prototypes.</p>
+            </div>
+
+            <div class="result-item">
+                <i class="fa-solid fa-rocket result-icon"></i>
+                <p class="result-text">High fidelity prototypes praised for 'premium physical feel' of the UI.</p>
+            </div>
+                    </div>
+                </section>
             </article>
         </div>
 
@@ -280,7 +378,48 @@ Developed a comprehensive component library in Figma utilizing auto-layout and s
                 }
             });
 
-            // 6. Theme Toggle — wired via universal ThemeSystem (theme.js loaded in <head>)
+            // 6. Before/After Slider Interactivity
+            const sliders = document.querySelectorAll('.comparison-slider');
+            
+            sliders.forEach(slider => {
+                const afterImg = slider.querySelector('.comparison-img.after');
+                const handle = slider.querySelector('.slider-handle');
+                let isResizing = false;
+
+                const updateSlider = (x) => {
+                    const rect = slider.getBoundingClientRect();
+                    let position = ((x - rect.left) / rect.width) * 100;
+                    
+                    // Constrain between 0 and 100
+                    position = Math.max(0, Math.min(100, position));
+                    
+                    afterImg.style.clipPath = `inset(0 0 0 ${position}%)`;
+                    handle.style.left = `${position}%`;
+                };
+
+                slider.addEventListener('mousedown', () => isResizing = true);
+                window.addEventListener('mouseup', () => isResizing = false);
+                
+                window.addEventListener('mousemove', (e) => {
+                    if (!isResizing) return;
+                    updateSlider(e.clientX);
+                });
+
+                // Touch support
+                slider.addEventListener('touchstart', () => isResizing = true);
+                window.addEventListener('touchend', () => isResizing = false);
+                window.addEventListener('touchmove', (e) => {
+                    if (!isResizing) return;
+                    updateSlider(e.touches[0].clientX);
+                });
+
+                // Initial positioning (centers it)
+                setTimeout(() => {
+                    updateSlider(slider.getBoundingClientRect().left + slider.offsetWidth / 2);
+                }, 500);
+            });
+
+            // 7. Theme Toggle — wired via universal ThemeSystem (theme.js loaded in <head>)
             if (window.ThemeSystem) window.ThemeSystem.init();
         });
     </script>

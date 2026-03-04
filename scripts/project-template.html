@@ -120,8 +120,43 @@
             </aside>
 
             <!-- Right Main Content -->
-            <article class="project-content-wrapper fade-element" id="projectContent">
-                {{CONTENT}}
+            <article class="project-content-wrapper" id="projectContent">
+                <section class="project-main-narrative fade-element">
+                    {{CONTENT}}
+                </section>
+
+                <!-- Key Features Section -->
+                <section class="project-features-section fade-element">
+                    <h2 class="section-title">Key Features</h2>
+                    <div class="features-grid">
+                        {{FEATURES_HTML}}
+                    </div>
+                </section>
+
+                <!-- Comparative Visual Section (Before / After) -->
+                <section class="project-visual-comparison fade-element">
+                    <h2 class="section-title">Visual Evolution</h2>
+                    <p class="section-desc">Comparing the initial wireframes/concepts with the final polished implementation.</p>
+                    <div class="before-after-container">
+                        {{BEFORE_AFTER_HTML}}
+                    </div>
+                </section>
+
+                <!-- Challenges & Solutions Section -->
+                <section class="project-challenges-section fade-element">
+                    <h2 class="section-title">Technical Challenges</h2>
+                    <div class="challenges-grid">
+                        {{CHALLENGES_HTML}}
+                    </div>
+                </section>
+
+                <!-- Results & Impact Section -->
+                <section class="project-results-section fade-element">
+                    <h2 class="section-title">Project Outcomes</h2>
+                    <div class="results-container">
+                        {{RESULTS_HTML}}
+                    </div>
+                </section>
             </article>
         </div>
 
@@ -268,7 +303,48 @@
                 }
             });
 
-            // 6. Theme Toggle — wired via universal ThemeSystem (theme.js loaded in <head>)
+            // 6. Before/After Slider Interactivity
+            const sliders = document.querySelectorAll('.comparison-slider');
+            
+            sliders.forEach(slider => {
+                const afterImg = slider.querySelector('.comparison-img.after');
+                const handle = slider.querySelector('.slider-handle');
+                let isResizing = false;
+
+                const updateSlider = (x) => {
+                    const rect = slider.getBoundingClientRect();
+                    let position = ((x - rect.left) / rect.width) * 100;
+                    
+                    // Constrain between 0 and 100
+                    position = Math.max(0, Math.min(100, position));
+                    
+                    afterImg.style.clipPath = `inset(0 0 0 ${position}%)`;
+                    handle.style.left = `${position}%`;
+                };
+
+                slider.addEventListener('mousedown', () => isResizing = true);
+                window.addEventListener('mouseup', () => isResizing = false);
+                
+                window.addEventListener('mousemove', (e) => {
+                    if (!isResizing) return;
+                    updateSlider(e.clientX);
+                });
+
+                // Touch support
+                slider.addEventListener('touchstart', () => isResizing = true);
+                window.addEventListener('touchend', () => isResizing = false);
+                window.addEventListener('touchmove', (e) => {
+                    if (!isResizing) return;
+                    updateSlider(e.touches[0].clientX);
+                });
+
+                // Initial positioning (centers it)
+                setTimeout(() => {
+                    updateSlider(slider.getBoundingClientRect().left + slider.offsetWidth / 2);
+                }, 500);
+            });
+
+            // 7. Theme Toggle — wired via universal ThemeSystem (theme.js loaded in <head>)
             if (window.ThemeSystem) window.ThemeSystem.init();
         });
     </script>

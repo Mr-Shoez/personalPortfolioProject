@@ -378,6 +378,52 @@ if (projectTemplateBlock && projectsData.length > 0) {
         // Technologies
         let techHtml = (proj.technologies || []).map(tech => `<span class="tech-pill">${tech}</span>`).join('\n                ');
         pageHtml = pageHtml.replace(/{{TECHNOLOGIES_HTML}}/g, techHtml);
+
+        // 1. Key Features
+        let featuresHtml = (proj.keyFeatures || []).map(feat => `
+            <div class="feature-card">
+                <i class="fa-solid fa-check feature-icon"></i>
+                <span class="feature-text">${feat}</span>
+            </div>`).join('\n');
+        pageHtml = pageHtml.replace(/{{FEATURES_HTML}}/g, featuresHtml);
+
+        // 2. Visual Evolution (Before / After Slider)
+        let beforeAfterHtml = '';
+        if (proj.beforeAfter) {
+            beforeAfterHtml = `
+                <div class="comparison-slider-wrapper">
+                    <div class="comparison-slider">
+                        <img class="comparison-img before" src="../${proj.beforeAfter.before}" alt="Initial Version">
+                        <img class="comparison-img after" src="../${proj.beforeAfter.after}" alt="Final Version">
+                        <div class="slider-handle">
+                            <i class="fa-solid fa-arrows-left-right"></i>
+                        </div>
+                    </div>
+                </div>`;
+        }
+        pageHtml = pageHtml.replace(/{{BEFORE_AFTER_HTML}}/g, beforeAfterHtml);
+
+        // 3. Technical Challenges
+        let challengesHtml = (proj.challengesStructured || []).map(ch => `
+            <div class="challenge-pair">
+                <div class="challenge-side">
+                    <span class="side-label issue">The Problem</span>
+                    <p>${ch.issue}</p>
+                </div>
+                <div class="solution-side">
+                    <span class="side-label solution">The Solution</span>
+                    <p>${ch.solution}</p>
+                </div>
+            </div>`).join('\n');
+        pageHtml = pageHtml.replace(/{{CHALLENGES_HTML}}/g, challengesHtml);
+
+        // 4. Project Outcomes
+        let resultsHtml = (proj.outcomes || []).map(res => `
+            <div class="result-item">
+                <i class="fa-solid fa-rocket result-icon"></i>
+                <p class="result-text">${res}</p>
+            </div>`).join('\n');
+        pageHtml = pageHtml.replace(/{{RESULTS_HTML}}/g, resultsHtml);
         
         // Prev / Next Links
         if (proj.prevSlug) {
