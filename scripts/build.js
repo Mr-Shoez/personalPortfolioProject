@@ -465,55 +465,37 @@ let htmlContent = `<!DOCTYPE html>
     <title>Sitemap | File Tree</title>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/blog.css">
+    
     <style>
-        :root {
-            --bg-color: #0d1117;
-            --text-primary: #c9d1d9;
-            --text-secondary: #8b949e;
-            --accent: #2f81f7;
-            --border-color: #30363d;
-            --hover-bg: rgba(177, 186, 196, 0.12);
-            --folder-color: #d2a8ff;
-            --html-color: #e34c26;
-            --xml-color: #2ea043;
-        }
-        * { box-sizing: border-box; }
+        /* Sitemap Specific Overrides */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            padding: 40px 20px;
-            max-width: 800px;
+            /* Handled by style.css but ensure un-hide on load */
+            overflow: auto;
+            padding-bottom: 80px;
+        }
+        
+        .sitemap-wrapper {
+            max-width: 900px;
             margin: 0 auto;
-            line-height: 1.5;
-        }
-        h1 { 
-            color: var(--text-primary); 
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .subtitle {
-            color: var(--text-secondary);
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 0 20px;
         }
         
         /* Tree Layout */
         .file-tree-container {
             font-family: 'Fira Code', monospace;
             font-size: 0.95rem;
-            background: #161b22;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
+            background: var(--skeleton-base);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 30px;
             overflow-x: auto;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
         .tree-branch {
@@ -530,7 +512,7 @@ let htmlContent = `<!DOCTYPE html>
         .tree-branch:not([style*="--level: 0"]) {
             padding-left: 24px;
             margin-left: -4px;
-            border-left: 1px dotted var(--border-color);
+            border-left: 1px dotted var(--glass-border);
         }
         
         .tree-item {
@@ -540,15 +522,16 @@ let htmlContent = `<!DOCTYPE html>
         .tree-row {
             display: flex;
             align-items: center;
-            padding: 6px 8px;
-            border-radius: 4px;
+            padding: 8px 10px;
+            border-radius: 6px;
             margin: 2px 0;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.2s;
             position: relative;
         }
         
         .tree-row:hover {
-            background-color: var(--hover-bg);
+            background-color: var(--glass-bg);
+            transform: translateX(2px);
         }
         
         /* The horizontal branch line */
@@ -557,7 +540,7 @@ let htmlContent = `<!DOCTYPE html>
             left: -24px;
             top: 50%;
             width: 20px;
-            border-top: 1px dotted var(--border-color);
+            border-top: 1px dotted var(--glass-border);
             z-index: 0;
         }
         
@@ -569,32 +552,33 @@ let htmlContent = `<!DOCTYPE html>
             top: 50%;
             bottom: -200px; /* Cover any continuing border */
             width: 4px;
-            background: #161b22; /* Match container background */
+            background: var(--skeleton-base); /* Match container background */
             z-index: -1;
+            transition: background 0.4s ease;
         }
         
         .tree-icon {
-            margin-right: 10px;
+            margin-right: 12px;
             font-size: 1.1em;
             width: 16px;
             text-align: center;
             z-index: 1;
         }
         
-        .directory { color: var(--folder-color); }
-        .html-file { color: var(--html-color); }
-        .xml-file { color: var(--xml-color); }
+        .directory { color: #d2a8ff; } /* Keeping vibrant colors for file icons */
+        .html-file { color: #e34c26; }
+        .xml-file { color: #2ea043; }
         
         .tree-label {
-            color: var(--text-primary);
+            color: var(--text-light);
             text-decoration: none;
             cursor: pointer;
             z-index: 1;
+            transition: color 0.2s;
         }
         
         a.tree-label:hover {
-            color: var(--accent);
-            text-decoration: underline;
+            color: var(--accent-primary);
         }
         
         .project-root {
@@ -602,39 +586,79 @@ let htmlContent = `<!DOCTYPE html>
             align-items: center;
             padding: 10px;
             font-weight: 600;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 10px;
-            gap: 10px;
+            color: var(--text-light);
+            border-bottom: 1px solid var(--glass-border);
+            margin-bottom: 15px;
+            gap: 12px;
+            font-size: 1.05rem;
         }
         .project-root i {
-            color: var(--accent);
+            color: var(--accent-primary);
         }
         
-        /* Nav button to get back */
-        .back-nav {
-            margin-top: 40px;
-            display: inline-block;
-            color: var(--accent);
-            text-decoration: none;
+        .build-subtitle {
+            color: var(--text-muted);
             font-family: 'Fira Code', monospace;
             font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 40px;
         }
-        .back-nav:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
-    <h1><i class="fa-solid fa-sitemap"></i> Project Architecture</h1>
-    <div class="subtitle">Generated dynamically via build.js &bull; Directory Map</div>
-    
-    <div class="file-tree-container">
-        <div class="project-root">
-            <i class="fa-solid fa-globe"></i> yourportfolio.com
-        </div>
-        ${renderTreeBranch(fileTree, 0)}
+    <!-- Utility Toggles -->
+    <div class="utility-toggles">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+            <i class="fa-solid fa-moon"></i>
+        </button>
     </div>
-    
-    <a href="/index.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> Return to Home</a>
+
+    <section class="blog-gallery-section" style="padding-top: 100px;">
+        <div class="sitemap-wrapper">
+            <div class="blog-section-header">
+                <h2 class="blog-title">
+                    <span class="blog-main-text" style="font-size: clamp(2rem, 5vw, 3.5rem);"><i class="fa-solid fa-sitemap" style="color: var(--accent-primary); margin-right: 15px;"></i>Project Architecture</span>
+                    <span class="blog-ghost-text">Sitemap</span>
+                </h2>
+            </div>
+            
+            <div class="build-subtitle">Generated dynamically via build.js &bull; Directory Map</div>
+            
+            <div class="file-tree-container">
+                <div class="project-root">
+                    <i class="fa-solid fa-globe"></i> yourportfolio.com
+                </div>
+                ${renderTreeBranch(fileTree, 0)}
+            </div>
+            
+            <div style="text-align: center; margin-top: 60px;">
+                <a href="/index.html" class="lets-talk-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Theme Toggle Logic -->
+    <script>
+        const themeToggleBtn = document.getElementById('themeToggle');
+        
+        // Initial check
+        if (localStorage.getItem('portfolio-theme') === 'light') {
+            document.body.setAttribute('data-theme', 'light');
+            themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+        }
+        
+        themeToggleBtn.addEventListener('click', () => {
+            if (document.body.getAttribute('data-theme') === 'light') {
+                document.body.removeAttribute('data-theme');
+                localStorage.setItem('portfolio-theme', 'dark');
+                themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+            } else {
+                document.body.setAttribute('data-theme', 'light');
+                localStorage.setItem('portfolio-theme', 'light');
+                themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+            }
+        });
+    </script>
 </body>
 </html>`;
 
