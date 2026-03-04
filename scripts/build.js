@@ -1,9 +1,9 @@
-const fs = require('fs');
+﻿const fs = require('fs');
 const path = require('path');
 const { marked } = require('marked');
 
 // Configuration
-const BASE_URL = 'https://yourportfolio.com'; // Adjust this when deploying
+const BASE_URL = 'https://www.sudo.co.za'; // Adjust this when deploying
 const ROOT_DIR = path.join(__dirname, '../');
 const DATA_PATH = path.join(__dirname, '../data/blog.json');
 const INDEX_PATH = path.join(__dirname, '../index.html');

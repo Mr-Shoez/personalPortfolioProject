@@ -532,6 +532,18 @@ body, html {
 .tech-js:hover { color: #F7DF1E; }
 .tech-git:hover { color: #F05032; }
 .tech-github:hover { color: #FFFFFF; }
+.tech-nodejs:hover { color: #339933; }
+.tech-cloudflare:hover { color: #F48120; }
+.tech-vercel:hover { color: #FFFFFF; }
+.tech-gh-actions:hover { color: #2088FF; }
+.tech-prettier:hover { color: #F7B93E; }
+
+/* Inline SVG icons: match font-size scaling of FA icons */
+.tech-item svg {
+    width: 1em;
+    height: 1em;
+    display: block;
+}
 
 /* Hover effects are now driven by JS slowing down playbackRate, not paused css */
 
@@ -895,6 +907,99 @@ body, html {
     color: var(--bg-dark);
     box-shadow: 0 0 30px var(--accent-primary);
     transform: scale(1.05);
+}
+
+/* =========================================
+   Skills Section (Added to About)
+========================================= */
+.skills-wrapper {
+    max-width: 1000px;
+    margin: 0 auto 50px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.skills-category {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.skills-subheading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-light);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding-left: 10px;
+    border-left: 4px solid var(--accent-primary);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.nice-to-have-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.skill-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.skill-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border-color: var(--accent-primary);
+}
+
+.skill-icon {
+    font-size: 1.8rem;
+    color: var(--accent-primary);
+    min-width: 35px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.skill-card:hover .skill-icon {
+    transform: scale(1.1);
+}
+
+.skill-text {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.4;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.skill-card:hover .skill-text {
+    color: var(--text-light);
+}
+
+/* Adding a fade-in animation trigger for skills */
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-section.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* =========================================
@@ -1380,22 +1485,23 @@ body, html {
     /* --- Hero Layout Stack --- */
     .hero-layout-wrapper {
         flex-direction: column;
-        padding: 0 30px;
-        gap: 30px;
-        margin-top: 60px; /* Clear top nav */
+        padding: 0 20px;
+        gap: 15px;
+        margin-top: 50px; /* Clear top nav */
     }
 
     .hero-text-content {
         align-items: center;
         text-align: center;
+        gap: 5px;
     }
 
     .hero-image-container {
-        width: 180px;
+        width: 140px;
     }
 
     .tech-carousel-wrapper {
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     /* --- About Timeline Mobile Stack --- */

@@ -806,6 +806,24 @@ if (contentGroups.length > 0) {
     contentGroups.forEach(group => observer.observe(group));
 }
 
+// 3b. Fade-In for Skills Section
+const fadeInSections = document.querySelectorAll('.fade-in-section');
+if (fadeInSections.length > 0) {
+    const fadeInObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                fadeInObserver.unobserve(entry.target); // Only animate once
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+
+    fadeInSections.forEach(el => fadeInObserver.observe(el));
+}
+
+
 // 4. Scroll Fade-Up Animation for Blog Cards
 const blogItems = document.querySelectorAll('.blog-gallery-item');
 if (blogItems.length > 0) {
