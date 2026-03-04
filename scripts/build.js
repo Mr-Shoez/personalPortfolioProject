@@ -350,8 +350,8 @@ if (projectTemplateBlock && projectsData.length > 0) {
         pageHtml = pageHtml.replace(/{{FULL_IMAGE}}/g, proj.fullImage || '');
         
         // Links
-        let liveLinkHtml = proj.liveLink && proj.liveLink !== '#' ? `<a href="${proj.liveLink}" target="_blank" class="project-link-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>` : '';
-        let githubLinkHtml = proj.githubLink && proj.githubLink !== '#' ? `<a href="${proj.githubLink}" target="_blank" class="project-link-btn"><i class="fa-brands fa-github"></i> GitHub Repo</a>` : '';
+        let liveLinkHtml = proj.liveLink && proj.liveLink !== '#' ? `<a href="${proj.liveLink}" target="_blank" rel="noopener noreferrer" class="project-link-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>` : '';
+        let githubLinkHtml = proj.githubLink && proj.githubLink !== '#' ? `<a href="${proj.githubLink}" target="_blank" rel="noopener noreferrer" class="project-link-btn"><i class="fa-brands fa-github"></i> GitHub Repo</a>` : '';
         pageHtml = pageHtml.replace(/{{LIVE_LINK_HTML}}/g, liveLinkHtml);
         pageHtml = pageHtml.replace(/{{GITHUB_LINK_HTML}}/g, githubLinkHtml);
         
