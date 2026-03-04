@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const { marked } = require('marked');
+const CleanCSS = require('clean-css');
+const terser = require('terser');
 
 // Configuration
 const BASE_URL = 'https://www.sudo.co.za'; // Adjust this when deploying
@@ -240,11 +242,11 @@ const articlesHTML = `<!DOCTYPE html>
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.sudo.co.za/articles.html">
     <meta property="og:title" content="All Articles | Mosa Moleleki">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.min.css">
     <link rel="stylesheet" href="css/all.min.css">
-    <link rel="stylesheet" href="css/blog.css">
+    <link rel="stylesheet" href="css/blog.min.css">
     <!-- Universal Theme System (non-deferred to prevent flash) -->
-    <script src="js/theme.js"><\/script>
+    <script src="js/theme.min.js"><\/script>
 </head>
 <body>
     <!-- Theme Toggle -->
@@ -534,8 +536,8 @@ let htmlContent = `<!DOCTYPE html>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Global Styles -->
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/blog.css">
+    <link rel="stylesheet" href="/css/style.min.css">
+    <link rel="stylesheet" href="/css/blog.min.css">
     
     <style>
         /* Sitemap Specific Overrides */
@@ -735,4 +737,49 @@ try {
     console.error('Error generating sitemap.html:', err);
 }
 
-console.log('Unified build process completed entirely.');
+// ==========================================
+// 8. Minify CSS & JS
+// ==========================================
+console.log('Starting minification process...');
+
+async function minifyFiles() {
+    const cssDir = path.join(__dirname, '../css');
+    const jsDir = path.join(__dirname, '../js');
+
+    // Minify CSS
+    if (fs.existsSync(cssDir)) {
+        const cssFiles = fs.readdirSync(cssDir).filter(f => f.endsWith('.min.css') && !f.endsWith('.min.css'));
+        cssFiles.forEach(file => {
+            const inputPath = path.join(cssDir, file);
+            const minPath = path.join(cssDir, file.replace(/\.css$/, '.min.css'));
+            try {
+                const inputCss = fs.readFileSync(inputPath, 'utf8');
+                const output = new CleanCSS({}).minify(inputCss);
+                fs.writeFileSync(minPath, output.styles, 'utf8');
+                console.log(`Minified CSS: ${file} -> ${path.basename(minPath)}`);
+            } catch (err) {
+                console.error(`Error minifying ${file}:`, err);
+            }
+        });
+    }
+
+    // Minify JS
+    if (fs.existsSync(jsDir)) {
+        const jsFiles = fs.readdirSync(jsDir).filter(f => f.endsWith('.min.js') && !f.endsWith('.min.js'));
+        for (const file of jsFiles) {
+            const inputPath = path.join(jsDir, file);
+            const minPath = path.join(jsDir, file.replace(/\.js$/, '.min.js'));
+            try {
+                const inputJs = fs.readFileSync(inputPath, 'utf8');
+                const output = await terser.minify(inputJs, { module: file === 'index.min.js' });
+                fs.writeFileSync(minPath, output.code, 'utf8');
+                console.log(`Minified JS: ${file} -> ${path.basename(minPath)}`);
+            } catch (err) {
+                console.error(`Error minifying ${file}:`, err);
+            }
+        }
+    }
+    console.log('Unified build process completed entirely.');
+}
+
+minifyFiles();
