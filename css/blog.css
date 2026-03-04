@@ -1,5 +1,12 @@
 
 
+/* Override global style.css overflow hiding for articles */
+html, body {
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    height: auto !important;
+}
+
 /* =========================================
    Blog / Articles Section (Static Grid)
 ========================================= */

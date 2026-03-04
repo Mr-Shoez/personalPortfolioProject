@@ -2,11 +2,18 @@
    Single Blog Post / Article Details
    ========================================= */
 
+html {
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    height: auto !important;
+}
+
 body.blog-post-page {
     background: var(--bg-dark);
     color: var(--text-light);
     overflow-y: auto !important;
     overflow-x: hidden;
+    height: auto !important;
     position: relative;
     padding-top: 50px; /* Space for scroll progress */
 }
