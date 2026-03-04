@@ -875,6 +875,7 @@ function renderBentoGrid(projects) {
         img.src = project.thumbnail;
         img.alt = project.title;
         img.className = 'bento-img';
+        img.loading = 'lazy';
         
         // Create Overlay content
         const overlay = document.createElement('div');

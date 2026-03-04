@@ -13,15 +13,18 @@
     <meta property="og:url" content="https://yourportfolio.com/projects/travel-blog.html">
     <meta property="og:title" content="Travel Blog | Case Study">
     <meta property="og:description" content="A minimalist, high-performance travel blog platform optimized for SEO and readability.">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1200&h=800&auto=format&fit=crop">
+    <meta property="og:image" content="https://yourportfolio.com/my pictures/travel_blog.png">
 
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" as="script">
+    <link rel="preload" as="image" href="my pictures/travel_blog.png">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/all.min.css">
     <link rel="stylesheet" href="../css/project.css">
 
     <!-- GSAP for scroll animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 </head>
 <body class="project-detail-page">
     
@@ -44,7 +47,7 @@
         <!-- Hero Section -->
         <header class="project-hero animate-slide-up">
             <div class="project-hero-image-container">
-                <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=1200&h=800&auto=format&fit=crop" alt="Travel Blog" class="project-hero-img">
+                <img src="my pictures/travel_blog.png" alt="Travel Blog" class="project-hero-img" fetchpriority="high">
                 <div class="project-hero-overlay"></div>
                 <h1 class="project-hero-title gradient-text">Travel Blog</h1>
                 <div class="project-hero-badges">

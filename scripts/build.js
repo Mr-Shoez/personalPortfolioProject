@@ -61,7 +61,7 @@ latestPosts.forEach((post, index) => {
     cardsHTML += `
             <div class="blog-gallery-item">
                 <div class="blog-gallery-image-wrapper">
-                    ${post.image ? `<img src="${post.image}" alt="${post.topic}">` : `<div class="blog-gallery-placeholder"></div>`}
+                    ${post.image ? `<img src="${post.image}" alt="${post.topic}" loading="lazy">` : `<div class="blog-gallery-placeholder"></div>`}
                 </div>
                 <div class="blog-gallery-content">
                     <div class="blog-gallery-ghost-number">${ghostNumber}</div>
@@ -215,7 +215,7 @@ let allCardsHTML = '\n';
             <div class="blog-card glow-card">
                 <a href="${post.link}" class="glow-content" style="text-decoration: none; display: flex; flex-direction: column;">
                     <div class="blog-gallery-image-wrapper">
-                        ${post.image ? `<img src="${post.image}" alt="${post.topic}">` : `<div class="blog-gallery-placeholder"></div>`}
+                        ${post.image ? `<img src="${post.image}" alt="${post.topic}" loading="lazy">` : `<div class="blog-gallery-placeholder"></div>`}
                     </div>
                     <div class="blog-gallery-content">
                         <div class="blog-gallery-text-content">
