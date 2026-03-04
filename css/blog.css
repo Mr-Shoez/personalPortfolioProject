@@ -95,15 +95,17 @@ html, body {
     height: 100%;
 }
 
-.blog-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    z-index: 10;
-}
+@media (hover: hover) {
+    .blog-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        z-index: 10;
+    }
 
-/* Dim siblings on hover */
-.blog-gallery-grid:hover .blog-card:not(:hover) {
-    filter: brightness(0.6) blur(2px);
+    /* Dim siblings on hover */
+    .blog-gallery-grid:hover .blog-card:not(:hover) {
+        filter: brightness(0.6) blur(2px);
+    }
 }
 
 .blog-gallery-image-wrapper {
@@ -129,8 +131,10 @@ html, body {
     transition: transform 0.5s ease;
 }
 
-.blog-card:hover .blog-gallery-image-wrapper img {
-    transform: scale(1.05);
+@media (hover: hover) {
+    .blog-card:hover .blog-gallery-image-wrapper img {
+        transform: scale(1.05);
+    }
 }
 
 .blog-gallery-content {
@@ -191,12 +195,14 @@ html, body {
     transition: transform 0.3s ease;
 }
 
-.blog-card:hover .blog-gallery-link {
-    color: var(--accent-primary);
-}
+@media (hover: hover) {
+    .blog-card:hover .blog-gallery-link {
+        color: var(--accent-primary);
+    }
 
-.blog-card:hover .blog-gallery-link i {
-    transform: translateX(5px);
+    .blog-card:hover .blog-gallery-link i {
+        transform: translateX(5px);
+    }
 }
 
 @media (max-width: 992px) {
@@ -208,5 +214,13 @@ html, body {
 @media (max-width: 768px) {
     .blog-gallery-grid {
         grid-template-columns: 1fr;
+    }
+    
+    /* Make link styled as active by default on mobile for better accessibility */
+    .blog-gallery-link {
+        color: var(--accent-primary);
+    }
+    .blog-gallery-link i {
+        transform: translateX(5px);
     }
 }
