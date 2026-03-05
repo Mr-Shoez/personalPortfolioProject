@@ -1031,3 +1031,186 @@ body.project-detail-page {
   font-size: 1.5rem;
   flex-shrink: 0;
 }
+/* ==========================================================================
+   PROJECT GALLERY (projects.html) SPECIFIC STYLES
+   ========================================================================== */
+
+.projects-gallery-page .gallery-section {
+  padding: 120px 20px 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.gallery-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+/* Centered Header Overrides */
+.projects-gallery-page .projects-section-header {
+  margin-bottom: 3rem;
+  left: 0;
+  transform: none;
+}
+
+.projects-gallery-page .projects-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Search Bar Styling */
+.gallery-search-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  padding: 5px 20px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.search-box:focus-within {
+  transform: translateY(-3px) scale(1.02);
+  border-color: var(--accent-primary);
+  box-shadow: 0 15px 40px rgba(0, 140, 255, 0.2);
+}
+
+.search-icon {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-right: 15px;
+}
+
+#gallerySearch {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-light);
+  font-size: 1rem;
+  padding: 12px 0;
+  font-family: inherit;
+}
+
+#gallerySearch::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.clear-search-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 5px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+.clear-search-btn:hover {
+  color: var(--accent-primary);
+  transform: scale(1.1);
+}
+
+/* Gallery Grid Layout */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  margin-top: 4rem;
+}
+
+/* Card Visual Fixes for Gallery */
+.projects-gallery-page .project-row {
+  margin-bottom: 0; /* Override row margin */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.projects-gallery-page .project-row-img-container {
+  height: 220px;
+  flex-shrink: 0;
+}
+
+.projects-gallery-page .project-row-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.projects-gallery-page .project-row-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+/* No Results Styling */
+.no-results-message {
+  grid-column: 1 / -1;
+  padding: 80px 20px;
+  text-align: center;
+  background: var(--glass-bg);
+  border: 1px dashed var(--glass-border);
+  border-radius: 24px;
+  color: var(--text-muted);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+.no-results-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.no-results-content i {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  color: var(--accent-primary);
+  opacity: 0.5;
+}
+
+.no-results-content h3 {
+  font-size: 1.5rem;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+}
+
+/* Animations for filtering */
+.project-row.filtered-out {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .projects-gallery-page .gallery-section {
+    padding-top: 100px;
+  }
+}

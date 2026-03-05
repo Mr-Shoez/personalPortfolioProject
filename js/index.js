@@ -701,3 +701,71 @@ ie &&
           (ae.disabled = !1));
       });
   });
+// =========================================================================
+// GALLERY SEARCH & FILTER LOGIC
+// =========================================================================
+const gallerySearch = document.getElementById("gallerySearch");
+const clearSearchBtn = document.getElementById("clearSearch");
+
+if (gallerySearch) {
+  gallerySearch.addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    const projects = document.querySelectorAll(".project-row");
+    
+    // Toggle clear button
+    if (clearSearchBtn) {
+      clearSearchBtn.style.opacity = searchTerm.length > 0 ? "1" : "0";
+      clearSearchBtn.style.pointerEvents = searchTerm.length > 0 ? "auto" : "none";
+    }
+
+    projects.forEach((project) => {
+      const title = project.querySelector(".project-row-title")?.textContent.toLowerCase() || "";
+      const desc = project.querySelector(".project-row-desc")?.textContent.toLowerCase() || "";
+      const tech = Array.from(project.querySelectorAll(".project-row-pill")).map(p => p.textContent.toLowerCase()).join(" ");
+      
+      const matches = title.includes(searchTerm) || desc.includes(searchTerm) || tech.includes(searchTerm);
+      
+      if (matches) {
+        project.style.display = "";
+        project.classList.remove("filtered-out");
+      } else {
+        project.style.display = "none";
+        project.classList.add("filtered-out");
+      }
+    });
+
+    // Check if no results
+    const visibleProjects = Array.from(projects).filter(p => !p.classList.contains("filtered-out"));
+    const projectsStack = document.getElementById("projectsStack");
+    
+    let noResultsMsg = document.getElementById("noResultsMsg");
+    if (visibleProjects.length === 0) {
+      if (!noResultsMsg) {
+        noResultsMsg = document.createElement("div");
+        noResultsMsg.id = "noResultsMsg";
+        noResultsMsg.className = "no-results-message fade-element";
+        noResultsMsg.innerHTML = `
+          <div class="no-results-content">
+            <i class="fa-solid fa-face-frown"></i>
+            <h3>No projects found</h3>
+            <p>Try searching for different keywords or check back later.</p>
+          </div>
+        `;
+        projectsStack?.appendChild(noResultsMsg);
+        setTimeout(() => noResultsMsg.classList.add("visible"), 10);
+      }
+    } else {
+      if (noResultsMsg) {
+        noResultsMsg.remove();
+      }
+    }
+  });
+}
+
+if (clearSearchBtn && gallerySearch) {
+  clearSearchBtn.addEventListener("click", () => {
+    gallerySearch.value = "";
+    gallerySearch.dispatchEvent(new Event("input"));
+    gallerySearch.focus();
+  });
+}

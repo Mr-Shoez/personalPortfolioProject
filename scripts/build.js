@@ -725,16 +725,26 @@ const projectsGalleryHTML = `<!DOCTYPE html>
     <!-- Back Button -->
     <a href="index.html#projects" class="back-home-btn" style="position: fixed; top: 2rem; left: 2rem; z-index: 100;"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
 
-    <section class="projects-section" style="padding-top: 120px; min-height: 100vh;">
-        <div class="projects-section-header">
-            <span class="projects-subtitle">GALLERY</span>
-            <h2 class="projects-title">
-                <span class="projects-main-text">All Projects</span>
-                <span class="projects-ghost-text">Portfolio</span>
-            </h2>
+    <section class="gallery-section">
+        <div class="gallery-header fade-element">
+            <div class="projects-section-header">
+                <span class="projects-subtitle">COLLECTION</span>
+                <h2 class="projects-title">
+                    <span class="projects-main-text">Project Gallery</span>
+                    <span class="projects-ghost-text">Showcase</span>
+                </h2>
+            </div>
+            
+            <div class="gallery-search-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="gallerySearch" placeholder="Search projects by title, tech, or description..." aria-label="Search Projects">
+                    <button id="clearSearch" class="clear-search-btn" aria-label="Clear Search"><i class="fa-solid fa-circle-xmark"></i></button>
+                </div>
+            </div>
         </div>
         
-        <div class="projects-stack glow-container" id="projectsStack" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <div class="gallery-grid glow-container" id="projectsStack">
             ${allProjectsCardsHTML}
         </div>
     </section>
