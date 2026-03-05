@@ -1023,7 +1023,7 @@ html {
   inset: 0;
   background: radial-gradient(
     800px circle at var(--x, 0) var(--y, 0),
-    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.1),
     transparent 40%
   );
   z-index: 1;
@@ -1032,7 +1032,7 @@ html {
   inset: 1px;
   background: radial-gradient(
     400px circle at var(--x, 0) var(--y, 0),
-    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.03),
     transparent 40%
   );
   z-index: 5;
@@ -1044,7 +1044,7 @@ html {
 .glow-card:hover::before {
   background: radial-gradient(
     800px circle at var(--x, 0) var(--y, 0),
-    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.15),
     transparent 40%
   );
 }
