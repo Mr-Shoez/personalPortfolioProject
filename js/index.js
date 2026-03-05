@@ -225,8 +225,8 @@ const I = () => ({ height: window.innerHeight, width: window.innerWidth }),
   M = (t) => {
     y || (y = t);
     const o = t - y,
-      n = Math.max(0, o - 500),
-      s = Math.min(1, n / 6e3),
+      n = Math.max(0, o - 100),
+      s = Math.min(1, n / 2e3),
       d = Math.min(1, s / 0.15),
       p = ((f = d), 1 - Math.pow(1 - f, 3));
     var f;
@@ -296,11 +296,11 @@ const I = () => ({ height: window.innerHeight, width: window.innerWidth }),
                         (document.body.style.height = "auto"),
                         setTimeout(() => {
                           i.style.display = "none";
-                        }, 1500));
-                    }, 1700));
-                }, 3500));
-            }, 800));
-        }, 2e3));
+                        }, 500));
+                    }, 500));
+                }, 1000));
+            }, 300));
+        }, 500));
     }
   };
 let k = !1;
@@ -360,7 +360,7 @@ const z = () => {
                 .catch((e) => console.log("Audio playback prevented:", e)),
               requestAnimationFrame(M));
           });
-        }, 500)));
+        }, 100)));
 };
 // =========================================================================
 // GLOBAL EVENT LISTENERS & RESIZE HANDLING
