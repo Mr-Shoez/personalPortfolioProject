@@ -9,7 +9,7 @@ const BASE_URL = 'https://www.sudo.co.za'; // Adjust this when deploying
 const ROOT_DIR = path.join(__dirname, '../');
 const DATA_PATH = path.join(__dirname, '../data/blog.json');
 const INDEX_PATH = path.join(__dirname, '../index.html');
-const TEMPLATE_PATH = path.join(__dirname, 'blog-template.html');
+const TEMPLATE_PATH = path.join(__dirname, '../templates/blog-template.html');
 const SITEMAP_XML_PATH = path.join(__dirname, '../sitemap.xml');
 const SITEMAP_HTML_PATH = path.join(__dirname, '../sitemap.html');
 const POSTS_DIR = path.join(__dirname, '../posts');
@@ -131,21 +131,8 @@ blogData.forEach(post => {
     pageHtml = pageHtml.replace(/{{TITLE}}/g, post.topic);
     pageHtml = pageHtml.replace(/{{DATE}}/g, post.date);
     
-    // Read and parse Markdown content for the blog post
-    const mdFilePath = path.join(ROOT_DIR, 'data/posts', `${post.slug}.md`);
-    let markedHtml = '';
-    try {
-        if (fs.existsSync(mdFilePath)) {
-            const rawMd = fs.readFileSync(mdFilePath, 'utf8');
-            markedHtml = marked.parse(rawMd);
-        } else {
-            console.warn(`Warning: Markdown file not found for ${post.slug}`);
-            markedHtml = `<p>Content coming soon...</p>`;
-        }
-    } catch (err) {
-        console.error(`Error reading markdown for ${post.slug}:`, err);
-        markedHtml = `<p>Error loading content.</p>`;
-    }
+    // Load Content from JSON directly
+    let markedHtml = post.content || '<p>Content coming soon...</p>';
     
     pageHtml = pageHtml.replace(/{{CONTENT}}/g, markedHtml);
     
@@ -294,7 +281,7 @@ console.log('Blog generation complete!');
 // ==========================================
 console.log('Starting project pages generation...');
 const PROJECTS_DATA_PATH = path.join(__dirname, '../data/projects.json');
-const PROJECT_TEMPLATE_PATH = path.join(__dirname, 'project-template.html');
+const PROJECT_TEMPLATE_PATH = path.join(__dirname, '../templates/project-template.html');
 const PROJECTS_OUT_DIR = path.join(__dirname, '../projects');
 
 let projectsData = [];
@@ -351,17 +338,8 @@ if (projectTemplateBlock && projectsData.length > 0) {
     projectsData.forEach(proj => {
         let pageHtml = projectTemplateBlock;
         
-        // Load Markdown Content
-        let projContentHtml = '';
-        try {
-            const mdPath = path.join(__dirname, '../data/projects', `${proj.slug}.md`);
-            if (fs.existsSync(mdPath)) {
-                const mdRaw = fs.readFileSync(mdPath, 'utf8');
-                projContentHtml = marked.parse(mdRaw);
-            }
-        } catch (e) {
-            console.error(`Error processing markdown for ${proj.slug}:`, e);
-        }
+        // Load Content
+        let projContentHtml = proj.content || '';
 
         pageHtml = pageHtml.replace(/{{TITLE}}/g, proj.title || '');
         pageHtml = pageHtml.replace(/{{DESCRIPTION}}/g, proj.description || '');
