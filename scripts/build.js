@@ -9,11 +9,15 @@ const BASE_URL = 'https://www.sudo.co.za'; // Adjust this when deploying
 const ROOT_DIR = path.join(__dirname, '../');
 const DATA_PATH = path.join(__dirname, '../data/blog.json');
 const INDEX_PATH = path.join(__dirname, '../index.html');
-const TEMPLATE_PATH = path.join(__dirname, '../templates/blog-template.html');
+const POST_TEMPLATE_PATH = path.join(__dirname, '../templates/post-template.html');
+const BLOG_TEMPLATE_PATH = path.join(__dirname, '../templates/blog-template.html');
+const PROJECTS_GALLERY_TEMPLATE_PATH = path.join(__dirname, '../templates/projects-gallery-template.html');
+const SITEMAP_XML_TEMPLATE_PATH = path.join(__dirname, '../templates/sitemap-template.xml');
+const SITEMAP_HTML_TEMPLATE_PATH = path.join(__dirname, '../templates/sitemap-template.html');
 const SITEMAP_XML_PATH = path.join(__dirname, '../sitemap.xml');
 const SITEMAP_HTML_PATH = path.join(__dirname, '../sitemap.html');
 const POSTS_DIR = path.join(__dirname, '../posts');
-const ARTICLES_PATH = path.join(__dirname, '../articles.html');
+const BLOG_PATH = path.join(__dirname, '../articles.html');
 
 // Cache Busting Version
 const VERSION = Date.now();
@@ -82,7 +86,7 @@ latestPosts.forEach((post, index) => {
 
 // Add the See All Posts button to the index gallery
 cardsHTML += `\n            <div style="text-align: center; margin-top: 3rem; grid-column: 1 / -1; width: 100%;">
-                <a href="articles.html" class="lets-talk-btn" style="display: inline-block; text-decoration: none;">See All Posts</a>
+                <a href="blog.html" class="lets-talk-btn" style="display: inline-block; text-decoration: none;">See All Posts</a>
             </div>\n            `;
 
 // 3. Inject into index.html
@@ -119,9 +123,9 @@ fs.mkdirSync(POSTS_DIR, { recursive: true });
 
 let templateBlock = '';
 try {
-    templateBlock = fs.readFileSync(TEMPLATE_PATH, 'utf8');
+    templateBlock = fs.readFileSync(POST_TEMPLATE_PATH, 'utf8');
 } catch (err) {
-    console.error('Error reading blog-template.html:', err);
+    console.error('Error reading post-template.html:', err);
     process.exit(1);
 }
 
@@ -210,7 +214,7 @@ blogData.forEach(post => {
     sitePages.push(post.link);
 });
 
-// 5. Generate articles.html (Archive Page)
+// 5. Generate articles.html (Gallery Page)
 let allCardsHTML = '\n';
 [...blogData].reverse().forEach((post, index) => {
     // We use the bento/glow layout structure but customized for blogs
@@ -232,136 +236,15 @@ let allCardsHTML = '\n';
             </div>`;
 });
 
-const articlesHTML = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Articles | Mosa Moleleki</title>
-    <meta name="description" content="All articles and blog posts by Mosa Moleleki, Front-End Web Developer.">
-    <link rel="canonical" href="https://www.sudo.co.za/articles.html">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.sudo.co.za/articles.html">
-    <meta property="og:title" content="All Articles | Mosa Moleleki">
-    <link rel="stylesheet" href="css/min/style.min.css?v=${VERSION}">
-    <link rel="stylesheet" href="css/all.min.css?v=${VERSION}">
-    <link rel="stylesheet" href="css/min/blog.min.css?v=${VERSION}">
-    <!-- Universal Theme System (non-deferred to prevent flash) -->
-    <script src="js/min/theme.min.js?v=${VERSION}"><\/script>
-</head>
-<body>
-    <!-- Theme Toggle -->
-    <div class="utility-toggles" style="z-index: 10000;">
-        <button class="theme-toggle" data-theme-toggle aria-label="Toggle Dark Mode">
-            <i class="fa-solid fa-moon"></i>
-        </button>
-    </div>
-
-    <!-- Back Button — fixed top-left via blog.css -->
-    <a href="index.html#blog" class="back-home-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
-
-    <section class="blog-gallery-section" style="padding-top: 120px;">
-        <div class="blog-section-header">
-            <h2 class="blog-title">
-                <span class="blog-main-text">All Articles</span>
-                <span class="blog-ghost-text">Articles</span>
-            </h2>
-        </div>
-        
-        <div class="gallery-search-container" style="margin-bottom: 3rem;">
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" id="articleSearch" placeholder="Search articles by topic or description..." aria-label="Search Articles">
-                <button id="clearArticleSearch" class="clear-search-btn" aria-label="Clear Search"><i class="fa-solid fa-circle-xmark"></i></button>
-            </div>
-        </div>
-
-        <div class="blog-gallery-grid" id="articlesStack">
-            ${allCardsHTML}
-        </div>
-    </section>
-
-    <style>
-        /* Search Bar Styling */
-        .gallery-search-container { width: 100%; max-width: 600px; margin: 0 auto; }
-        .search-box { position: relative; display: flex; align-items: center; background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 50px; padding: 5px 20px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); }
-        .search-box:focus-within { transform: translateY(-3px) scale(1.02); border-color: var(--accent-primary); box-shadow: 0 15px 40px rgba(0, 140, 255, 0.2); }
-        .search-icon { color: var(--text-muted); font-size: 1.1rem; margin-right: 15px; }
-        #articleSearch { flex: 1; background: transparent; border: none; outline: none; color: var(--text-light); font-size: 1rem; padding: 12px 0; font-family: inherit; }
-        #articleSearch::placeholder { color: var(--text-muted); opacity: 0.7; }
-        .clear-search-btn { background: transparent; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; padding: 5px; opacity: 0; pointer-events: none; transition: all 0.2s ease; }
-        .clear-search-btn:hover { color: var(--accent-primary); transform: scale(1.1); }
-        .no-results-message { grid-column: 1 / -1; padding: 80px 20px; text-align: center; background: var(--glass-bg); border: 1px dashed var(--glass-border); border-radius: 24px; color: var(--text-muted); opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
-        .no-results-message.visible { opacity: 1; transform: translateY(0); }
-        .no-results-content i { font-size: 4rem; margin-bottom: 1.5rem; color: var(--accent-primary); opacity: 0.5; }
-        .no-results-content h3 { font-size: 1.5rem; color: var(--text-light); margin-bottom: 0.5rem; }
-        .blog-card.filtered-out { opacity: 0; transform: scale(0.9); pointer-events: none; }
-    </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            if (window.ThemeSystem) window.ThemeSystem.init();
-            
-            const articleSearch = document.getElementById("articleSearch");
-            const clearArticleSearch = document.getElementById("clearArticleSearch");
-            const articles = document.querySelectorAll(".blog-card");
-            const articlesStack = document.getElementById("articlesStack");
-            
-            if (articleSearch) {
-                articleSearch.addEventListener("input", (e) => {
-                    const searchTerm = e.target.value.toLowerCase().trim();
-                    
-                    if (clearArticleSearch) {
-                        clearArticleSearch.style.opacity = searchTerm.length > 0 ? "1" : "0";
-                        clearArticleSearch.style.pointerEvents = searchTerm.length > 0 ? "auto" : "none";
-                    }
-                    
-                    let visibleCount = 0;
-                    articles.forEach((article) => {
-                        const title = article.querySelector(".blog-gallery-topic")?.textContent.toLowerCase() || "";
-                        const desc = article.querySelector(".blog-gallery-desc")?.textContent.toLowerCase() || "";
-                        
-                        if (title.includes(searchTerm) || desc.includes(searchTerm)) {
-                            article.style.display = "";
-                            article.classList.remove("filtered-out");
-                            visibleCount++;
-                        } else {
-                            article.style.display = "none";
-                            article.classList.add("filtered-out");
-                        }
-                    });
-                    
-                    let noResultsMsg = document.getElementById("noArticleResultsMsg");
-                    if (visibleCount === 0) {
-                        if (!noResultsMsg) {
-                            noResultsMsg = document.createElement("div");
-                            noResultsMsg.id = "noArticleResultsMsg";
-                            noResultsMsg.className = "no-results-message fade-element";
-                            noResultsMsg.innerHTML = \`<div class="no-results-content"><i class="fa-solid fa-face-frown"></i><h3>No articles found</h3><p>Try searching for different keywords.</p></div>\`;
-                            articlesStack.appendChild(noResultsMsg);
-                            setTimeout(() => noResultsMsg.classList.add("visible"), 10);
-                        }
-                    } else if (noResultsMsg) {
-                        noResultsMsg.remove();
-                    }
-                });
-            }
-            
-            if (clearArticleSearch && articleSearch) {
-                clearArticleSearch.addEventListener("click", () => {
-                    articleSearch.value = "";
-                    articleSearch.dispatchEvent(new Event("input"));
-                    articleSearch.focus();
-                });
-            }
-        });
-    <\/script>
-</body>
-</html>`;
-
 try {
-    fs.writeFileSync(ARTICLES_PATH, articlesHTML, 'utf8');
+    let blogListTemplate = fs.readFileSync(BLOG_TEMPLATE_PATH, 'utf8');
+    blogListTemplate = blogListTemplate.replace(/{{ALL_CARDS_HTML}}/g, allCardsHTML);
+    blogListTemplate = blogListTemplate.replace(/{{VERSION}}/g, VERSION);
+    
+    fs.writeFileSync(BLOG_PATH, blogListTemplate, 'utf8');
     console.log('Successfully generated articles.html');
     sitePages.push('articles.html');
+    
 } catch (err) {
     console.error('Error generating articles.html:', err);
 }
@@ -775,126 +658,12 @@ try {
 }
 
 // Generate projects.html (Gallery Page)
-const projectsGalleryHTML = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Gallery | Mosa Moleleki</title>
-    <meta name="description" content="A showcase of web projects, interactive experiences, and digital solutions by Mosa Moleleki.">
-    <link rel="canonical" href="https://www.sudo.co.za/projects.html">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.sudo.co.za/projects.html">
-    <meta property="og:title" content="Project Gallery | Mosa Moleleki">
-    <link rel="stylesheet" href="css/min/style.min.css?v=${VERSION}">
-    <link rel="stylesheet" href="css/all.min.css?v=${VERSION}">
-    <link rel="stylesheet" href="css/min/project.min.css?v=${VERSION}">
-    <!-- Universal Theme System -->
-    <script src="js/min/theme.min.js?v=${VERSION}"></script>
-</head>
-<body class="projects-gallery-page">
-    <!-- Theme Toggle -->
-    <div class="utility-toggles" style="z-index: 10000;">
-        <button class="theme-toggle" data-theme-toggle aria-label="Toggle Dark Mode">
-            <i class="fa-solid fa-moon"></i>
-        </button>
-    </div>
-
-    <!-- Back Button -->
-    <a href="index.html#projects" class="back-home-btn" style="position: fixed; top: 2rem; left: 2rem; z-index: 100;"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
-
-    <section class="gallery-section">
-        <div class="gallery-header fade-element">
-            <div class="projects-section-header">
-                <span class="projects-subtitle">COLLECTION</span>
-                <h2 class="projects-title">
-                    <span class="projects-main-text">Project Gallery</span>
-                    <span class="projects-ghost-text">Showcase</span>
-                </h2>
-            </div>
-            
-            <div class="gallery-search-container">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="gallerySearch" placeholder="Search projects by title, tech, or description..." aria-label="Search Projects">
-                    <button id="clearSearch" class="clear-search-btn" aria-label="Clear Search"><i class="fa-solid fa-circle-xmark"></i></button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="gallery-grid glow-container" id="projectsStack">
-            ${allProjectsCardsHTML}
-        </div>
-    </section>
-
-    <!-- Project Modal Integrated -->
-    <div class="project-modal" id="projectModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content-wrapper">
-            <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close Modal">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="modal-image-container">
-                <img src="" alt="Project Image" id="modalImage">
-            </div>
-            <div class="modal-info">
-                <span class="modal-category" id="modalCategory">Category</span>
-                <h2 class="modal-title" id="modalTitle">Project Title</h2>
-                <p class="modal-description" id="modalDescription">Project description goes here.</p>
-                <div class="modal-tech-stack" id="modalTechStack"></div>
-                <a href="#" class="modal-link-btn" id="modalLink">See Details <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-        </div>
-    </div>
-
-    <script src="js/min/index.min.js?v=${VERSION}" type="module"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            if (window.ThemeSystem) window.ThemeSystem.init();
-            
-            // Re-initialize the glow effect for statically rendered cards
-            document.addEventListener("pointermove", (e) => {
-                const container = e.target.closest(".glow-container");
-                if (container) {
-                    container.querySelectorAll(".glow-card").forEach((card) => {
-                        const rect = card.getBoundingClientRect();
-                        card.style.setProperty("--x", e.clientX - rect.left + "px");
-                        card.style.setProperty("--y", e.clientY - rect.top + "px");
-                    });
-                }
-            });
-
-            // Video hover logic for static cards
-            const projectCards = document.querySelectorAll('.project-row');
-            projectCards.forEach(card => {
-                const img = card.querySelector('.project-row-img');
-                const video = card.querySelector('.project-row-video');
-                
-                if (video) {
-                    card.addEventListener('mouseenter', () => {
-                        if (window.innerWidth >= 992) {
-                            video.play().catch(console.error);
-                            img.style.opacity = '0';
-                            video.style.opacity = '1';
-                        }
-                    });
-                    card.addEventListener('mouseleave', () => {
-                        if (window.innerWidth >= 992) {
-                            video.pause();
-                            video.currentTime = 0;
-                            img.style.opacity = '1';
-                            video.style.opacity = '0';
-                        }
-                    });
-                }
-            });
-        });
-    </script>
-</body>
-</html>`;
-
 try {
-    fs.writeFileSync(path.join(ROOT_DIR, 'projects.html'), projectsGalleryHTML, 'utf8');
+    let projectGalleryTemplate = fs.readFileSync(PROJECTS_GALLERY_TEMPLATE_PATH, 'utf8');
+    projectGalleryTemplate = projectGalleryTemplate.replace(/{{ALL_PROJECTS_CARDS_HTML}}/g, allProjectsCardsHTML);
+    projectGalleryTemplate = projectGalleryTemplate.replace(/{{VERSION}}/g, VERSION);
+    
+    fs.writeFileSync(path.join(ROOT_DIR, 'projects.html'), projectGalleryTemplate, 'utf8');
     console.log('Successfully generated projects.html');
     sitePages.push('projects.html');
 } catch (err) {
@@ -902,14 +671,15 @@ try {
 }
 
 // 7. Generate sitemap.xml
-let xmlContent = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-sitePages.forEach(page => {
-    const loc = `${BASE_URL}/${page}`;
-    xmlContent += `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n  </url>\n`;
-});
-xmlContent += `</urlset>`;
-
 try {
+    let xmlContent = fs.readFileSync(SITEMAP_XML_TEMPLATE_PATH, 'utf8');
+    let urlSetHtml = '';
+    sitePages.forEach(page => {
+        const loc = `${BASE_URL}/${page}`;
+        urlSetHtml += `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n  </url>\n`;
+    });
+    xmlContent = xmlContent.replace(/{{URL_SET_HTML}}/g, urlSetHtml);
+    
     fs.writeFileSync(SITEMAP_XML_PATH, xmlContent, 'utf8');
     console.log('Successfully generated sitemap.xml');
 } catch (err) {
@@ -975,213 +745,12 @@ function renderTreeBranch(node, level = 0) {
     return html;
 }
 
-let htmlContent = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sitemap | File Tree</title>
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Global Styles -->
-    <link rel="stylesheet" href="/css/min/style.min.css">
-    <link rel="stylesheet" href="/css/min/blog.min.css">
-    
-    <style>
-        /* Sitemap Specific Overrides */
-        body {
-            /* Handled by style.css but ensure un-hide on load */
-            overflow: auto;
-            padding-bottom: 80px;
-        }
-        
-        .sitemap-wrapper {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Tree Layout */
-        .file-tree-container {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.95rem;
-            background: var(--skeleton-base);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 30px;
-            overflow-x: auto;
-            margin-top: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .tree-branch {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            position: relative;
-        }
-        
-        .tree-branch[style*="--level: 0"] > .tree-item > .tree-row > .tree-line {
-            display: none; /* No lines for root level */
-        }
-        
-        .tree-branch:not([style*="--level: 0"]) {
-            padding-left: 24px;
-            margin-left: -4px;
-            border-left: 1px dotted var(--glass-border);
-        }
-        
-        .tree-item {
-            position: relative;
-        }
-        
-        .tree-row {
-            display: flex;
-            align-items: center;
-            padding: 8px 10px;
-            border-radius: 6px;
-            margin: 2px 0;
-            transition: background 0.2s, transform 0.2s;
-            position: relative;
-        }
-        
-        .tree-row:hover {
-            background-color: var(--glass-bg);
-            transform: translateX(2px);
-        }
-        
-        /* The horizontal branch line */
-        .tree-line {
-            position: absolute;
-            left: -24px;
-            top: 50%;
-            width: 20px;
-            border-top: 1px dotted var(--glass-border);
-            z-index: 0;
-        }
-        
-        /* Hide bottom tail of vertical line for last items */
-        .tree-item.is-last > .tree-row::before {
-            content: '';
-            position: absolute;
-            left: -25px;
-            top: 50%;
-            bottom: -200px; /* Cover any continuing border */
-            width: 4px;
-            background: var(--skeleton-base); /* Match container background */
-            z-index: -1;
-            transition: background 0.4s ease;
-        }
-        
-        .tree-icon {
-            margin-right: 12px;
-            font-size: 1.1em;
-            width: 16px;
-            text-align: center;
-            z-index: 1;
-        }
-        
-        .directory { color: #d2a8ff; } /* Keeping vibrant colors for file icons */
-        .html-file { color: #e34c26; }
-        .xml-file { color: #2ea043; }
-        
-        .tree-label {
-            color: var(--text-light);
-            text-decoration: none;
-            cursor: pointer;
-            z-index: 1;
-            transition: color 0.2s;
-        }
-        
-        a.tree-label:hover {
-            color: var(--accent-primary);
-        }
-        
-        .project-root {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            font-weight: 600;
-            color: var(--text-light);
-            border-bottom: 1px solid var(--glass-border);
-            margin-bottom: 15px;
-            gap: 12px;
-            font-size: 1.05rem;
-        }
-        .project-root i {
-            color: var(--accent-primary);
-        }
-        
-        .build-subtitle {
-            color: var(--text-muted);
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-    </style>
-</head>
-<body>
-    <!-- Utility Toggles -->
-    <div class="utility-toggles">
-        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Dark Mode">
-            <i class="fa-solid fa-moon"></i>
-        </button>
-    </div>
-
-    <section class="blog-gallery-section" style="padding-top: 100px;">
-        <div class="sitemap-wrapper">
-            <div class="blog-section-header">
-                <h2 class="blog-title">
-                    <span class="blog-main-text" style="font-size: clamp(2rem, 5vw, 3.5rem);"><i class="fa-solid fa-sitemap" style="color: var(--accent-primary); margin-right: 15px;"></i>Project Architecture</span>
-                    <span class="blog-ghost-text">Sitemap</span>
-                </h2>
-            </div>
-            
-            <div class="build-subtitle">Generated dynamically via build.js &bull; Directory Map</div>
-            
-            <div class="file-tree-container">
-                <div class="project-root">
-                    <i class="fa-solid fa-globe"></i> www.sudo.co.za
-                </div>
-                ${renderTreeBranch(fileTree, 0)}
-            </div>
-            
-            <div style="text-align: center; margin-top: 60px;">
-                <a href="/index.html" class="lets-talk-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Theme Toggle Logic -->
-    <script>
-        const themeToggleBtn = document.getElementById('themeToggle');
-        
-        // Initial check
-        if (localStorage.getItem('portfolio-theme') === 'light') {
-            document.body.setAttribute('data-theme', 'light');
-            themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-        }
-        
-        themeToggleBtn.addEventListener('click', () => {
-            if (document.body.getAttribute('data-theme') === 'light') {
-                document.body.removeAttribute('data-theme');
-                localStorage.setItem('portfolio-theme', 'dark');
-                themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-            } else {
-                document.body.setAttribute('data-theme', 'light');
-                localStorage.setItem('portfolio-theme', 'light');
-                themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-            }
-        });
-    </script>
-</body>
-</html>`;
-
 try {
-    fs.writeFileSync(SITEMAP_HTML_PATH, htmlContent, 'utf8');
+    let sitemapHtmlTemplate = fs.readFileSync(SITEMAP_HTML_TEMPLATE_PATH, 'utf8');
+    sitemapHtmlTemplate = sitemapHtmlTemplate.replace(/{{FILE_TREE_HTML}}/g, renderTreeBranch(fileTree, 0));
+    sitemapHtmlTemplate = sitemapHtmlTemplate.replace(/{{VERSION}}/g, VERSION);
+    
+    fs.writeFileSync(SITEMAP_HTML_PATH, sitemapHtmlTemplate, 'utf8');
     console.log('Successfully generated sitemap.html');
 } catch (err) {
     console.error('Error generating sitemap.html:', err);

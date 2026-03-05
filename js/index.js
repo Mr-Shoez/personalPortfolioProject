@@ -320,7 +320,7 @@ const z = () => {
         s =
           "#blog" === window.location.hash &&
           (document.referrer.includes("/posts/") ||
-            document.referrer.includes("articles.html")),
+            document.referrer.includes("blog.html")),
         i = window.location.hash && !t;
       return (!t && o) || (!t && (n || s || i));
     })()

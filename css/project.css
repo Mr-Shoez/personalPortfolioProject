@@ -1141,9 +1141,17 @@ body.projects-gallery-page {
 .projects-gallery-page .project-row {
   margin-bottom: 0; /* Override row margin */
   height: 100%;
+  min-height: 480px; /* Ensure space for title, meta, desc and actions */
   display: flex;
   flex-direction: column;
+  cursor: pointer;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.projects-gallery-page .project-row:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--accent-primary);
+  box-shadow: 0 20px 40px rgba(0, 140, 255, 0.15);
 }
 
 .projects-gallery-page .project-row-img-container {

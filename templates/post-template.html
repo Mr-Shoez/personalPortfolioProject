@@ -3,61 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Features Integration | Mosa Moleleki</title>
+    <title>{{TITLE}} | Mosa Moleleki</title>
     <!-- Dynamic SEO Meta Tags -->
-    <meta name="description" content="A practical guide to integrating third-party features — APIs, auth, analytics, payments — into modern web apps without sacrificing performance or maintainability.">
-    <meta name="author" content="Mosa Moleleki">
+    <meta name="description" content="{{DESCRIPTION}}">
+    <meta name="author" content="{{AUTHOR}}">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#0a0a0a">
-    <link rel="canonical" href="https://www.sudo.co.za/posts/features-integration.html">
+    <link rel="canonical" href="{{PAGE_URL}}">
     
     <!-- Open Graph (LinkedIn/Discord/Facebook) -->
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://www.sudo.co.za/posts/features-integration.html">
-    <meta property="og:title" content="Features Integration | Mosa Moleleki">
-    <meta property="og:description" content="A practical guide to integrating third-party features — APIs, auth, analytics, payments — into modern web apps without sacrificing performance or maintainability.">
-    <meta property="og:image" content="https://www.sudo.co.za/my pictures/blog_multilingual.png">
+    <meta property="og:url" content="{{PAGE_URL}}">
+    <meta property="og:title" content="{{TITLE}} | Mosa Moleleki">
+    <meta property="og:description" content="{{DESCRIPTION}}">
+    <meta property="og:image" content="{{OG_IMAGE}}">
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://www.sudo.co.za/posts/features-integration.html">
-    <meta name="twitter:title" content="Features Integration | Mosa Moleleki">
-    <meta name="twitter:description" content="A practical guide to integrating third-party features — APIs, auth, analytics, payments — into modern web apps without sacrificing performance or maintainability.">
-    <meta name="twitter:image" content="https://www.sudo.co.za/my pictures/blog_multilingual.png">
+    <meta name="twitter:url" content="{{PAGE_URL}}">
+    <meta name="twitter:title" content="{{TITLE}} | Mosa Moleleki">
+    <meta name="twitter:description" content="{{DESCRIPTION}}">
+    <meta name="twitter:image" content="{{OG_IMAGE}}">
     
     <!-- Schema.org JSON-LD -->
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Features Integration",
-  "image": "https://www.sudo.co.za/my pictures/blog_multilingual.png",
-  "author": {
-    "@type": "Person",
-    "name": "Mosa Moleleki",
-    "url": "https://www.sudo.co.za/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Mosa Moleleki",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://www.sudo.co.za/my pictures/dark mode.webp"
-    }
-  },
-  "datePublished": "2026-03-01T22:00:00.000Z",
-  "description": "A practical guide to integrating third-party features — APIs, auth, analytics, payments — into modern web apps without sacrificing performance or maintainability."
-}
-</script>
+    {{JSON_LD}}
     
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js?v=1772740475326" as="script">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js?v=1772740475326" as="script">
-    <link rel="preload" as="image" href="../my pictures/blog_multilingual.png">
-    <link rel="stylesheet" href="../css/min/style.min.css?v=1772740475326">
-    <link rel="stylesheet" href="../css/all.min.css?v=1772740475326">
-    <link rel="stylesheet" href="../css/min/blog-post.min.css?v=1772740475326">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" as="script">
+    <link rel="preload" as="image" href="{{HERO_IMAGE}}">
+    <link rel="stylesheet" href="../css/min/style.min.css">
+    <link rel="stylesheet" href="../css/all.min.css">
+    <link rel="stylesheet" href="../css/min/blog-post.min.css">
     <!-- Universal Theme System (non-deferred to prevent flash) -->
-    <script src="../js/min/theme.min.js?v=1772740475326"></script>
+    <script src="../js/min/theme.min.js"></script>
 </head>
 <body class="blog-post-page">
 
@@ -78,13 +56,13 @@
 
     <!-- Hero Section -->
     <header class="post-hero">
-        <h1 class="post-hero-title gradient-text">Features Integration</h1>
+        <h1 class="post-hero-title gradient-text">{{TITLE}}</h1>
         <div class="post-hero-meta">
-            <span class="post-date"><i class="fa-regular fa-calendar"></i> MARCH 2, 2026</span>
+            <span class="post-date"><i class="fa-regular fa-calendar"></i> {{DATE}}</span>
             <span class="post-reading-time" id="readingTime"><i class="fa-regular fa-clock"></i> 5 min read</span>
         </div>
         <div class="post-hero-image-container">
-            <img src="../my pictures/blog_multilingual.png" alt="Features Integration" class="post-hero-img" fetchpriority="high" onerror="this.src='../my pictures/dark mode.webp'; this.onerror=null;">
+            <img src="{{HERO_IMAGE}}" alt="{{TITLE}}" class="post-hero-img" fetchpriority="high" onerror="this.src='../my pictures/dark mode.webp'; this.onerror=null;">
         </div>
     </header>
 
@@ -123,8 +101,8 @@
             </div>
 
             <div class="post-share">
-                <a href="https://twitter.com/intent/tweet?url=https://www.sudo.co.za/posts/features-integration.html&text=Features Integration" target="_blank" rel="noopener noreferrer" class="share-btn" aria-label="Share on Twitter"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://www.sudo.co.za/posts/features-integration.html&title=Features Integration" target="_blank" rel="noopener noreferrer" class="share-btn" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://twitter.com/intent/tweet?url={{PAGE_URL}}&text={{TITLE}}" target="_blank" rel="noopener noreferrer" class="share-btn" aria-label="Share on Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{PAGE_URL}}&title={{TITLE}}" target="_blank" rel="noopener noreferrer" class="share-btn" aria-label="Share on LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
                 <button class="share-btn" id="copyLinkBtn" aria-label="Copy Link"><i class="fa-solid fa-link"></i></button>
             </div>
         </aside>
@@ -132,33 +110,21 @@
         <!-- Main Content -->
         <div class="post-content-wrapper fade-element">
             <article class="post-content" id="postContent">
-                <h2>Handling Dependencies Like a Pro</h2>
-<p>Sed ut unde omnis iste natus sit voluptatem accus antium laudantium totam aperiam inventore veritatis et architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-<blockquote>
-<p>[!CAUTION] Integration Hell
-Dropping a shiny new feature into an existing monolithic codebase often breaks three other unrelated things. Identifying the blast radius of a new integration is terrifying in a large repo.</p>
-</blockquote>
-<blockquote>
-<p>[!TIP] Feature Flags &amp; Strangler Fig
-Utilize feature flags to conditionally roll out the new integration. Pair this with the Strangler Fig pattern where you slowly route traffic to the new microservice instead of doing a risky &quot;Big Bang&quot; release.</p>
-</blockquote>
-<h3>Summary</h3>
-<p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>
-
+                {{CONTENT}}
             </article>
 
             <!-- Bottom Navigation -->
             <nav class="post-bottom-nav">
-                <a href="online-feedbacks.html" class="nav-btn">&larr; Previous</a>
-                <span class="nav-btn disabled">Next &rarr;</span>
+                {{PREV_LINK}}
+                {{NEXT_LINK}}
             </nav>
         </div>
 
     </div>
 
     <!-- GSAP for animations -->
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js?v=1772740475326"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js?v=1772740475326"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {

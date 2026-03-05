@@ -9,11 +9,11 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.sudo.co.za/projects.html">
     <meta property="og:title" content="Project Gallery | Mosa Moleleki">
-    <link rel="stylesheet" href="css/min/style.min.css?v=1772740475326">
-    <link rel="stylesheet" href="css/all.min.css?v=1772740475326">
-    <link rel="stylesheet" href="css/min/project.min.css?v=1772740475326">
+    <link rel="stylesheet" href="css/min/style.min.css?v={{VERSION}}">
+    <link rel="stylesheet" href="css/all.min.css?v={{VERSION}}">
+    <link rel="stylesheet" href="css/min/project.min.css?v={{VERSION}}">
     <!-- Universal Theme System -->
-    <script src="js/min/theme.min.js?v=1772740475326"></script>
+    <script src="js/min/theme.min.js?v={{VERSION}}"></script>
 </head>
 <body class="projects-gallery-page">
     <!-- Theme Toggle -->
@@ -46,28 +46,7 @@
         </div>
         
         <div class="gallery-grid glow-container" id="projectsStack">
-            
-
-                <div class="project-row glow-card" data-index="1">
-                    <div class="project-row-img-container">
-                        <img src="projects/sarko/mockup-all-framed.png" alt="Sarko" class="project-row-img" loading="lazy">
-                        
-                    </div>
-                    <div class="project-row-content">
-                        <h3 class="project-row-title">Sarko</h3>
-                        <div class="project-row-meta">
-                            <div class="project-row-tech">
-                                <span class="project-row-pill">HTML5</span><span class="project-row-pill">Modern CSS</span><span class="project-row-pill">Vanilla JS</span><span class="project-row-pill">GSAP</span>
-                            </div>
-                            <span class="project-row-category">Web Design</span>
-                        </div>
-                        <p class="project-row-desc">A tailored web project demonstrating immersive and responsive design principles.</p>
-                        <div class="project-row-actions">
-                            <a href="projects/sarko.html" class="project-row-btn primary">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-                            <a href="https://github.com/Mr-Shoez" class="project-row-btn secondary" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> View Source</a>
-                        </div>
-                    </div>
-                </div>
+            {{ALL_PROJECTS_CARDS_HTML}}
         </div>
     </section>
 
@@ -91,7 +70,7 @@
         </div>
     </div>
 
-    <script src="js/min/index.min.js?v=1772740475326" type="module"></script>
+    <script src="js/min/index.min.js?v={{VERSION}}" type="module"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             if (window.ThemeSystem) window.ThemeSystem.init();
