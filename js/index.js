@@ -559,7 +559,7 @@ if (W.length > 0) {
 // =========================================================================
 // PROJECTS MODAL LOGIC & DATA FETCHING
 // =========================================================================
-const V = document.getElementById("bentoGrid"),
+const V = document.getElementById("projectsStack"),
   _ = document.getElementById("projectModal"),
   U = document.getElementById("modalCloseBtn");
 let Z = [];
@@ -587,61 +587,110 @@ const Q = document.querySelector(".modal-content-wrapper");
           if (!V) return;
           ((V.innerHTML = ""),
             V.classList.add("glow-container"),
-            e.forEach((e, t) => {
-              const o = document.createElement("div");
-              ((o.className = `bento-item glow-card bento-${t + 1}`),
-                o.setAttribute("data-index", t));
-              const n = document.createElement("div");
-              n.className = "glow-content";
-              const s = document.createElement("img");
-              ((s.src = e.thumbnail),
-                (s.alt = e.title),
-                (s.className = "bento-img"),
-                (s.loading = "lazy"));
-              const i = document.createElement("div");
-              i.className = "bento-overlay";
-              const a = document.createElement("h3");
-              ((a.className = "bento-item-title"), (a.textContent = e.title));
-              const l = document.createElement("span");
-              ((l.className = "bento-item-category"),
-                (l.textContent = e.category),
-                i.appendChild(a),
-                i.appendChild(l),
-                n.appendChild(s),
-                n.appendChild(i),
-                o.appendChild(n),
-                o.addEventListener("click", () =>
-                  (function (e) {
-                    if (!Z[e]) return;
-                    const t = Z[e];
-                    ((document.getElementById("modalImage").src = t.fullImage),
-                      (document.getElementById("modalImage").alt = t.title),
-                      (document.getElementById("modalCategory").textContent =
-                        t.category),
-                      (document.getElementById("modalTitle").textContent =
-                        t.title),
-                      (document.getElementById("modalDescription").textContent =
-                        t.description),
-                      t.link
-                        ? ((document.getElementById("modalLink").href = t.link),
-                          (document.getElementById("modalLink").style.display =
-                            "inline-flex"))
-                        : (document.getElementById("modalLink").style.display =
-                            "none"));
-                    const o = document.getElementById("modalTechStack");
-                    ((o.innerHTML = ""),
-                      t.technologies &&
-                        t.technologies.length > 0 &&
-                        t.technologies.forEach((e) => {
-                          const t = document.createElement("span");
-                          ((t.className = "modal-pill"),
-                            (t.textContent = e),
-                            o.appendChild(t));
-                        }));
-                    (_.classList.add("active"), S());
-                  })(t),
-                ),
-                V.appendChild(o));
+            e.forEach((proj, index) => {
+              const row = document.createElement("div");
+              row.className = "project-row glow-card";
+              row.setAttribute("data-index", index);
+
+              const imgContainer = document.createElement("div");
+              imgContainer.className = "project-row-img-container";
+
+              const img = document.createElement("img");
+              img.src = proj.thumbnail;
+              img.alt = proj.title;
+              img.className = "project-row-img";
+              img.loading = "lazy";
+
+              let video = null;
+              if (proj.desktopVideoUrl) {
+                video = document.createElement("video");
+                video.className = "project-row-video";
+                video.src = proj.desktopVideoUrl;
+                video.muted = true;
+                video.loop = true;
+                video.playsInline = true;
+                
+                imgContainer.addEventListener("mouseenter", () => {
+                  if (window.innerWidth >= 992) {
+                    video.play().catch(console.error);
+                    img.style.opacity = "0";
+                    video.style.opacity = "1";
+                  }
+                });
+                imgContainer.addEventListener("mouseleave", () => {
+                  if (window.innerWidth >= 992) {
+                    video.pause();
+                    video.currentTime = 0;
+                    img.style.opacity = "1";
+                    video.style.opacity = "0";
+                  }
+                });
+              }
+
+              imgContainer.appendChild(img);
+              if (video) imgContainer.appendChild(video);
+
+              const content = document.createElement("div");
+              content.className = "project-row-content";
+
+              const title = document.createElement("h3");
+              title.className = "project-row-title";
+              title.textContent = proj.title;
+
+              const metaContainer = document.createElement("div");
+              metaContainer.className = "project-row-meta";
+              
+              if (proj.technologies && proj.technologies.length > 0) {
+                const techStack = document.createElement("div");
+                techStack.className = "project-row-tech";
+                proj.technologies.slice(0, 4).forEach((tech) => {
+                  const techPill = document.createElement("span");
+                  techPill.className = "project-row-pill";
+                  techPill.textContent = tech;
+                  techStack.appendChild(techPill);
+                });
+                metaContainer.appendChild(techStack);
+              }
+              
+              const category = document.createElement("span");
+              category.className = "project-row-category";
+              category.textContent = proj.category || "";
+              metaContainer.appendChild(category);
+
+              const desc = document.createElement("p");
+              desc.className = "project-row-desc";
+              desc.textContent = proj.description;
+
+              const actions = document.createElement("div");
+              actions.className = "project-row-actions";
+
+              if (proj.link && proj.link !== "#") {
+                const viewBtn = document.createElement("a");
+                viewBtn.className = "project-row-btn primary";
+                viewBtn.href = proj.link;
+                viewBtn.innerHTML = 'Learn More <i class="fa-solid fa-arrow-right"></i>';
+                actions.appendChild(viewBtn);
+              }
+
+              if (proj.githubLink && proj.githubLink !== "#") {
+                const gitBtn = document.createElement("a");
+                gitBtn.className = "project-row-btn secondary";
+                gitBtn.href = proj.githubLink;
+                gitBtn.target = "_blank";
+                gitBtn.rel = "noopener noreferrer";
+                gitBtn.innerHTML = '<i class="fa-brands fa-github"></i> View Source';
+                actions.appendChild(gitBtn);
+              }
+
+              content.appendChild(title);
+              content.appendChild(metaContainer);
+              content.appendChild(desc);
+              content.appendChild(actions);
+
+              row.appendChild(imgContainer);
+              row.appendChild(content);
+
+              V.appendChild(row);
             }));
         })(Z));
     } catch (e) {

@@ -45,7 +45,8 @@
         "slug": "e-commerce-platform",
         "link": "projects/e-commerce-platform.html",
         "prevSlug": null,
-        "nextSlug": "finance-dashboard"
+        "nextSlug": "finance-dashboard",
+        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
         "id": 2,
@@ -92,7 +93,8 @@
         "slug": "finance-dashboard",
         "link": "projects/finance-dashboard.html",
         "prevSlug": "e-commerce-platform",
-        "nextSlug": "social-media-app"
+        "nextSlug": "social-media-app",
+        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
         "id": 3,
@@ -139,7 +141,8 @@
         "slug": "social-media-app",
         "link": "projects/social-media-app.html",
         "prevSlug": "finance-dashboard",
-        "nextSlug": "smart-home-iot"
+        "nextSlug": "smart-home-iot",
+        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
         "id": 4,
@@ -186,7 +189,8 @@
         "slug": "smart-home-iot",
         "link": "projects/smart-home-iot.html",
         "prevSlug": "social-media-app",
-        "nextSlug": "travel-blog"
+        "nextSlug": "travel-blog",
+        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
         "id": 5,
@@ -233,7 +237,8 @@
         "slug": "travel-blog",
         "link": "projects/travel-blog.html",
         "prevSlug": "smart-home-iot",
-        "nextSlug": "task-manager"
+        "nextSlug": "task-manager",
+        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
         "id": 6,
@@ -280,7 +285,8 @@
         "slug": "task-manager",
         "link": "projects/task-manager.html",
         "prevSlug": "travel-blog",
-        "nextSlug": "ai-image-gen"
+        "nextSlug": "ai-image-gen",
+        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
         "id": 7,
@@ -327,7 +333,8 @@
         "slug": "ai-image-gen",
         "link": "projects/ai-image-gen.html",
         "prevSlug": "task-manager",
-        "nextSlug": "portfolio-v1"
+        "nextSlug": "portfolio-v1",
+        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
         "id": 8,
@@ -374,6 +381,7 @@
         "slug": "portfolio-v1",
         "link": "projects/portfolio-v1.html",
         "prevSlug": "ai-image-gen",
-        "nextSlug": null
+        "nextSlug": null,
+        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
     }
 ]
