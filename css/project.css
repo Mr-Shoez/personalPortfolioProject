@@ -587,6 +587,88 @@ body.project-detail-page {
   font-size: 1.2rem;
 }
 /* ==========================================================================
+   RESPONSIVE SHOWCASE (DESKTOP, TABLET, MOBILE)
+   ========================================================================== */
+.project-responsive-section {
+  margin-bottom: 5rem;
+}
+.responsive-showcase {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1rem;
+  margin: 3rem 0;
+  padding: 3rem 2rem;
+  background: var(--card-bg, rgba(255, 255, 255, 0.02));
+  border-radius: 20px;
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.05));
+  position: relative;
+  overflow: hidden;
+}
+[data-theme="light"] .responsive-showcase {
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+}
+.responsive-frames {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  position: relative;
+}
+.device-frame {
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.device-frame:hover {
+  transform: translateY(-15px);
+  z-index: 10 !important;
+}
+.device-frame img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none; /* Disable default img shadow as we use drop-shadow on the transparent PNG */
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
+}
+[data-theme="light"] .device-frame img {
+  filter: drop-shadow(0 20px 30px rgba(0,0,0,0.15));
+}
+.device-frame.desktop-frame {
+  flex: 3;
+  max-width: 700px;
+  z-index: 1;
+}
+.device-frame.tablet-frame {
+  flex: 1.2;
+  max-width: 300px;
+  margin-left: -8%;
+  z-index: 2;
+}
+.device-frame.mobile-frame {
+  flex: 0.8;
+  max-width: 180px;
+  margin-left: -5%;
+  z-index: 3;
+}
+@media (max-width: 900px) {
+  .responsive-frames {
+    flex-direction: column;
+    align-items: center;
+  }
+  .device-frame {
+    margin-left: 0 !important;
+  }
+  .device-frame.tablet-frame {
+    margin-top: -15%;
+  }
+  .device-frame.mobile-frame {
+    margin-top: -25%;
+  }
+}
+/* ==========================================================================
    CHALLENGES & SOLUTIONS GRID
    ========================================================================== */
 .challenges-grid {

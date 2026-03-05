@@ -1,387 +1,45 @@
 [
     {
         "id": 1,
-        "title": "E-Commerce Platform",
-        "category": "Full Stack",
-        "role": "Lead Engineer",
-        "year": "2026",
-        "description": "A fully functional e-commerce platform with a custom 3D product view using Three.js and a robust backend for order management.",
-        "overview": "The E-Commerce Platform project aimed to redefine the standard online shopping experience by introducing an immersive, interactive 3D product viewing feature. This platform allows users to inspect products from every angle in real-time before adding them to their cart, all while maintaining lightning-fast performance and a seamless checkout flow.",
-        "keyFeatures": [
-            "Interactive 3D Product Visualiser via Three.js",
-            "Real-time Inventory & Order Management",
-            "Persistent Shopping Cart with Zustand State",
-            "Secure Stripe Checkout Integration"
-        ],
-        "challengesStructured": [
-            {
-                "issue": "Integrating high-poly 3D models caused significant frame drops on mobile devices.",
-                "solution": "Implemented DRACO geometry compression and custom texture mipmapping to reduce asset size by 65%."
-            },
-            {
-                "issue": "Syncing 3D canvas state with traditional DOM UI elements like the cart sidebar.",
-                "solution": "Architected a global Zustand store as a single source of truth, bridging the WebGL and React layers."
-            }
-        ],
-        "outcomes": [
-            "40% increase in user session duration compared to static galleries.",
-            "Average page load time under 1.5 seconds despite heavy 3D assets.",
-            "Flawless cross-device compatibility from iPhone 12 to 4K Desktops."
-        ],
-        "beforeAfter": {
-            "before": "my pictures/ecommerce_before.png",
-            "after": "my pictures/ecommerce_platform.png"
-        },
-        "githubLink": "https://github.com/Mr-Shoez",
-        "liveLink": "https://www.sudo.co.za/ecommerce",
-        "thumbnail": "my pictures/ecommerce_platform.png",
-        "fullImage": "my pictures/ecommerce_platform.png",
-        "technologies": [
-            "React",
-            "Three.js",
-            "Node.js",
-            "MongoDB"
-        ],
-        "slug": "e-commerce-platform",
-        "link": "projects/e-commerce-platform.html",
-        "prevSlug": null,
-        "nextSlug": "finance-dashboard",
-        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
-    },
-    {
-        "id": 2,
-        "title": "Finance Dashboard",
-        "category": "Frontend",
-        "role": "UI/UX Developer",
-        "year": "2025",
-        "description": "An interactive analytics dashboard for financial data visualization with real-time updates and interactive charts.",
-        "overview": "This Finance Dashboard consolidates raw financial streams into a single, beautifully designed interface, providing real-time data visualization and customizable widget layouts to improve decision-making speed.",
-        "keyFeatures": [
-            "Real-time Data Streaming via WebSockets",
-            "D3.js Interactive Financial Charts",
-            "Customisable Widget Grid System",
-            "Multi-currency & Dark Mode Support"
-        ],
-        "challengesStructured": [
-            {
-                "issue": "Rendering 10k+ data points in real-time maxed out the browser's main thread.",
-                "solution": "Offloaded data processing to Web Workers and switched from SVG to Canvas API for high-density plots."
-            },
-            {
-                "issue": "Ensuring pixel-perfect layout responsiveness for dense financial tables.",
-                "solution": "Utilized advanced CSS Grid with subgrid support and dynamic viewport-based scaling."
-            }
-        ],
-        "outcomes": [
-            "Achieved constant 60fps rendering even during high-volatility market data bursts.",
-            "Reduced data analysis time for beta users by an estimated 30%.",
-            "Seamless dark/light theme transitions with CSS variable architecture."
-        ],
-        "beforeAfter": {
-            "before": "my pictures/finance_before.png",
-            "after": "my pictures/finance_dashboard.png"
-        },
-        "githubLink": "https://github.com/Mr-Shoez",
-        "liveLink": "https://www.sudo.co.za/finance",
-        "thumbnail": "my pictures/finance_dashboard.png",
-        "fullImage": "my pictures/finance_dashboard.png",
-        "technologies": [
-            "Vue.js",
-            "D3.js",
-            "Tailwind CSS"
-        ],
-        "slug": "finance-dashboard",
-        "link": "projects/finance-dashboard.html",
-        "prevSlug": "e-commerce-platform",
-        "nextSlug": "social-media-app",
-        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
-    },
-    {
-        "id": 3,
-        "title": "Social Media App",
-        "category": "Mobile App",
-        "role": "Mobile Developer",
-        "year": "2025",
-        "description": "A cross-platform mobile application for community engagement with instant messaging and live feed capabilities.",
-        "overview": "A community-focused social application designed to bring localized groups together. It providing a unified cross-platform hub for instant messaging, event planning, and a live engagement feed.",
-        "keyFeatures": [
-            "Real-time Instant Messaging",
-            "Custom Live Community Feed",
-            "Offline Persistence & Syncing",
-            "Secure JWT-based Authentication"
-        ],
-        "challengesStructured": [
-            {
-                "issue": "Slow image loading on the infinite feed for users with low-bandwidth connections.",
-                "solution": "Implemented a multi-stage image pipeline with Low-Quality Image Placeholders (LQIP) and lazy-loading."
-            },
-            {
-                "issue": "Maintaining message order and consistency during intermittent connectivity.",
-                "solution": "Integrated Firebase offline persistence with a custom Redux middleware for optimistic updates."
-            }
-        ],
-        "outcomes": [
-            "App performance consistently scores above 90 on React Native performance benchmarks.",
-            "Average user engagement increased by 25% during initial beta testing.",
-            " जीरो-डेटा-लॉस consistency even during sudden app crashes/disconnects."
-        ],
-        "beforeAfter": {
-            "before": "my pictures/social_before.png",
-            "after": "my pictures/social_media.png"
-        },
-        "githubLink": "https://github.com/Mr-Shoez",
-        "liveLink": "#",
-        "thumbnail": "my pictures/social_media.png",
-        "fullImage": "my pictures/social_media.png",
-        "technologies": [
-            "React Native",
-            "Firebase",
-            "Redux"
-        ],
-        "slug": "social-media-app",
-        "link": "projects/social-media-app.html",
-        "prevSlug": "finance-dashboard",
-        "nextSlug": "smart-home-iot",
-        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
-    },
-    {
-        "id": 4,
-        "title": "Smart Home IoT",
-        "category": "UI/UX",
-        "role": "Product Designer",
-        "year": "2024",
-        "description": "Design system and interface prototype for a smart home device management application.",
-        "overview": "This design system provides a centralized, ultra-intuitive interface allowing users to control lighting, climate, and security with minimal friction and engaging micro-interactions.",
-        "keyFeatures": [
-            "Comprehensive Design Token System",
-            "Spatial Management UI Patterns",
-            "Animated Micro-interactions",
-            "Accessibility-First Component Library"
-        ],
-        "challengesStructured": [
-            {
-                "issue": "Creating a spatial model that felt intuitive across both mobile and tablet orientations.",
-                "solution": "Developed a modular card-based system with CSS Container Queries for truly context-aware layouts."
-            },
-            {
-                "issue": "Conveying complex device states (e.g., partial heating) through simple icons.",
-                "solution": "Iterated through 3 rounds of user testing to refine a bespoke animated SVG icon set."
-            }
-        ],
-        "outcomes": [
-            "Reduced task completion time for setup procedures by 45% in usability tests.",
-            "Design system successfully adopted for both iOS and Android prototypes.",
-            "High fidelity prototypes praised for 'premium physical feel' of the UI."
-        ],
-        "beforeAfter": {
-            "before": "my pictures/iot_before.png",
-            "after": "my pictures/smart_home_iot.png"
-        },
-        "githubLink": "#",
-        "liveLink": "https://www.sudo.co.za/smarthome",
-        "thumbnail": "my pictures/smart_home_iot.png",
-        "fullImage": "my pictures/smart_home_iot.png",
-        "technologies": [
-            "Figma",
-            "Framer Motion",
-            "React"
-        ],
-        "slug": "smart-home-iot",
-        "link": "projects/smart-home-iot.html",
-        "prevSlug": "social-media-app",
-        "nextSlug": "travel-blog",
-        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
-    },
-    {
-        "id": 5,
-        "title": "Travel Blog",
+        "title": "Sarko",
         "category": "Web Design",
-        "role": "Frontend Architect",
-        "year": "2024",
-        "description": "A minimalist, high-performance travel blog platform optimized for SEO and readability.",
-        "overview": "A visually stunning, content-first travel blog built to handle massive amounts of high-resolution photography without compromising speed. providing an SEO-optimized architecture.",
+        "role": "Frontend Developer",
+        "year": "2026",
+        "description": "A tailored web project demonstrating immersive and responsive design principles.",
+        "overview": "Sarko is a modern web experience meant to demonstrate how to elegantly adapt interactive applications seamlessly across all device dimensions without compromising on aesthetics or performance.",
         "keyFeatures": [
-            "Next.js Static Site Generation (SSG)",
-            "Dynamic Image Optimisation Pipeline",
-            "Headless CMS (GraphQL) Integration",
-            "Semantic HTML & Schema.org Metadata"
+            "Seamless Responsive Design Architecture",
+            "Performance Optimized Asset Loading",
+            "Dynamic Interaction Elements",
+            "Minimalist Content Presentation"
         ],
         "challengesStructured": [
             {
-                "issue": "High-resolution media caused Cumulative Layout Shift (CLS) issues.",
-                "solution": "Applied aspect-ratio boxes and server-side image metadata to reserve layout space during loading."
-            },
-            {
-                "issue": "Creating a flexible editorial layout system for varying content lengths.",
-                "solution": "Built a modular component-based CMS schema allowing for art-directed post layouts."
+                "issue": "Creating a unified layout that adapts perfectly from 4k monitors to tiny mobile screens.",
+                "solution": "Leveraged modern CSS Grid and custom container queries for fluid adjustments."
             }
         ],
         "outcomes": [
-            "Perfect 100/100 Lighthouse scores across Performance and SEO.",
-            "Global CDN average response time of 150ms.",
-            "Successfully ranked on page 1 of search results for 5 core target keywords."
+            "Achieved pixel-perfect responsive scaling across 15+ tested device physical profiles.",
+            "Sub-second load times due to aggressive asset optimization."
         ],
-        "beforeAfter": {
-            "before": "my pictures/travel_before.png",
-            "after": "my pictures/travel_blog.png"
+        "responsiveViews": {
+            "desktop": "projects/sarko/mockup-desktop-framed.png",
+            "tablet": "projects/sarko/mockup-tablet-framed.png",
+            "mobile": "projects/sarko/mockup-mobile-framed.png"
         },
         "githubLink": "https://github.com/Mr-Shoez",
-        "liveLink": "https://www.sudo.co.za/travel",
-        "thumbnail": "my pictures/travel_blog.png",
-        "fullImage": "my pictures/travel_blog.png",
+        "liveLink": "https://www.sudo.co.za/sarko",
+        "thumbnail": "projects/sarko/mockup-all-framed.png",
+        "fullImage": "projects/sarko/mockup-desktop-framed.png",
         "technologies": [
-            "Next.js",
-            "GraphQL",
-            "Tailwind CSS"
+            "HTML & CSS",
+            "Vanilla JS",
+            "Responsive Web Design"
         ],
-        "slug": "travel-blog",
-        "link": "projects/travel-blog.html",
-        "prevSlug": "smart-home-iot",
-        "nextSlug": "task-manager",
-        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
-    },
-    {
-        "id": 6,
-        "title": "Task Manager",
-        "category": "Web Application",
-        "role": "Full Stack Dev",
-        "year": "2023",
-        "description": "A productivity tool with drag-and-drop Kanban boards and team collaboration features.",
-        "overview": "A comprehensive project management web application designed to boost team productivity through intuitive Kanban boards and real-time collaboration. It focuses on extremely fast interactions.",
-        "keyFeatures": [
-            "Drag-and-Drop Kanban Board",
-            "WebSocket-based Real-time Collaboration",
-            "Hierarchical Task Scoping & Labels",
-            "Performance-first Angular Architecture"
-        ],
-        "challengesStructured": [
-            {
-                "issue": "Maintaining 60fps animations during complex drag-and-drop operations on large boards.",
-                "solution": "Utilized transform-based animations and the RequestAnimationFrame API to bypass DOM reflows."
-            },
-            {
-                "issue": "Handling concurrent edits without overwriting team member changes.",
-                "solution": "Implemented an Operational Transformation (OT) algorithm for real-time conflict resolution."
-            }
-        ],
-        "outcomes": [
-            "Zero perceived lag even on Kanban boards with 500+ active cards.",
-            "Real-time sync reliable across 10+ concurrent users per board.",
-            "Highly praised for the 'weightless' feel of the task interactions."
-        ],
-        "beforeAfter": {
-            "before": "my pictures/task_before.png",
-            "after": "my pictures/task_manager.png"
-        },
-        "githubLink": "https://github.com/Mr-Shoez",
-        "liveLink": "#",
-        "thumbnail": "my pictures/task_manager.png",
-        "fullImage": "my pictures/task_manager.png",
-        "technologies": [
-            "Angular",
-            "TypeScript",
-            "SCSS"
-        ],
-        "slug": "task-manager",
-        "link": "projects/task-manager.html",
-        "prevSlug": "travel-blog",
-        "nextSlug": "ai-image-gen",
-        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
-    },
-    {
-        "id": 7,
-        "title": "AI Image Gen",
-        "category": "Machine Learning",
-        "role": "AI Integrator",
-        "year": "2023",
-        "description": "Interface for generating images from text using advanced stable diffusion models.",
-        "overview": "A web-based interface providing seamless access to advanced generative AI image models. It wraps complex command-line parameters into a surprisingly simple, beautiful web UI.",
-        "keyFeatures": [
-            "Stable Diffusion Inference Wrapper",
-            "Asynchronous Task Queue (FastAPI/Celery)",
-            "Mesmerizing Progress Visualiser",
-            "GPU Resource Scheduling System"
-        ],
-        "challengesStructured": [
-            {
-                "issue": "Users were dropping off during the 15-second generation wait window.",
-                "solution": "Designed a custom animated loading sequence that visually represents the latent diffusion steps."
-            },
-            {
-                "issue": "Scaling the GPU backend to handle traffic spikes without crashing.",
-                "solution": "Implemented a robust Redis-backed queue system with automatic worker scaling."
-            }
-        ],
-        "outcomes": [
-            "User retention during generation window stabilized at 98%.",
-            "Average of 5,000+ images generated successfully per month.",
-            "Low-latency response times for the management of the generation queue."
-        ],
-        "beforeAfter": {
-            "before": "my pictures/ai_before.png",
-            "after": "my pictures/ai_image_gen.png"
-        },
-        "githubLink": "https://github.com/Mr-Shoez",
-        "liveLink": "https://www.sudo.co.za/ai",
-        "thumbnail": "my pictures/ai_image_gen.png",
-        "fullImage": "my pictures/ai_image_gen.png",
-        "technologies": [
-            "Python",
-            "FastAPI",
-            "React"
-        ],
-        "slug": "ai-image-gen",
-        "link": "projects/ai-image-gen.html",
-        "prevSlug": "task-manager",
-        "nextSlug": "portfolio-v1",
-        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
-    },
-    {
-        "id": 8,
-        "title": "Portfolio v1",
-        "category": "Archived",
-        "role": "Developer",
-        "year": "2022",
-        "description": "The previous iteration of my personal portfolio, built focusing on brutalist design principles.",
-        "overview": "The very first iteration of my personal portfolio. Designed to be deliberately raw, it adopted brutalist design principles to stand out. It served as an experimental playground for vanilla JavaScript.",
-        "keyFeatures": [
-            "Pure Vanilla JavaScript Core",
-            "Custom CSS Grid Brutalist Layout",
-            "Lightweight Zero-Dependency Site",
-            "IntersectionObserver Scroll Animations"
-        ],
-        "challengesStructured": [
-            {
-                "issue": "Handling complex responsive layouts without using any frontend frameworks.",
-                "solution": "Mastered CSS Grid and Variables to create a rigid, mathematical design system."
-            },
-            {
-                "issue": "Achieving smooth scroll-triggered animations in a performant way.",
-                "solution": "Built a custom observer-based animation engine to minimize main-thread work."
-            }
-        ],
-        "outcomes": [
-            "Reached a perfect 100/100 score on Lighthouse Mobile Performance.",
-            "Served as the foundation for LaunchPad Studio's early engineering philosophy.",
-            "Successfully demonstrated the power of the 'Vanilla Web' to initial clients."
-        ],
-        "beforeAfter": {
-            "before": "my pictures/portfolio_v1_wireframe.png",
-            "after": "my pictures/portfolio_v1.png"
-        },
-        "githubLink": "https://github.com/Mr-Shoez",
-        "liveLink": "https://www.sudo.co.za/v1",
-        "thumbnail": "my pictures/portfolio_v1.png",
-        "fullImage": "my pictures/portfolio_v1.png",
-        "technologies": [
-            "HTML",
-            "CSS",
-            "Vanilla JS"
-        ],
-        "slug": "portfolio-v1",
-        "link": "projects/portfolio-v1.html",
-        "prevSlug": "ai-image-gen",
-        "nextSlug": null,
-        "desktopVideoUrl": "https://www.w3schools.com/html/mov_bbb.mp4"
+        "slug": "sarko",
+        "link": "projects/sarko.html",
+        "prevSlug": null,
+        "nextSlug": null
     }
 ]

@@ -329,10 +329,16 @@ try {
 }
 
 if (fs.existsSync(PROJECTS_OUT_DIR)) {
-    fs.rmSync(PROJECTS_OUT_DIR, { recursive: true, force: true });
-    console.log('Purged old projects/ folder.');
+    const files = fs.readdirSync(PROJECTS_OUT_DIR);
+    files.forEach(file => {
+        if (file.endsWith('.html')) {
+            fs.unlinkSync(path.join(PROJECTS_OUT_DIR, file));
+        }
+    });
+    console.log('Purged old project HTML files.');
+} else {
+    fs.mkdirSync(PROJECTS_OUT_DIR, { recursive: true });
 }
-fs.mkdirSync(PROJECTS_OUT_DIR, { recursive: true });
 
 let projectTemplateBlock = '';
 try {
@@ -393,17 +399,41 @@ if (projectTemplateBlock && projectsData.length > 0) {
         let beforeAfterHtml = '';
         if (proj.beforeAfter) {
             beforeAfterHtml = `
-                <div class="comparison-slider-wrapper">
-                    <div class="comparison-slider">
-                        <img class="comparison-img before" src="../${proj.beforeAfter.before}" alt="Initial Version">
-                        <img class="comparison-img after" src="../${proj.beforeAfter.after}" alt="Final Version">
-                        <div class="slider-handle">
-                            <i class="fa-solid fa-arrows-left-right"></i>
+                <section class="project-visual-comparison fade-element">
+                    <h2 class="section-title">Visual Evolution</h2>
+                    <p class="section-desc">Comparing the initial wireframes/concepts with the final polished implementation.</p>
+                    <div class="before-after-container">
+                        <div class="comparison-slider-wrapper">
+                            <div class="comparison-slider">
+                                <img class="comparison-img before" src="../${proj.beforeAfter.before}" alt="Initial Version">
+                                <img class="comparison-img after" src="../${proj.beforeAfter.after}" alt="Final Version">
+                                <div class="slider-handle">
+                                    <i class="fa-solid fa-arrows-left-right"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>`;
+                </section>`;
         }
         pageHtml = pageHtml.replace(/{{BEFORE_AFTER_HTML}}/g, beforeAfterHtml);
+
+        // Responsive Views Showcase
+        let responsiveHtml = '';
+        if (proj.responsiveViews) {
+            responsiveHtml = `
+                <section class="project-responsive-section fade-element">
+                    <h2 class="section-title">Responsive Design</h2>
+                    <p class="section-desc">A seamless experience across desktop, tablet, and mobile devices.</p>
+                    <div class="responsive-showcase">
+                        <div class="responsive-frames">
+                            ${proj.responsiveViews.desktop ? `<div class="device-frame desktop-frame"><img src="../${proj.responsiveViews.desktop}" alt="Desktop View"></div>` : ''}
+                            ${proj.responsiveViews.tablet ? `<div class="device-frame tablet-frame"><img src="../${proj.responsiveViews.tablet}" alt="Tablet View"></div>` : ''}
+                            ${proj.responsiveViews.mobile ? `<div class="device-frame mobile-frame"><img src="../${proj.responsiveViews.mobile}" alt="Mobile View"></div>` : ''}
+                        </div>
+                    </div>
+                </section>`;
+        }
+        pageHtml = pageHtml.replace(/{{RESPONSIVE_VIEWS_HTML}}/g, responsiveHtml);
 
         // 3. Technical Challenges
         let challengesHtml = (proj.challengesStructured || []).map(ch => `
