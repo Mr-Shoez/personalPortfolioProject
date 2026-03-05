@@ -272,6 +272,15 @@ body.blog-post-page {
 .post-content p {
   margin-bottom: 1.5em;
 }
+.post-content ul,
+.post-content ol {
+  margin-bottom: 1.5em;
+  padding-left: 2rem;
+  color: var(--text-muted);
+}
+.post-content li {
+  margin-bottom: 0.5em;
+}
 .post-content img {
   width: 100%;
   border-radius: 16px;
