@@ -139,6 +139,7 @@ blogData.forEach(post => {
     // SEO Replacements
     const pageUrl = `${BASE_URL}/posts/${post.slug}.html`;
     const ogImage = post.image ? `${BASE_URL}/${post.image}` : '';
+    const heroImage = post.image ? `../${post.image}` : '';
     const author = "Mosa Moleleki";
     
     let publishedDate = new Date().toISOString();
@@ -172,6 +173,7 @@ blogData.forEach(post => {
     pageHtml = pageHtml.replace(/{{AUTHOR}}/g, author);
     pageHtml = pageHtml.replace(/{{PAGE_URL}}/g, pageUrl);
     pageHtml = pageHtml.replace(/{{OG_IMAGE}}/g, ogImage);
+    pageHtml = pageHtml.replace(/{{HERO_IMAGE}}/g, heroImage);
     pageHtml = pageHtml.replace(/{{JSON_LD}}/g, `<script type="application/ld+json">\n${JSON.stringify(jsonLd, null, 2)}\n</script>`);
     
     // Previous Link
@@ -350,10 +352,11 @@ if (projectTemplateBlock && projectsData.length > 0) {
         
         const pageUrl = `${BASE_URL}/projects/${proj.slug}.html`;
         const ogImage = proj.fullImage.startsWith('http') ? proj.fullImage : `${BASE_URL}/${proj.fullImage}`;
+        const displayImage = (proj.fullImage && !proj.fullImage.startsWith('http')) ? `../${proj.fullImage}` : (proj.fullImage || '');
         
         pageHtml = pageHtml.replace(/{{PAGE_URL}}/g, pageUrl);
         pageHtml = pageHtml.replace(/{{OG_IMAGE}}/g, ogImage);
-        pageHtml = pageHtml.replace(/{{FULL_IMAGE}}/g, proj.fullImage || '');
+        pageHtml = pageHtml.replace(/{{FULL_IMAGE}}/g, displayImage);
         
         // Links
         let liveLinkHtml = proj.liveLink && proj.liveLink !== '#' ? `<a href="${proj.liveLink}" target="_blank" rel="noopener noreferrer" class="project-link-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>` : '';
