@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Gallery | Mosa Moleleki</title>
+    <meta name="description" content="A showcase of web projects, interactive experiences, and digital solutions by Mosa Moleleki.">
+    <link rel="canonical" href="https://www.sudo.co.za/projects.html">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.sudo.co.za/projects.html">
+    <meta property="og:title" content="Project Gallery | Mosa Moleleki">
+    <link rel="stylesheet" href="css/min/style.min.css?v=1772735126506">
+    <link rel="stylesheet" href="css/all.min.css?v=1772735126506">
+    <link rel="stylesheet" href="css/min/project.min.css?v=1772735126506">
+    <!-- Universal Theme System -->
+    <script src="js/min/theme.min.js?v=1772735126506"></script>
+</head>
+<body class="projects-gallery-page">
+    <!-- Theme Toggle -->
+    <div class="utility-toggles" style="z-index: 10000;">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle Dark Mode">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Back Button -->
+    <a href="index.html#projects" class="back-home-btn" style="position: fixed; top: 2rem; left: 2rem; z-index: 100;"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+
+    <section class="projects-section" style="padding-top: 120px; min-height: 100vh;">
+        <div class="projects-section-header">
+            <span class="projects-subtitle">GALLERY</span>
+            <h2 class="projects-title">
+                <span class="projects-main-text">All Projects</span>
+                <span class="projects-ghost-text">Portfolio</span>
+            </h2>
+        </div>
+        
+        <div class="projects-stack glow-container" id="projectsStack" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            
+
+                <div class="project-row glow-card" data-index="1">
+                    <div class="project-row-img-container">
+                        <img src="projects/sarko/mockup-all-framed.png" alt="Sarko" class="project-row-img" loading="lazy">
+                        
+                    </div>
+                    <div class="project-row-content">
+                        <h3 class="project-row-title">Sarko</h3>
+                        <div class="project-row-meta">
+                            <div class="project-row-tech">
+                                <span class="project-row-pill">HTML5</span><span class="project-row-pill">Modern CSS</span><span class="project-row-pill">Vanilla JS</span><span class="project-row-pill">GSAP</span>
+                            </div>
+                            <span class="project-row-category">Web Design</span>
+                        </div>
+                        <p class="project-row-desc">A tailored web project demonstrating immersive and responsive design principles.</p>
+                        <div class="project-row-actions">
+                            <a href="projects/sarko.html" class="project-row-btn primary">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="https://github.com/Mr-Shoez" class="project-row-btn secondary" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> View Source</a>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>
+
+    <!-- Project Modal Integrated -->
+    <div class="project-modal" id="projectModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content-wrapper">
+            <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close Modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-image-container">
+                <img src="" alt="Project Image" id="modalImage">
+            </div>
+            <div class="modal-info">
+                <span class="modal-category" id="modalCategory">Category</span>
+                <h2 class="modal-title" id="modalTitle">Project Title</h2>
+                <p class="modal-description" id="modalDescription">Project description goes here.</p>
+                <div class="modal-tech-stack" id="modalTechStack"></div>
+                <a href="#" class="modal-link-btn" id="modalLink">See Details <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/min/index.min.js?v=1772735126506" type="module"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.ThemeSystem) window.ThemeSystem.init();
+            
+            // Re-initialize the glow effect for statically rendered cards
+            document.addEventListener("pointermove", (e) => {
+                const container = e.target.closest(".glow-container");
+                if (container) {
+                    container.querySelectorAll(".glow-card").forEach((card) => {
+                        const rect = card.getBoundingClientRect();
+                        card.style.setProperty("--x", e.clientX - rect.left + "px");
+                        card.style.setProperty("--y", e.clientY - rect.top + "px");
+                    });
+                }
+            });
+
+            // Video hover logic for static cards
+            const projectCards = document.querySelectorAll('.project-row');
+            projectCards.forEach(card => {
+                const img = card.querySelector('.project-row-img');
+                const video = card.querySelector('.project-row-video');
+                
+                if (video) {
+                    card.addEventListener('mouseenter', () => {
+                        if (window.innerWidth >= 992) {
+                            video.play().catch(console.error);
+                            img.style.opacity = '0';
+                            video.style.opacity = '1';
+                        }
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        if (window.innerWidth >= 992) {
+                            video.pause();
+                            video.currentTime = 0;
+                            img.style.opacity = '1';
+                            video.style.opacity = '0';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

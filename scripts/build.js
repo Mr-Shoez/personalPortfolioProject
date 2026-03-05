@@ -630,6 +630,189 @@ if (projectTemplateBlock && projectsData.length > 0) {
 }
 console.log('Project generation complete!');
 
+// ==========================================
+// 6.5 Generate Project Cards for Index & Gallery
+// ==========================================
+console.log('Starting project cards generation for Index and Gallery...');
+
+let indexProjectsHTML = '\n';
+let allProjectsCardsHTML = '\n';
+
+// For index.html, we only want the first 3 projects
+const indexProjects = projectsData.slice(0, 3);
+
+function generateProjectCard(proj, isGallery = false) {
+    const techPills = (proj.technologies || []).slice(0, 4).map(tech => `<span class="project-row-pill">${tech}</span>`).join('');
+    
+    // We use the same structure as the dynamic rendering but as static HTML
+    return `
+                <div class="project-row glow-card" data-index="${proj.id}">
+                    <div class="project-row-img-container">
+                        <img src="${proj.thumbnail}" alt="${proj.title}" class="project-row-img" loading="lazy">
+                        ${proj.desktopVideoUrl ? `<video class="project-row-video" src="${proj.desktopVideoUrl}" muted loop playsinline></video>` : ''}
+                    </div>
+                    <div class="project-row-content">
+                        <h3 class="project-row-title">${proj.title}</h3>
+                        <div class="project-row-meta">
+                            <div class="project-row-tech">
+                                ${techPills}
+                            </div>
+                            <span class="project-row-category">${proj.category || ''}</span>
+                        </div>
+                        <p class="project-row-desc">${proj.description}</p>
+                        <div class="project-row-actions">
+                            <a href="${proj.link}" class="project-row-btn primary">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                            ${proj.githubLink && proj.githubLink !== '#' ? `<a href="${proj.githubLink}" class="project-row-btn secondary" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> View Source</a>` : ''}
+                        </div>
+                    </div>
+                </div>`;
+}
+
+indexProjects.forEach(proj => {
+    indexProjectsHTML += generateProjectCard(proj);
+});
+
+projectsData.forEach(proj => {
+    allProjectsCardsHTML += generateProjectCard(proj, true);
+});
+
+// Inject into index.html
+try {
+    let indexData = fs.readFileSync(INDEX_PATH, 'utf8');
+    const startTag = '<!-- PROJECTS_START -->';
+    const endTag = '<!-- PROJECTS_END -->';
+    
+    const regex = new RegExp(`${startTag}[\\s\\S]*?${endTag}`, 'g');
+    const replacement = `${startTag}${indexProjectsHTML}${endTag}`;
+    
+    if (regex.test(indexData)) {
+        indexData = indexData.replace(regex, replacement);
+        fs.writeFileSync(INDEX_PATH, indexData, 'utf8');
+        console.log('Successfully injected project cards into index.html');
+    } else {
+        console.error('Could not find PROJECTS_START/END injection markers in index.html!');
+    }
+} catch (err) {
+    console.error('Error processing projects in index.html:', err);
+}
+
+// Generate projects.html (Gallery Page)
+const projectsGalleryHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Gallery | Mosa Moleleki</title>
+    <meta name="description" content="A showcase of web projects, interactive experiences, and digital solutions by Mosa Moleleki.">
+    <link rel="canonical" href="https://www.sudo.co.za/projects.html">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.sudo.co.za/projects.html">
+    <meta property="og:title" content="Project Gallery | Mosa Moleleki">
+    <link rel="stylesheet" href="css/min/style.min.css?v=${VERSION}">
+    <link rel="stylesheet" href="css/all.min.css?v=${VERSION}">
+    <link rel="stylesheet" href="css/min/project.min.css?v=${VERSION}">
+    <!-- Universal Theme System -->
+    <script src="js/min/theme.min.js?v=${VERSION}"></script>
+</head>
+<body class="projects-gallery-page">
+    <!-- Theme Toggle -->
+    <div class="utility-toggles" style="z-index: 10000;">
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle Dark Mode">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Back Button -->
+    <a href="index.html#projects" class="back-home-btn" style="position: fixed; top: 2rem; left: 2rem; z-index: 100;"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+
+    <section class="projects-section" style="padding-top: 120px; min-height: 100vh;">
+        <div class="projects-section-header">
+            <span class="projects-subtitle">GALLERY</span>
+            <h2 class="projects-title">
+                <span class="projects-main-text">All Projects</span>
+                <span class="projects-ghost-text">Portfolio</span>
+            </h2>
+        </div>
+        
+        <div class="projects-stack glow-container" id="projectsStack" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            ${allProjectsCardsHTML}
+        </div>
+    </section>
+
+    <!-- Project Modal Integrated -->
+    <div class="project-modal" id="projectModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content-wrapper">
+            <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close Modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-image-container">
+                <img src="" alt="Project Image" id="modalImage">
+            </div>
+            <div class="modal-info">
+                <span class="modal-category" id="modalCategory">Category</span>
+                <h2 class="modal-title" id="modalTitle">Project Title</h2>
+                <p class="modal-description" id="modalDescription">Project description goes here.</p>
+                <div class="modal-tech-stack" id="modalTechStack"></div>
+                <a href="#" class="modal-link-btn" id="modalLink">See Details <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/min/index.min.js?v=${VERSION}" type="module"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.ThemeSystem) window.ThemeSystem.init();
+            
+            // Re-initialize the glow effect for statically rendered cards
+            document.addEventListener("pointermove", (e) => {
+                const container = e.target.closest(".glow-container");
+                if (container) {
+                    container.querySelectorAll(".glow-card").forEach((card) => {
+                        const rect = card.getBoundingClientRect();
+                        card.style.setProperty("--x", e.clientX - rect.left + "px");
+                        card.style.setProperty("--y", e.clientY - rect.top + "px");
+                    });
+                }
+            });
+
+            // Video hover logic for static cards
+            const projectCards = document.querySelectorAll('.project-row');
+            projectCards.forEach(card => {
+                const img = card.querySelector('.project-row-img');
+                const video = card.querySelector('.project-row-video');
+                
+                if (video) {
+                    card.addEventListener('mouseenter', () => {
+                        if (window.innerWidth >= 992) {
+                            video.play().catch(console.error);
+                            img.style.opacity = '0';
+                            video.style.opacity = '1';
+                        }
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        if (window.innerWidth >= 992) {
+                            video.pause();
+                            video.currentTime = 0;
+                            img.style.opacity = '1';
+                            video.style.opacity = '0';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>`;
+
+try {
+    fs.writeFileSync(path.join(ROOT_DIR, 'projects.html'), projectsGalleryHTML, 'utf8');
+    console.log('Successfully generated projects.html');
+    sitePages.push('projects.html');
+} catch (err) {
+    console.error('Error generating projects.html:', err);
+}
+
 // 7. Generate sitemap.xml
 let xmlContent = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 sitePages.forEach(page => {

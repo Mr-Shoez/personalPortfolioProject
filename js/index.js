@@ -582,117 +582,52 @@ const Q = document.querySelector(".modal-content-wrapper");
     try {
       const e = await fetch("./data/projects.json");
       if (!e.ok) throw new Error("Failed to load projects data");
-      ((Z = await e.json()),
-        (function (e) {
-          if (!V) return;
-          ((V.innerHTML = ""),
-            V.classList.add("glow-container"),
-            e.forEach((proj, index) => {
-              const row = document.createElement("div");
-              row.className = "project-row glow-card";
-              row.setAttribute("data-index", index);
+      Z = await e.json();
+      
+      // We don't need to render cards anymore as they are SSG
+      // But we do need to handle clicks on the existing cards
+      if (V) {
+        V.addEventListener("click", (e) => {
+          const card = e.target.closest(".project-row");
+          if (card) {
+            // If the user clicked a link or button, don't open the modal
+            if (e.target.closest("a, button")) return;
 
-              const imgContainer = document.createElement("div");
-              imgContainer.className = "project-row-img-container";
+            const indexValue = card.getAttribute("data-index");
+            // Find the project by ID since build.js uses proj.id for data-index
+            const project = Z.find(p => p.id == indexValue) || Z[indexValue];
+            
+            if (project) {
+              const modalImage = document.getElementById("modalImage");
+              const modalCategory = document.getElementById("modalCategory");
+              const modalTitle = document.getElementById("modalTitle");
+              const modalDescription = document.getElementById("modalDescription");
+              const modalTechStack = document.getElementById("modalTechStack");
+              const modalLink = document.getElementById("modalLink");
 
-              const img = document.createElement("img");
-              img.src = proj.thumbnail;
-              img.alt = proj.title;
-              img.className = "project-row-img";
-              img.loading = "lazy";
-
-              let video = null;
-              if (proj.desktopVideoUrl) {
-                video = document.createElement("video");
-                video.className = "project-row-video";
-                video.src = proj.desktopVideoUrl;
-                video.muted = true;
-                video.loop = true;
-                video.playsInline = true;
-                
-                imgContainer.addEventListener("mouseenter", () => {
-                  if (window.innerWidth >= 992) {
-                    video.play().catch(console.error);
-                    img.style.opacity = "0";
-                    video.style.opacity = "1";
-                  }
-                });
-                imgContainer.addEventListener("mouseleave", () => {
-                  if (window.innerWidth >= 992) {
-                    video.pause();
-                    video.currentTime = 0;
-                    img.style.opacity = "1";
-                    video.style.opacity = "0";
-                  }
-                });
-              }
-
-              imgContainer.appendChild(img);
-              if (video) imgContainer.appendChild(video);
-
-              const content = document.createElement("div");
-              content.className = "project-row-content";
-
-              const title = document.createElement("h3");
-              title.className = "project-row-title";
-              title.textContent = proj.title;
-
-              const metaContainer = document.createElement("div");
-              metaContainer.className = "project-row-meta";
+              if (modalTitle) modalTitle.textContent = project.title;
+              if (modalDescription) modalDescription.textContent = project.description;
+              if (modalCategory) modalCategory.textContent = project.category || "";
+              if (modalImage) modalImage.src = project.thumbnail;
               
-              if (proj.technologies && proj.technologies.length > 0) {
-                const techStack = document.createElement("div");
-                techStack.className = "project-row-tech";
-                proj.technologies.slice(0, 4).forEach((tech) => {
-                  const techPill = document.createElement("span");
-                  techPill.className = "project-row-pill";
-                  techPill.textContent = tech;
-                  techStack.appendChild(techPill);
+              if (modalTechStack) {
+                modalTechStack.innerHTML = "";
+                (project.technologies || []).forEach(tech => {
+                  const span = document.createElement("span");
+                  span.className = "tech-pill";
+                  span.textContent = tech;
+                  modalTechStack.appendChild(span);
                 });
-                metaContainer.appendChild(techStack);
               }
+
+              if (modalLink) modalLink.href = project.link;
               
-              const category = document.createElement("span");
-              category.className = "project-row-category";
-              category.textContent = proj.category || "";
-              metaContainer.appendChild(category);
-
-              const desc = document.createElement("p");
-              desc.className = "project-row-desc";
-              desc.textContent = proj.description;
-
-              const actions = document.createElement("div");
-              actions.className = "project-row-actions";
-
-              if (proj.link && proj.link !== "#") {
-                const viewBtn = document.createElement("a");
-                viewBtn.className = "project-row-btn primary";
-                viewBtn.href = proj.link;
-                viewBtn.innerHTML = 'Learn More <i class="fa-solid fa-arrow-right"></i>';
-                actions.appendChild(viewBtn);
-              }
-
-              if (proj.githubLink && proj.githubLink !== "#") {
-                const gitBtn = document.createElement("a");
-                gitBtn.className = "project-row-btn secondary";
-                gitBtn.href = proj.githubLink;
-                gitBtn.target = "_blank";
-                gitBtn.rel = "noopener noreferrer";
-                gitBtn.innerHTML = '<i class="fa-brands fa-github"></i> View Source';
-                actions.appendChild(gitBtn);
-              }
-
-              content.appendChild(title);
-              content.appendChild(metaContainer);
-              content.appendChild(desc);
-              content.appendChild(actions);
-
-              row.appendChild(imgContainer);
-              row.appendChild(content);
-
-              V.appendChild(row);
-            }));
-        })(Z));
+              _.classList.add("active");
+              S(); // Play sound
+            }
+          }
+        });
+      }
     } catch (e) {
       console.error("Error loading projects:", e);
     }
