@@ -20,9 +20,7 @@ import { CSS3DRenderer as n, CSS3DObject as s } from "three-css-3d-renderer";
 // DOM ELEMENTS & DEVICE CONFIGURATION
 // =========================================================================
 const i = document.getElementById("splashScreen"),
-  a =
-    (document.getElementById("skeletonLoader"),
-    document.getElementById("quoteContainer")),
+  a = document.getElementById("quoteContainer"),
   l = document.getElementById("heroSection"),
   r = document.getElementById("laptop"),
   c = document.getElementById("laptop-screen"),
@@ -78,7 +76,7 @@ v.forEach((e) => {
   ((e.volume = 0), e.load());
 });
 const E = document.getElementById("muteToggle"),
-  b = localStorage.getItem("isMuted");
+  b = sessionStorage.getItem("isMuted");
 let L = null === b || "true" === b;
 const x = () => {
   if (
@@ -93,12 +91,12 @@ const x = () => {
         ? "fa-solid fa-volume-xmark"
         : "fa-solid fa-volume-high");
   }
-  (localStorage.setItem("isMuted", L),
+  (sessionStorage.setItem("isMuted", L),
     L ||
-      (a.classList.contains("show") &&
+      (a && a.classList.contains("show") &&
         g.paused &&
         g.play().catch((e) => console.log("Audio playback resumed:", e)),
-      "none" !== i.style.display &&
+      i && "none" !== i.style.display &&
         p.paused &&
         p.play().catch((e) => console.log("Audio playback resumed:", e))));
 };
@@ -308,59 +306,79 @@ let k = !1;
 // INTRO ANIMATION & INITIALIZATION ROUTINE
 // =========================================================================
 const z = () => {
-  k ||
-    ((k = !0),
-    (() => {
-      const e = performance.getEntriesByType("navigation"),
-        t = e.length > 0 && "reload" === e[0].type,
-        o = "true" === localStorage.getItem("introPlayed"),
-        n =
-          "#projects" === window.location.hash &&
-          document.referrer.includes("/projects/"),
-        s =
-          "#blog" === window.location.hash &&
-          (document.referrer.includes("/posts/") ||
-            document.referrer.includes("blog.html")),
-        i = window.location.hash && !t;
-      return (!t && o) || (!t && (n || s || i));
-    })()
-      ? ((r.style.display = "none"),
-        (c.style.display = "none"),
-        (a.style.display = "none"),
-        (i.style.display = "none"),
-        l.classList.add("show"),
-        document.getElementById("globalUi")?.classList.add("show"),
-        (document.documentElement.style.overflowY = "auto"),
-        (document.documentElement.style.overflowX = "hidden"),
-        (document.body.style.overflowY = "auto"),
-        (document.body.style.overflowX = "hidden"),
-        (document.documentElement.style.height = "auto"),
-        (document.body.style.height = "auto"),
-        window.location.hash &&
-          setTimeout(() => {
-            const e = document.querySelector(window.location.hash);
-            e && e.scrollIntoView();
-          }, 100))
-      : (localStorage.setItem("introPlayed", "true"),
-        setTimeout(() => {
-          (async () => {
-            const e = new o(),
-              n = new t();
-            (n.setDecoderPath(
-              "https://www.gstatic.com/draco/versioned/decoders/1.5.6/",
-            ),
-              e.setDRACOLoader(n),
-              (u.deviceType = window.innerWidth < 768 ? "iphone" : "laptop"));
-            const s = m[u.deviceType];
-            u.geometryFile = await e.loadAsync(s.file);
-          })().then(() => {
-            (C(),
-              p
-                .play()
-                .catch((e) => console.log("Audio playback prevented:", e)),
-              requestAnimationFrame(M));
-          });
-        }, 300)));
+  if (k) return;
+  k = !0;
+
+  // 1. Determine if we are on the homepage
+  const isHomePage = window.location.pathname === "/" || window.location.pathname.endsWith("index.html");
+  if (!isHomePage) {
+    // If not on homepage, just show content and skip splash logic
+    if (i) i.style.display = "none";
+    if (l) l.classList.add("show");
+    document.getElementById("globalUi")?.classList.add("show");
+    document.documentElement.style.overflowY = "auto";
+    document.body.style.overflowY = "auto";
+    return;
+  }
+
+  // 2. Logic to decide whether to show animation or skip it
+  const shouldSkipAnimation = (() => {
+    const navEntries = performance.getEntriesByType("navigation");
+    const navType = navEntries.length > 0 ? navEntries[0].type : "";
+    
+    // Fallback for older browsers or inconsistent performance API
+    const isReload = navType === "reload" || 
+                     (window.performance && window.performance.navigation && window.performance.navigation.type === 1);
+    const isBackForward = navType === "back_forward" || 
+                          (window.performance && window.performance.navigation && window.performance.navigation.type === 2);
+    
+    const introPlayed = sessionStorage.getItem("introPlayed") === "true";
+    const hasHash = !!window.location.hash;
+
+    // Skip cases:
+    if (isBackForward) return true;
+    if (isReload && hasHash) return true;
+    if (introPlayed && !isReload) return true;
+
+    return false;
+  })();
+
+  if (shouldSkipAnimation) {
+    if (r) r.style.display = "none";
+    if (c) c.style.display = "none";
+    if (a) a.style.display = "none";
+    if (i) i.style.display = "none";
+    if (l) l.classList.add("show");
+    document.getElementById("globalUi")?.classList.add("show");
+    document.documentElement.style.overflowY = "auto";
+    document.body.style.overflowY = "auto";
+    
+    // If there's a hash, scroll to it immediately
+    if (window.location.hash) {
+      setTimeout(() => {
+        const target = document.querySelector(window.location.hash);
+        target?.scrollIntoView();
+      }, 100);
+    }
+  } else {
+    // Show splash screen and start animation
+    sessionStorage.setItem("introPlayed", "true");
+    setTimeout(() => {
+      (async () => {
+        const gltfLoader = new o();
+        const dracoLoader = new t();
+        dracoLoader.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.6/");
+        gltfLoader.setDRACOLoader(dracoLoader);
+        u.deviceType = window.innerWidth < 768 ? "iphone" : "laptop";
+        const deviceConfig = m[u.deviceType];
+        u.geometryFile = await gltfLoader.loadAsync(deviceConfig.file);
+      })().then(() => {
+        C();
+        if (!L) p.play().catch(e => console.log("Audio playback prevented:", e));
+        requestAnimationFrame(M);
+      });
+    }, 300);
+  }
 };
 // =========================================================================
 // GLOBAL EVENT LISTENERS & RESIZE HANDLING

@@ -17,7 +17,7 @@ const SITEMAP_HTML_TEMPLATE_PATH = path.join(__dirname, '../templates/sitemap-te
 const SITEMAP_XML_PATH = path.join(__dirname, '../sitemap.xml');
 const SITEMAP_HTML_PATH = path.join(__dirname, '../sitemap.html');
 const POSTS_DIR = path.join(__dirname, '../posts');
-const BLOG_PATH = path.join(__dirname, '../articles.html');
+const BLOG_PATH = path.join(__dirname, '../blog.html');
 
 // Cache Busting Version
 const VERSION = Date.now();
