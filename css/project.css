@@ -276,7 +276,8 @@ body.projects-gallery-page {
     width: 100%;
     position: relative;
     top: 0;
-    order: 2;
+    order: -1; /* Move ToC to the top on mobile */
+    margin-bottom: 2rem;
   }
 }
 .project-toc {
@@ -354,12 +355,9 @@ body.projects-gallery-page {
 [data-theme="light"] .snake-track {
   stroke: rgba(0, 0, 0, 0.06);
 }
-.project-tech-sidebar h4 {
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text-muted);
-  margin-bottom: 15px;
+.project-tech-stack-section {
+  margin-top: 4rem;
+  margin-bottom: 5rem;
 }
 /* ==========================================================================
    MAIN PROJECT CONTENT TYPOGRAPHY & MEDIA

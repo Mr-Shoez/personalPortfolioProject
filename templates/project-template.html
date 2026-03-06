@@ -80,14 +80,6 @@
                         <!-- Injected by JS -->
                     </ul>
                 </div>
-
-                <!-- Technologies Used -->
-                <div class="project-tech-sidebar fade-element">
-                    <h4>Tech Stack</h4>
-                    <div class="tech-pills-container">
-                        {{TECHNOLOGIES_HTML}}
-                    </div>
-                </div>
             </aside>
 
             <!-- Right Main Content -->
@@ -97,6 +89,19 @@
 
                 <section class="project-main-narrative fade-element">
                     {{CONTENT}}
+                </section>
+
+                <!-- Technology Stack -->
+                <section class="project-tech-stack-section fade-element">
+                    <div class="project-section-header">
+                        <h2 class="section-title">
+                            <span class="title-main">Tech Stack</span>
+                            <span class="title-ghost">Stack</span>
+                        </h2>
+                    </div>
+                    <div class="tech-pills-container">
+                        {{TECHNOLOGIES_HTML}}
+                    </div>
                 </section>
 
                 {{METRICS_HTML}}
