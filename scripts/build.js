@@ -388,7 +388,7 @@ if (projectTemplateBlock && projectsData.length > 0) {
         let featuresHtml = '';
         if (proj.keyFeatures && proj.keyFeatures.length > 0) {
             featuresHtml = `
-                <section class="project-features-section fade-element">
+                <section id="key-features" class="project-features-section fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">Key Features</span>
@@ -406,7 +406,7 @@ if (projectTemplateBlock && projectsData.length > 0) {
         let videosHtml = '';
         if (proj.videos && proj.videos.length > 0) {
             videosHtml = `
-                <section class="project-videos-section fade-element">
+                <section id="in-motion" class="project-videos-section fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">In Motion</span>
@@ -428,7 +428,7 @@ if (projectTemplateBlock && projectsData.length > 0) {
         let galleryHtml = '';
         if (proj.gallery && proj.gallery.length > 0) {
             galleryHtml = `
-                <section class="project-gallery-section fade-element">
+                <section id="gallery" class="project-gallery-section fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">Gallery</span>
@@ -436,11 +436,14 @@ if (projectTemplateBlock && projectsData.length > 0) {
                         </h2>
                     </div>
                     <div class="premium-gallery-grid">
-                        ${proj.gallery.map(img => `
+                        ${proj.gallery.map(img => {
+                            // Ensure path is relative to the projects/ folder
+                            const cleanPath = img.replace('../projects/', '');
+                            return `
                             <div class="gallery-item premium-media-container">
-                                <img src="../${img}" alt="Gallery Image" loading="lazy">
-                            </div>
-                        `).join('')}
+                                <img src="${cleanPath}" alt="Gallery Image" loading="lazy">
+                            </div>`;
+                        }).join('')}
                     </div>
                 </section>`;
         }
@@ -463,7 +466,7 @@ if (projectTemplateBlock && projectsData.length > 0) {
         let learningsHtml = '';
         if (proj.learnings && proj.learnings.length > 0) {
             learningsHtml = `
-                <section class="project-learnings-section fade-element">
+                <section id="key-takeaways" class="project-learnings-section fade-element">
                     <span class="ghost-text">Insights</span>
                     <h2 class="section-title">Key Takeaways</h2>
                     <ul class="learnings-list">
@@ -479,7 +482,7 @@ if (projectTemplateBlock && projectsData.length > 0) {
         let beforeAfterHtml = '';
         if (proj.beforeAfter) {
             beforeAfterHtml = `
-                <section class="project-visual-comparison fade-element">
+                <section id="visual-evolution" class="project-visual-comparison fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">Visual Evolution</span>
@@ -506,7 +509,7 @@ if (projectTemplateBlock && projectsData.length > 0) {
         let responsiveHtml = '';
         if (proj.responsiveViews) {
             responsiveHtml = `
-                <section class="project-responsive-section fade-element">
+                <section id="responsive-design" class="project-responsive-section fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">Responsive Design</span>
@@ -529,7 +532,7 @@ if (projectTemplateBlock && projectsData.length > 0) {
         let challengesHtml = '';
         if (proj.challengesStructured && proj.challengesStructured.length > 0) {
             challengesHtml = `
-                <section class="project-challenges-section fade-element">
+                <section id="technical-challenges" class="project-challenges-section fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">Technical Challenges</span>
@@ -555,7 +558,7 @@ if (projectTemplateBlock && projectsData.length > 0) {
 
         // 4. Project Outcomes — clean unordered list (no cards)
         let resultsHtml = `
-            <section class="project-results-section fade-element">
+            <section id="outcomes" class="project-results-section fade-element">
                 <div class="project-section-header">
                     <h2 class="section-title">
                         <span class="title-main">Project Outcomes</span>

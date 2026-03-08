@@ -15,18 +15,18 @@
     <meta property="og:description" content="A custom built wesite for a south african political party, it was built to demnstrate how ">
     <meta property="og:image" content="https://www.sudo.co.za/projects/sarko/mockup-desktop-framed.png">
 
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js?v=1772945849204" as="script">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js?v=1772945849204" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js?v=1772948661312" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js?v=1772948661312" as="script">
     <link rel="preload" as="image" href="../projects/sarko/mockup-desktop-framed.png">
-    <link rel="stylesheet" href="../css/min/style.min.css?v=1772945849204">
-    <link rel="stylesheet" href="../css/all.min.css?v=1772945849204">
-    <link rel="stylesheet" href="../css/min/project.min.css?v=1772945849204">
+    <link rel="stylesheet" href="../css/min/style.min.css?v=1772948661312">
+    <link rel="stylesheet" href="../css/all.min.css?v=1772948661312">
+    <link rel="stylesheet" href="../css/min/project.min.css?v=1772948661312">
     <!-- Universal Theme System (must be non-deferred to prevent flash) -->
-    <script src="../js/min/theme.min.js?v=1772945849204"></script>
+    <script src="../js/min/theme.min.js?v=1772948661312"></script>
 
     <!-- GSAP for scroll animations -->
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js?v=1772945849204"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js?v=1772945849204"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js?v=1772948661312"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js?v=1772948661312"></script>
 </head>
 <body class="project-detail-page">
     
@@ -149,7 +149,7 @@
                     </div>
                 </section>
                 
-                <section class="project-features-section fade-element">
+                <section id="key-features" class="project-features-section fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">Key Features</span>
@@ -164,7 +164,7 @@
                     </ul>
                 </section>
                 
-                <section class="project-videos-section fade-element">
+                <section id="in-motion" class="project-videos-section fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">In Motion</span>
@@ -181,7 +181,7 @@
                 </section>
                 
                 
-                <section class="project-responsive-section fade-element">
+                <section id="responsive-design" class="project-responsive-section fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">Responsive Design</span>
@@ -198,7 +198,7 @@
                     </div>
                 </section>
                 
-                <section class="project-gallery-section fade-element">
+                <section id="gallery" class="project-gallery-section fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">Gallery</span>
@@ -208,25 +208,21 @@
                     <div class="premium-gallery-grid">
                         
                             <div class="gallery-item premium-media-container">
-                                <img src="../../projects/sarko/gallery-1.jpeg" alt="Gallery Image" loading="lazy">
+                                <img src="sarko/gallery-1.jpeg" alt="Gallery Image" loading="lazy">
                             </div>
-                        
                             <div class="gallery-item premium-media-container">
-                                <img src="../../projects/sarko/gallery-2.jpeg" alt="Gallery Image" loading="lazy">
+                                <img src="sarko/gallery-2.jpeg" alt="Gallery Image" loading="lazy">
                             </div>
-                        
                             <div class="gallery-item premium-media-container">
-                                <img src="../../projects/sarko/gallery-3.jpeg" alt="Gallery Image" loading="lazy">
+                                <img src="sarko/gallery-3.jpeg" alt="Gallery Image" loading="lazy">
                             </div>
-                        
                             <div class="gallery-item premium-media-container">
-                                <img src="../../projects/sarko/gallery-4.jpeg" alt="Gallery Image" loading="lazy">
+                                <img src="sarko/gallery-4.jpeg" alt="Gallery Image" loading="lazy">
                             </div>
-                        
                     </div>
                 </section>
                 
-                <section class="project-challenges-section fade-element">
+                <section id="technical-challenges" class="project-challenges-section fade-element">
                     <div class="project-section-header">
                         <h2 class="section-title">
                             <span class="title-main">Technical Challenges</span>
@@ -248,7 +244,7 @@
                     </div>
                 </section>
                 
-                <section class="project-learnings-section fade-element">
+                <section id="key-takeaways" class="project-learnings-section fade-element">
                     <span class="ghost-text">Insights</span>
                     <h2 class="section-title">Key Takeaways</h2>
                     <ul class="learnings-list">
@@ -256,7 +252,7 @@
                     </ul>
                 </section>
                 
-            <section class="project-results-section fade-element">
+            <section id="outcomes" class="project-results-section fade-element">
                 <div class="project-section-header">
                     <h2 class="section-title">
                         <span class="title-main">Project Outcomes</span>
@@ -302,25 +298,35 @@
                 }
             });
 
-            // 2. Generate TOC from Section Titles only
+            // 2. Generate TOC with explicit Overview entry
             const content = document.getElementById('projectContent');
-            // Only pick up real section-title headings — NOT metric values, gallery headers, etc.
-            // We specifically target h2.section-title to avoid pollution from metric h3s
-            const sectionHeadings = Array.from(content.querySelectorAll('h2.section-title'));
+            const tocList = document.getElementById('tocList');
             
-            // Also include any h2/h3 that live in the .project-main-narrative (from content field)
+            // Collect all major sections
+            const sectionHeadings = Array.from(content.querySelectorAll('h2.section-title'));
             const narrativeHeadings = Array.from(content.querySelectorAll('.project-main-narrative h2, .project-main-narrative h3'));
             
             // Merge and de-duplicate, maintaining document order
             const headingsSet = new Set([...narrativeHeadings, ...sectionHeadings]);
             const headings = Array.from(content.querySelectorAll('h2, h3')).filter(h => headingsSet.has(h));
+
+            // Create a pseudo-heading for Overview if it doesn't exist
+            const overviewEl = document.querySelector('.project-hero');
+            if (overviewEl && !overviewEl.id) overviewEl.id = 'overview';
             
-            const tocList = document.getElementById('tocList');
+            // Clear and rebuild
+            tocList.innerHTML = '';
             
-            if (headings.length === 0) {
-                document.querySelector('.project-toc').style.display = 'none';
-                document.querySelector('.trailing-line-wrapper').style.display = 'none';
-            } else {
+            // Initial Overview link
+            const ovLi = document.createElement('li');
+            const ovA = document.createElement('a');
+            ovA.href = '#overview';
+            ovA.textContent = 'Project Overview';
+            ovA.classList.add('active'); // Default active
+            ovLi.appendChild(ovA);
+            tocList.appendChild(ovLi);
+
+            if (headings.length > 0) {
                 headings.forEach((heading, index) => {
                     const id = heading.id || `section-${index}`;
                     heading.id = id;
@@ -329,7 +335,6 @@
                     const a = document.createElement('a');
                     a.href = `#${id}`;
                     
-                    // Extract text: Prioritize .title-main if present, otherwise use heading text
                     const mainText = heading.querySelector('.title-main');
                     a.textContent = mainText ? mainText.textContent.trim() : heading.textContent.trim();
                     
@@ -343,43 +348,45 @@
                     tocList.appendChild(li);
                 });
 
-                // Highlight TOC on Scroll
+                // Enhanced IntersectionObserver
                 const observerOptions = {
                     root: null,
-                    rootMargin: '0px 0px -80% 0px',
+                    rootMargin: '-10% 0px -70% 0px',
                     threshold: 0
                 };
 
                 const tocLinks = tocList.querySelectorAll('a');
+                const scrollTargets = [overviewEl, ...headings];
                 
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            tocLinks.forEach(link => {
-                                link.classList.remove('active');
-                                if (link.getAttribute('href') === `#${entry.target.id}`) {
-                                    link.classList.add('active');
-                                }
-                            });
+                            tocLinks.forEach(link => link.classList.remove('active'));
+                            const activeLink = Array.from(tocLinks).find(link => link.getAttribute('href') === `#${entry.target.id}`);
+                            if (activeLink) activeLink.classList.add('active');
                         }
                     });
                 }, observerOptions);
 
-                headings.forEach(h => observer.observe(h));
+                scrollTargets.forEach(target => {
+                    if (target) observer.observe(target);
+                });
 
-                // Smooth scroll
+                // Smooth scroll with offset
                 tocLinks.forEach(link => {
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
                         const targetId = link.getAttribute('href').substring(1);
                         const targetEl = document.getElementById(targetId);
                         if (targetEl) {
-                            const yOffset = -100;
+                            const yOffset = -80;
                             const y = targetEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
                             window.scrollTo({top: y, behavior: 'smooth'});
                         }
                     });
                 });
+            } else if (!overviewEl) {
+                document.querySelector('.project-toc').style.display = 'none';
             }
 
             // 3. Trailing Line Animation (Snake SVG)
