@@ -492,6 +492,13 @@ const F = document.querySelector(".cv-nav");
           ? img.getAttribute("data-light")
           : img.getAttribute("data-dark");
     });
+    document.querySelectorAll(".blog-black-cube").forEach((cube) => {
+      const imgPath =
+        t === "light"
+          ? cube.getAttribute("data-light")
+          : cube.getAttribute("data-dark");
+      if (imgPath) cube.style.backgroundImage = `url('${imgPath}')`;
+    });
   }));
 const N = document.documentElement.getAttribute("data-theme") || "dark",
   Y = document.querySelector(".hero-profile-img");
@@ -505,6 +512,13 @@ document.querySelectorAll(".project-row-img[data-light]").forEach((img) => {
     "light" === N
       ? img.getAttribute("data-light")
       : img.getAttribute("data-dark");
+});
+document.querySelectorAll(".blog-black-cube").forEach((cube) => {
+  const imgPath =
+    N === "light"
+      ? cube.getAttribute("data-light")
+      : cube.getAttribute("data-dark");
+  if (imgPath) cube.style.backgroundImage = `url('${imgPath}')`;
 });
 const G = document.getElementById("heroScrollRig"),
   H = document.getElementById("heroContentGroup");
@@ -854,7 +868,16 @@ const blogsPerPage = 5;
 
 function createBlogCardHTML(post, isImageBlock = false) {
   if (isImageBlock) {
-    return `<div class="blog-black-cube" style="background-image: url('${post.image}'); background-size: cover; background-position: center;"></div>`;
+    const theme = document.documentElement.getAttribute("data-theme") || "dark";
+    const lightImg = "my pictures/light mode(gamified).png";
+    const darkImg = "my pictures/dark mode(gamified).png";
+    const currentImg = theme === "light" ? lightImg : darkImg;
+    return `
+      <div class="blog-black-cube" 
+           data-light="${lightImg}" 
+           data-dark="${darkImg}" 
+           style="background-image: url('${currentImg}'); background-size: cover; background-position: center;">
+      </div>`;
   }
   return `
     <a href="${post.link}" class="blog-card-v2 glow-card">
