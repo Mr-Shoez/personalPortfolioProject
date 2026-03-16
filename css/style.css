@@ -1600,548 +1600,399 @@ html {
   }
 }
 /* ==========================================================================
-   CONTACT / LET'S TALK SECTION
+   CONTACT SECTION (PREMIUM INDUSTRIAL REDESIGN)
    ========================================================================== */
 .contact-section {
-  padding: 100px 20px;
-  background: var(--bg-dark);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  padding: 140px 20px;
+  background-color: var(--bg-dark);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
+
+/* Technical Grid Overlay */
+.contact-grid-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(0, 140, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 140, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.contact-grid-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 20%,
+    var(--bg-dark) 80%
+  );
+  pointer-events: none;
+}
+
 .contact-section-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
   position: relative;
-  width: 100%;
+  z-index: 2;
 }
+
 .contact-subtitle {
   display: block;
-  font-size: 0.9rem;
-  letter-spacing: 2px;
-  color: var(--text-muted);
-  margin-bottom: 10px;
+  font-family: "Fira Code", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 5px;
+  color: var(--accent-primary);
+  margin-bottom: 20px;
   text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.8;
 }
+
 .contact-title {
   position: relative;
   display: inline-block;
   margin: 0;
 }
+
 .contact-main-text {
   position: relative;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 700;
-  color: var(--accent-primary);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  color: var(--text-light);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -1px;
   z-index: 2;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
+
 .contact-ghost-text {
   position: absolute;
-  top: 30%;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: clamp(3.5rem, 10vw, 7rem);
-  font-weight: 800;
-  color: var(--text-muted);
-  opacity: var(--ghost-opacity);
+  transform: translate(-50%, -60%);
+  font-size: clamp(5rem, 15vw, 10rem);
+  font-weight: 900;
+  color: var(--accent-primary);
+  opacity: 0.03;
   z-index: 1;
   white-space: nowrap;
   user-select: none;
   pointer-events: none;
+  letter-spacing: 10px;
 }
-.contact-content-body {
-  max-width: 800px;
-  margin: 0 auto 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.contact-description {
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: var(--text-muted);
-  margin-bottom: 40px;
-  max-width: 600px;
-}
-.lets-talk-btn {
-  background-color: var(--accent-primary);
-  color: #fff;
-  font-family: Inter, sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 16px 40px;
-  border: none;
-  transition:
-    background-color 0.3s ease,
-    transform 0.2s ease,
-    box-shadow 0.3s ease,
-    filter 0.3s ease;
-  border-radius: 50px;
-}
-[data-theme="light"] .lets-talk-btn {
-  background-color: var(--accent-primary);
-}
-.lets-talk-btn:hover {
-  filter: brightness(0.85);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-.lets-talk-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-}
-.contact-info-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  width: 100%;
-  max-width: 900px;
+
+.contact-container {
+  max-width: 1200px;
   margin: 0 auto;
-}
-.contact-info-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-.contact-info-label {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--accent-primary);
-  margin: 0;
-}
-.contact-info-value {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  line-height: 1.6;
-  margin: 0;
-}
-.contact-info-value a {
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color 0.3s;
-}
-.contact-info-value a:hover {
-  color: var(--accent-primary);
-}
-.contact-modal-wrapper {
-  max-width: 600px;
-  background: var(--bg-dark);
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-}
-.contact-close-btn {
-  top: 20px;
-  right: 20px;
-  color: var(--text-muted);
-  background: 0 0;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-.contact-close-btn:hover {
-  color: var(--accent-primary);
-}
-.contact-modal-inner {
-  padding: 60px 50px;
-  text-align: left;
-}
-.contact-modal-subtitle {
-  font-size: 0.8rem;
-  letter-spacing: 2px;
-  color: var(--text-muted);
-  margin: 0 0 10px 0;
-}
-.contact-modal-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--accent-primary);
-  margin: 0 0 40px 0;
-}
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-}
-.form-row {
-  display: flex;
-  gap: 20px;
-  width: 100%;
-}
-.form-row .form-group {
-  flex: 1;
-}
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.form-group label {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-light);
-}
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 15px;
-  border: 1px solid var(--glass-border);
-  border-radius: 4px;
-  font-family: Inter, sans-serif;
-  font-size: 1rem;
-  color: var(--text-light);
-  background-color: var(--skeleton-highlight);
-  transition:
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
-  box-sizing: border-box;
-}
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: 0;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(0, 140, 255, 0.2);
-}
-.contact-submit-btn {
-  background-color: var(--accent-primary);
-  color: #fff;
-  font-family: Inter, sans-serif;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 18px;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition:
-    background-color 0.3s ease,
-    transform 0.2s ease,
-    filter 0.3s ease;
-  margin-top: 10px;
-}
-.contact-submit-btn:hover {
-  filter: brightness(0.85);
-  transform: translateY(-2px);
-}
-@media (max-width: 768px) {
-  .contact-info-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  .form-row {
-    flex-direction: column;
-    gap: 25px;
-  }
-  .contact-modal-inner {
-    padding: 40px 25px;
-  }
-}
-/* ==========================================================================
-   SOCIALS BANNER SECTION
-   ========================================================================== */
-.socials-section {
-  width: 100%;
-  padding: 60px 20px;
-  background-color: var(--bg-dark);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.socials-container {
-  width: 100%;
-  max-width: 1000px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.socials-header {
   position: relative;
-  display: flex;
-  align-items: center;
-}
-.socials-title {
-  position: relative;
-  margin: 0;
-  display: inline-block;
-}
-.socials-main-text {
-  position: relative;
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  font-weight: 700;
-  color: var(--accent-primary);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  white-space: nowrap;
   z-index: 2;
 }
-.socials-ghost-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: clamp(3rem, 8vw, 5rem);
-  font-weight: 800;
-  color: var(--text-muted);
-  opacity: var(--ghost-opacity);
-  z-index: 1;
-  white-space: nowrap;
-  user-select: none;
-  pointer-events: none;
-}
-.socials-animated-line {
-  flex-grow: 1;
-  height: 1px;
-  background-color: var(--accent-primary);
-  transform: scaleX(0);
-  transform-origin: center;
-  transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.socials-animated-line.animate {
-  transform: scaleX(1);
-}
-.socials-buttons {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-.social-btn {
+
+.contact-main-card {
+  background: rgba(15, 15, 15, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
-  border-radius: 8px;
-  border: none;
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  transition: all 0.5s ease;
+  overflow: visible;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
 }
-.social-icon {
-  width: 32px;
-  height: auto;
-}
-.github-btn {
-  background-color: #24292e;
-}
-.linkedin-btn {
-  background-color: #0077b5;
-}
-.social-btn:hover {
-  transform: translateY(-12px);
-  border-radius: 50%;
-  filter: brightness(1.2);
-}
-.social-tooltip {
+
+/* Industrial Corner Markers */
+.corner-marker {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  color: var(--text-light);
-  font-size: 0.875rem;
-  font-family: Inter, sans-serif;
-  pointer-events: none;
-  transition: all 0.7s ease;
-  white-space: nowrap;
-}
-.social-btn:hover .social-tooltip {
-  opacity: 1;
-  transform: translate(-50%, calc(-50% - 50px));
-}
-/* ==========================================================================
-   GLOBAL FOOTER
-   ========================================================================== */
-.site-footer {
-  width: 100%;
-  background-color: var(--bg-dark);
-  border-top: 1px solid var(--glass-border);
-  padding-bottom: 60px;
-  position: relative;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--accent-primary);
   z-index: 10;
+  opacity: 0.6;
 }
-.site-footer .socials-section {
-  background-color: transparent;
-  padding: 80px 20px 40px;
+
+.corner-marker.top-left {
+  top: -2px;
+  left: -2px;
+  border-right: none;
+  border-bottom: none;
 }
-.footer-separator {
-  width: 100%;
-  max-width: 1000px;
-  height: 1px;
-  background-color: var(--glass-border);
-  margin: 0 auto;
+.corner-marker.top-right {
+  top: -2px;
+  right: -2px;
+  border-left: none;
+  border-bottom: none;
 }
-.footer-content {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 60px 20px 0;
+.corner-marker.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  border-right: none;
+  border-top: none;
 }
-.footer-row {
+.corner-marker.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  border-left: none;
+  border-top: none;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  min-height: 500px;
+}
+
+.contact-info-panel {
+  padding: 80px 60px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+.contact-description {
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+  margin-bottom: 50px;
+  text-align: left;
+  font-weight: 300;
+}
+
+.lets-talk-btn {
+  background: var(--accent-primary);
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 20px 48px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
   align-items: center;
-  gap: 30px;
+  gap: 15px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: 0 15px 35px rgba(0, 140, 255, 0.2);
+  position: relative;
+  overflow: hidden;
 }
-.footer-top {
-  margin-bottom: 60px;
+
+.lets-talk-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
 }
-.footer-bottom {
-  padding-top: 40px;
-  border-top: 1px solid var(--glass-border);
+
+.lets-talk-btn:hover::before {
+  left: 100%;
 }
-.footer-slogan {
+
+.lets-talk-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 140, 255, 0.4);
+}
+
+.lets-talk-btn i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.lets-talk-btn:hover i {
+  transform: translateX(5px) rotate(-10deg);
+}
+
+.contact-methods-panel {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  align-content: start;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.contact-method-item {
   flex: 1;
   display: flex;
-  align-items: baseline;
-  gap: 15px;
-}
-.sudo-text {
-  font-family: inherit;
-  font-size: clamp(2.2rem, 5.5vw, 3.2rem);
-  font-weight: 800;
-  color: var(--accent-primary);
-  letter-spacing: 1px;
-  line-height: 1;
-}
-.sudo-expansion {
-  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-  color: var(--text-light);
-  letter-spacing: 1px;
-  font-weight: 700;
-  text-transform: uppercase;
-  white-space: nowrap;
-  opacity: 0.9;
-}
-.github-star-btn {
+  align-items: center;
+  gap: 30px;
+  padding: 50px 60px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.4s ease;
   position: relative;
+}
+
+.contact-method-item:last-child {
+  border-bottom: none;
+}
+
+.contact-method-item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.contact-method-item::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 0;
+  background: var(--accent-primary);
+  transition: height 0.3s ease;
+}
+
+.contact-method-item:hover::after {
+  height: 100%;
+}
+
+.method-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 140, 255, 0.05);
+  border: 1px solid rgba(0, 140, 255, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  height: 44px;
-  padding: 0 20px;
-  background-color: #000;
+  font-size: 1.6rem;
+  color: var(--accent-primary);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.contact-method-item:hover .method-icon {
+  background: var(--accent-primary);
   color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-family: Inter, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1.1);
 }
-[data-theme="light"] .github-star-btn {
-  background-color: #111;
-}
-.github-star-btn:hover {
-  outline: 2px solid #000;
-  outline-offset: 2px;
-  filter: brightness(1.2);
-  transform: translateY(-2px);
-}
-.btn-shine {
-  position: absolute;
-  right: 0;
-  margin-top: -48px;
-  height: 128px;
-  width: 32px;
-  background-color: rgba(255, 255, 255, 0.15);
-  transform: translateX(48px) rotate(12deg);
-  transition: transform 1s ease-out;
-  pointer-events: none;
-}
-.github-star-btn:hover .btn-shine {
-  transform: translateX(-180px) rotate(12deg);
-}
-.btn-content {
+
+.method-content {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #fff;
-}
-.github-icon {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-}
-.btn-stats {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 6px;
-  border-left: 1px solid rgba(255, 255, 255, 0.2);
-  padding-left: 12px;
-  color: #fff;
 }
-.star-icon {
-  width: 16px;
-  height: 16px;
-  color: #9ca3af;
+
+.method-label {
+  font-family: "Fira Code", monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.method-link {
+  font-size: 1.25rem;
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 600;
   transition: color 0.3s ease;
 }
-.github-star-btn:hover .star-icon {
-  color: #fde047;
-}
-.stat-count {
-  font-family: Inter, sans-serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-  font-weight: 500;
-}
-.footer-copyright {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  font-weight: 400;
-}
-.stylized-name {
+
+a.method-link:hover {
   color: var(--accent-primary);
-  font-weight: 600;
 }
-.footer-nav {
-  display: flex;
-  gap: 25px;
+
+/* Modal Styling Improvements */
+.modal-backdrop {
+  background: rgba(5, 5, 5, 0.85);
+  backdrop-filter: blur(10px);
 }
-.footer-nav-link {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
+
+.contact-modal-wrapper {
+  max-width: 650px;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, 0.9);
+  position: relative;
+}
+
+.contact-modal-inner {
+  padding: 70px 60px;
+}
+
+.contact-form .form-group input,
+.contact-form .form-group textarea {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: #fff;
+  padding: 18px;
+  font-size: 1rem;
+}
+
+.contact-form .form-group label {
+  font-family: "Fira Code", monospace;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-}
-.footer-nav-link:hover {
   color: var(--accent-primary);
-  transform: translateY(-2px);
 }
-@media (max-width: 768px) {
-  .site-footer .socials-section {
-    padding: 60px 20px 30px;
+
+.contact-submit-btn {
+  background: var(--accent-primary);
+  border-radius: 4px;
+  padding: 20px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 20px;
+}
+
+@media (max-width: 992px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
   }
-  .footer-row {
-    flex-direction: column;
-    text-align: center;
-    gap: 40px;
+  .contact-info-panel {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 60px 40px;
   }
-  .footer-top {
-    margin-bottom: 40px;
+  .contact-method-item {
+    padding: 40px;
   }
-  .footer-nav {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px 25px;
+}
+
+@media (max-width: 600px) {
+  .contact-section {
+    padding: 80px 15px;
   }
-  .sudo-text {
+  .contact-main-text {
     font-size: 2.2rem;
   }
+  .contact-modal-inner {
+    padding: 50px 30px;
+  }
+  .contact-method-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
 }
+/* 
+   SOCIAL BANNER & GLOBAL FOOTER sections moved to dedicated footer.css 
+   for better modularity and premium redesign. 
+*/
 
 /* ==========================================================================
    BACK TO TOP BUTTON

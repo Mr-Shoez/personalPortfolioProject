@@ -29,12 +29,16 @@
   /**
    * Updates the site favicons based on the active theme.
    * Ensures the paths resolve correctly on sub-pages (e.g. 404).
-   * 
+   *
    * @param {string} theme - The active theme ('light' or 'dark')
    */
   function updateFavicon(theme) {
     const depth = (window.location.pathname.match(/\//g) || []).length - 1;
-    const basePath = (depth > 1 ? "../" : "") + "asserts/" + (theme === "dark" ? "dark mode favicon" : "light mode favicon") + "/";
+    const basePath =
+      (depth > 1 ? "../" : "") +
+      "asserts/" +
+      (theme === "dark" ? "dark mode favicon" : "light mode favicon") +
+      "/";
 
     const icons = [
       { id: "favicon-32", file: "favicon-32x32.png" },
@@ -54,13 +58,16 @@
   /**
    * Swaps images on the page that have data-light and data-dark atttributes.
    * Useful for preview images that should change with the theme.
-   * 
+   *
    * @param {string} theme - The active theme ('light' or 'dark')
    */
   function updateThemeAwareImages(theme) {
-    const images = document.querySelectorAll('img[data-light][data-dark]');
-    images.forEach(img => {
-      const newSrc = theme === 'light' ? img.getAttribute('data-light') : img.getAttribute('data-dark');
+    const images = document.querySelectorAll("img[data-light][data-dark]");
+    images.forEach((img) => {
+      const newSrc =
+        theme === "light"
+          ? img.getAttribute("data-light")
+          : img.getAttribute("data-dark");
       if (newSrc && img.src !== newSrc) {
         img.src = newSrc;
       }
@@ -85,20 +92,24 @@
       document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
         const icon = btn.querySelector("i");
         if (icon) {
-          icon.className = themeName === "light" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+          icon.className =
+            themeName === "light" ? "fa-solid fa-sun" : "fa-solid fa-moon";
         }
       });
 
       updateFavicon(themeName);
       updateThemeAwareImages(themeName);
-      document.dispatchEvent(new CustomEvent("themechange", { detail: { theme: themeName } }));
+      document.dispatchEvent(
+        new CustomEvent("themechange", { detail: { theme: themeName } }),
+      );
     },
 
     /**
      * Toggles the current theme between light and dark.
      */
     toggle: function () {
-      const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+      const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "dark";
       window.ThemeSystem.set(currentTheme === "dark" ? "light" : "dark");
     },
 
@@ -107,24 +118,28 @@
      * to toggle buttons and sets the correct initial favicons.
      */
     init: function () {
-      const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+      const currentTheme =
+        document.documentElement.getAttribute("data-theme") || "dark";
 
       // Attach interaction handlers to toggle buttons
-      document.querySelectorAll("[data-theme-toggle], .theme-toggle").forEach((btn) => {
-        btn.setAttribute("data-theme-toggle", "");
-        const icon = btn.querySelector("i");
-        if (icon) {
-          icon.className = currentTheme === "light" ? "fa-solid fa-sun" : "fa-solid fa-moon";
-        }
+      document
+        .querySelectorAll("[data-theme-toggle], .theme-toggle")
+        .forEach((btn) => {
+          btn.setAttribute("data-theme-toggle", "");
+          const icon = btn.querySelector("i");
+          if (icon) {
+            icon.className =
+              currentTheme === "light" ? "fa-solid fa-sun" : "fa-solid fa-moon";
+          }
 
-        // Prevent attaching multiple event listeners to the same button
-        if (!btn.dataset.themeWired) {
-          btn.dataset.themeWired = "true";
-          btn.addEventListener("click", () => {
-            window.ThemeSystem.toggle();
-          });
-        }
-      });
+          // Prevent attaching multiple event listeners to the same button
+          if (!btn.dataset.themeWired) {
+            btn.dataset.themeWired = "true";
+            btn.addEventListener("click", () => {
+              window.ThemeSystem.toggle();
+            });
+          }
+        });
 
       updateFavicon(currentTheme);
       updateThemeAwareImages(currentTheme);
@@ -179,12 +194,19 @@
       if (!backToTopBtn) return;
 
       const handleScroll = () => {
-        const scrollY = window.scrollY || document.body.scrollTop || document.documentElement.scrollTop || 0;
+        const scrollY =
+          window.scrollY ||
+          document.body.scrollTop ||
+          document.documentElement.scrollTop ||
+          0;
         const windowHeight = window.innerHeight;
-        const fullHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-        
+        const fullHeight = Math.max(
+          document.documentElement.scrollHeight,
+          document.body.scrollHeight,
+        );
+
         // Show if scrolled down more than 400px OR within 300px of the bottom
-        const isNearBottom = (scrollY + windowHeight) > (fullHeight - 300);
+        const isNearBottom = scrollY + windowHeight > fullHeight - 300;
         const isScrolledDown = scrollY > 400;
 
         if (isScrolledDown || isNearBottom) {
@@ -196,7 +218,7 @@
 
       window.addEventListener("scroll", handleScroll, { passive: true });
       document.body.addEventListener("scroll", handleScroll, { passive: true });
-      
+
       backToTopBtn.addEventListener("click", () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
         if (document.body.scrollTo) {
@@ -209,10 +231,34 @@
       // Run once initially
       handleScroll();
     },
+
+    /**
+     * Fetches the current star count for the project repository from GitHub API
+     * and updates the displayed count in the footer.
+     */
+    fetchGitHubStars: async function () {
+      const starCountElement = document.getElementById("github-star-count");
+      if (!starCountElement) return;
+
+      try {
+        const response = await fetch(
+          "https://api.github.com/repos/mr-s-u-d-o/personalPortfolioProject",
+        );
+        if (!response.ok) throw new Error("GitHub API response not ok");
+        const data = await response.json();
+
+        if (data && typeof data.stargazers_count === "number") {
+          starCountElement.textContent = data.stargazers_count;
+        }
+      } catch (error) {
+        console.error("Error fetching GitHub stars:", error);
+      }
+    },
   };
 
   // Auto-initialize when the DOM is fully loaded
   document.addEventListener("DOMContentLoaded", function () {
     window.ThemeSystem.init();
+    window.ThemeSystem.fetchGitHubStars();
   });
 })();

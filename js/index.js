@@ -111,25 +111,7 @@ const S = () => {
   ((w.currentTime = 0),
     w.play().catch((e) => console.log("Audio playback prevented:", e)));
 };
-// =========================================================================
-// GITHUB API INTEGRATION (STAR COUNT)
-// =========================================================================
-(async () => {
-  const e = document.getElementById("github-star-count");
-  if (e)
-    try {
-      const t = await fetch(
-        "https://api.github.com/repos/mr-s-u-d-o/personalPortfolioProject",
-      );
-      if (!t.ok) throw new Error("GitHub API response not ok");
-      const o = await t.json();
-      o &&
-        "number" == typeof o.stargazers_count &&
-        (e.textContent = o.stargazers_count);
-    } catch (e) {
-      console.error("Error fetching GitHub stars:", e);
-    }
-})();
+
 // =========================================================================
 // THREE.JS SCENE SETUP & RENDERING LOGIC
 // =========================================================================
@@ -731,20 +713,7 @@ function oe() {
     K.addEventListener("click", (e) => {
       (e.target === K || e.target.classList.contains("modal-backdrop")) && oe();
     }));
-const ne = document.getElementById("socials"),
-  se = document.getElementById("socialsLine");
-if (ne && se) {
-  const e = new IntersectionObserver(
-    (t) => {
-      t.forEach((t) => {
-        t.isIntersecting &&
-          (se.classList.add("animate"), e.unobserve(t.target));
-      });
-    },
-    { threshold: 0.5 },
-  );
-  e.observe(ne);
-}
+
 const ie = document.getElementById("contactForm"),
   ae = ie ? ie.querySelector(".contact-submit-btn") : null;
 ie &&
