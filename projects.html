@@ -1,52 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project Gallery | Mosa Moleleki</title>
-    <meta name="description" content="A showcase of web projects, interactive experiences, and digital solutions by Mosa Moleleki.">
-    <link rel="canonical" href="https://mr-sudo.dev/projects.html">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mr-sudo.dev/projects.html">
-    <meta property="og:title" content="Project Gallery | Mosa Moleleki">
-    <link rel="stylesheet" href="css/style.css?v=1773704573781">
-    <link rel="stylesheet" href="css/font-awesome.min.css?v=1773704573781">
-    <link rel="stylesheet" href="css/min/project.min.css?v=1773704573781">
+    <meta
+      name="description"
+      content="A showcase of web projects, interactive experiences, and digital solutions by Mosa Moleleki."
+    />
+    <link rel="canonical" href="https://mr-sudo.dev/projects.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mr-sudo.dev/projects.html" />
+    <meta property="og:title" content="Project Gallery | Mosa Moleleki" />
+    <link rel="stylesheet" href="css/style.css?v=1773707906916" />
+    <link rel="stylesheet" href="css/font-awesome.min.css?v=1773707906916" />
+    <link rel="stylesheet" href="css/min/project.min.css?v=1773707906916" />
     <!-- Universal Theme System -->
-    <script src="js/min/theme.min.js?v=1773704573781"></script>
-</head>
-<body class="projects-gallery-page">
-    <!-- Theme Toggle -->
-    <div class="utility-toggles" style="z-index: 10000;">
-        <button class="theme-toggle" data-theme-toggle aria-label="Toggle Dark Mode">
-            <i class="fa-solid fa-moon"></i>
-        </button>
+    <script src="js/min/theme.min.js?v=1773707906916"></script>
+  </head>
+  <body class="projects-gallery-page">
+    <!-- Persistent Utility Toggles -->
+    <div class="utility-toggles">
+      <button id="muteToggle" class="mute-toggle" aria-label="Toggle Audio">
+        <i class="fa-solid fa-volume-high"></i>
+      </button>
+      <button
+        class="theme-toggle"
+        data-theme-toggle
+        aria-label="Toggle Dark Mode"
+      >
+        <i class="fa-solid fa-moon"></i>
+      </button>
     </div>
 
+    <!-- Persistent CV Download -->
+    <nav class="sidebar-nav cv-nav">
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a
+            href="cv/mosa_moleleki_cv.pdf"
+            download="Mosa_Moleleki_CV.pdf"
+            target="_blank"
+            class="nav-link cv-link"
+            id="resumeLink"
+          >
+            <span class="nav-text">Resume</span>
+            <i class="fa-solid fa-download nav-icon"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
     <!-- Back Button -->
-    <a href="index.html#projects" class="back-home-btn" style="position: fixed; top: 2rem; left: 2rem; z-index: 100;"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+    <a
+      href="index.html#projects"
+      class="back-home-btn"
+      style="position: fixed; top: 2rem; left: 2rem; z-index: 100"
+      ><i class="fa-solid fa-arrow-left"></i> Back to Home</a
+    >
 
     <section class="gallery-section">
-        <div class="gallery-header fade-element">
-            <div class="projects-section-header">
-                <span class="projects-subtitle">COLLECTION</span>
-                <h2 class="projects-title">
-                    <span class="projects-main-text">Project Gallery</span>
-                    <span class="projects-ghost-text">Showcase</span>
-                </h2>
-            </div>
-            
-            <div class="gallery-search-container">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                    <input type="text" id="gallerySearch" placeholder="Search projects by title, tech, or description..." aria-label="Search Projects">
-                    <button id="clearSearch" class="clear-search-btn" aria-label="Clear Search"><i class="fa-solid fa-circle-xmark"></i></button>
-                </div>
-            </div>
+      <div class="gallery-header fade-element">
+        <div class="projects-section-header">
+          <span class="projects-subtitle">COLLECTION</span>
+          <h2 class="projects-title">
+            <span class="projects-main-text">Project Gallery</span>
+            <span class="projects-ghost-text">Showcase</span>
+          </h2>
         </div>
+
+        <div class="gallery-search-container">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input
+              type="text"
+              id="gallerySearch"
+              placeholder="Search projects by title, tech, or description..."
+              aria-label="Search Projects"
+            />
+            <button
+              id="clearSearch"
+              class="clear-search-btn"
+              aria-label="Clear Search"
+            >
+              <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="projects-stack glow-container" id="projectsStack">
         
-        <div class="projects-stack glow-container" id="projectsStack">
-            
 
                 <div class="project-row glow-card" data-index="1">
                     <div class="project-row-img-container">
@@ -128,79 +172,86 @@
                         </div>
                     </div>
                 </div>
-        </div>
+      </div>
     </section>
 
     <!-- Project Modal Integrated -->
     <div class="project-modal" id="projectModal">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content-wrapper">
-            <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close Modal">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="modal-image-container">
-                <img src="" alt="Project Image" id="modalImage">
-            </div>
-            <div class="modal-info">
-                <span class="modal-category" id="modalCategory">Category</span>
-                <h2 class="modal-title" id="modalTitle">Project Title</h2>
-                <p class="modal-description" id="modalDescription">Project description goes here.</p>
-                <div class="modal-tech-stack" id="modalTechStack"></div>
-                <a href="#" class="modal-link-btn" id="modalLink">See Details <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
+      <div class="modal-backdrop"></div>
+      <div class="modal-content-wrapper">
+        <button
+          class="modal-close-btn"
+          id="modalCloseBtn"
+          aria-label="Close Modal"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="modal-image-container">
+          <img src="" alt="Project Image" id="modalImage" />
         </div>
+        <div class="modal-info">
+          <span class="modal-category" id="modalCategory">Category</span>
+          <h2 class="modal-title" id="modalTitle">Project Title</h2>
+          <p class="modal-description" id="modalDescription">
+            Project description goes here.
+          </p>
+          <div class="modal-tech-stack" id="modalTechStack"></div>
+          <a href="#" class="modal-link-btn" id="modalLink"
+            >See Details <i class="fa-solid fa-arrow-right"></i
+          ></a>
+        </div>
+      </div>
     </div>
 
-    <script src="js/min/index.min.js?v=1773704573781" type="module"></script>
+    <script src="js/min/index.min.js?v=1773707906916" type="module"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            if (window.ThemeSystem) window.ThemeSystem.init();
-            
-            // Re-initialize the glow effect for statically rendered cards
-            document.addEventListener("pointermove", (e) => {
-                const container = e.target.closest(".glow-container");
-                if (container) {
-                    container.querySelectorAll(".glow-card").forEach((card) => {
-                        const rect = card.getBoundingClientRect();
-                        card.style.setProperty("--x", e.clientX - rect.left + "px");
-                        card.style.setProperty("--y", e.clientY - rect.top + "px");
-                    });
-                }
-            });
+      document.addEventListener("DOMContentLoaded", function () {
+        if (window.ThemeSystem) window.ThemeSystem.init();
 
-            // Video hover logic for static cards
-            const projectCards = document.querySelectorAll('.project-row');
-            projectCards.forEach(card => {
-                const img = card.querySelector('.project-row-img');
-                const video = card.querySelector('.project-row-video');
-                
-                if (video) {
-                    card.addEventListener('mouseenter', () => {
-                        if (window.innerWidth >= 992) {
-                            video.play().catch(console.error);
-                            img.style.opacity = '0';
-                            video.style.opacity = '1';
-                        }
-                    });
-                    card.addEventListener('mouseleave', () => {
-                        if (window.innerWidth >= 992) {
-                            video.pause();
-                            video.currentTime = 0;
-                            img.style.opacity = '1';
-                            video.style.opacity = '0';
-                        }
-                    });
-                }
+        // Re-initialize the glow effect for statically rendered cards
+        document.addEventListener("pointermove", (e) => {
+          const container = e.target.closest(".glow-container");
+          if (container) {
+            container.querySelectorAll(".glow-card").forEach((card) => {
+              const rect = card.getBoundingClientRect();
+              card.style.setProperty("--x", e.clientX - rect.left + "px");
+              card.style.setProperty("--y", e.clientY - rect.top + "px");
             });
+          }
         });
+
+        // Video hover logic for static cards
+        const projectCards = document.querySelectorAll(".project-row");
+        projectCards.forEach((card) => {
+          const img = card.querySelector(".project-row-img");
+          const video = card.querySelector(".project-row-video");
+
+          if (video) {
+            card.addEventListener("mouseenter", () => {
+              if (window.innerWidth >= 992) {
+                video.play().catch(console.error);
+                img.style.opacity = "0";
+                video.style.opacity = "1";
+              }
+            });
+            card.addEventListener("mouseleave", () => {
+              if (window.innerWidth >= 992) {
+                video.pause();
+                video.currentTime = 0;
+                img.style.opacity = "1";
+                video.style.opacity = "0";
+              }
+            });
+          }
+        });
+      });
     </script>
 
     <!-- ========================================= -->
     <!-- Back to Top                               -->
     <!-- ========================================= -->
     <button class="back-to-top" id="backToTop" aria-label="Back to top">
-        <i class="fa-solid fa-chevron-up"></i>
+      <i class="fa-solid fa-chevron-up"></i>
     </button>
-
-</body>
+  </body>
 </html>

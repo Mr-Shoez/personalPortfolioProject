@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="../css/font-awesome.min.css">
     <link rel="stylesheet" href="../css/min/project.min.css">
     <!-- Universal Theme System (must be non-deferred to prevent flash) -->
-    <script src="../js/min/theme.min.js?v=1773704573781"></script>
+    <script src="../js/min/theme.min.js?v=1773707906916"></script>
 
     <!-- GSAP for scroll animations -->
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -34,11 +34,27 @@
     <div class="scroll-progress-bar" id="scrollProgressBar"></div>
 
     <!-- Utility Toggles -->
-    <div class="utility-toggles" style="z-index: 9999;">
-        <button id="themeToggle" class="theme-toggle" data-theme-toggle aria-label="Toggle Dark Mode">
+    <div class="utility-toggles">
+        <button id="muteToggle" class="mute-toggle" aria-label="Toggle Audio">
+            <i class="fa-solid fa-volume-high"></i>
+        </button>
+        <button class="theme-toggle" data-theme-toggle aria-label="Toggle Dark Mode">
             <i class="fa-solid fa-moon"></i>
         </button>
     </div>
+
+    <!-- Persistent CV Download -->
+    <nav class="sidebar-nav cv-nav">
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="../cv/mosa_moleleki_cv.pdf" download="Mosa_Moleleki_CV.pdf" target="_blank" class="nav-link cv-link" id="resumeLink">
+                    <span class="nav-text">Resume</span>
+                    <i class="fa-solid fa-download nav-icon"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
 
     <!-- Main Container -->
     <div class="project-container">
@@ -508,7 +524,7 @@
                 }, 500);
             });
 
-            // 7. Theme Toggle — wired via universal ThemeSystem (theme.js?v=1773704573781 loaded in <head>)
+            // 7. Theme Toggle — wired via universal ThemeSystem (theme.js?v=1773707906916 loaded in <head>)
             if (window.ThemeSystem) window.ThemeSystem.init();
         });
     </script>

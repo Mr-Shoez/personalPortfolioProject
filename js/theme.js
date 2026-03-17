@@ -118,10 +118,13 @@
      * to toggle buttons and sets the correct initial favicons.
      */
     init: function () {
+      // 1. Ensure Persistent UI (Theme, Mute, CV) exists before wiring events
+      this.initPersistentUI();
+
       const currentTheme =
         document.documentElement.getAttribute("data-theme") || "dark";
 
-      // Attach interaction handlers to toggle buttons
+      // 2. Attach interaction handlers to toggle buttons
       document
         .querySelectorAll("[data-theme-toggle], .theme-toggle")
         .forEach((btn) => {
@@ -144,11 +147,125 @@
       updateFavicon(currentTheme);
       updateThemeAwareImages(currentTheme);
 
-      // Initialize Back to Top Logic
+      // 3. Initialize other systems
       this.initBackToTop();
-
-      // Initialize Search Logic if present
       this.initSearch();
+      this.initObservers();
+      this.initSound();
+    },
+
+    /**
+     * Ensures consistent UI elements (Theme Toggle, Mute Toggle, CV Link)
+     * exist on every page.
+     */
+    initPersistentUI: function () {
+      // 1. Handle Utility Toggles (Theme & Mute)
+      let toggles = document.querySelector(".utility-toggles");
+      if (!toggles) {
+        toggles = document.createElement("div");
+        toggles.className = "utility-toggles";
+        document.body.appendChild(toggles);
+      }
+
+      // Ensure Mute Toggle
+      if (!document.getElementById("muteToggle")) {
+        const muteBtn = document.createElement("button");
+        muteBtn.id = "muteToggle";
+        muteBtn.className = "mute-toggle";
+        muteBtn.setAttribute("aria-label", "Toggle Audio");
+        muteBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+        toggles.prepend(muteBtn);
+      }
+
+      // Ensure Theme Toggle
+      if (!document.querySelector(".theme-toggle, [data-theme-toggle]")) {
+        const themeBtn = document.createElement("button");
+        themeBtn.className = "theme-toggle";
+        themeBtn.setAttribute("data-theme-toggle", "");
+        themeBtn.setAttribute("aria-label", "Toggle Dark Mode");
+        themeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+        toggles.appendChild(themeBtn);
+      }
+
+      // 2. Handle CV Navigation
+      if (!document.querySelector(".cv-nav")) {
+        // Calculate paths based on location
+        const isProjectSub = window.location.pathname.includes("/projects/");
+        const isPostSub = window.location.pathname.includes("/posts/");
+        const basePath = isProjectSub || isPostSub ? "../" : "./";
+
+        const cvNav = document.createElement("nav");
+        cvNav.className = "sidebar-nav cv-nav";
+        cvNav.innerHTML = `
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="${basePath}cv/mosa_moleleki_cv.pdf" download="Mosa_Moleleki_CV.pdf" target="_blank" class="nav-link cv-link" id="resumeLink">
+                <span class="nav-text">Resume</span>
+                <i class="fa-solid fa-download nav-icon"></i>
+              </a>
+            </li>
+          </ul>
+        `;
+        document.body.appendChild(cvNav);
+      }
+    },
+
+    /**
+     * Initializes IntersectionObservers for common animations like fade-in-section.
+     */
+    initObservers: function () {
+      const fadeSections = document.querySelectorAll(".fade-in-section");
+      if (fadeSections.length > 0) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
+        fadeSections.forEach((section) => observer.observe(section));
+      }
+    },
+
+    /**
+     * Initializes the sound system, sharing state with sessionStorage.
+     */
+    initSound: function () {
+      const muteBtn = document.getElementById("muteToggle");
+      if (!muteBtn) return;
+
+      const isMuted = sessionStorage.getItem("isMuted") === "true";
+
+      const updateMuteUI = (muted) => {
+        const icon = muteBtn.querySelector("i");
+        if (icon) {
+          icon.className = muted
+            ? "fa-solid fa-volume-xmark"
+            : "fa-solid fa-volume-high";
+        }
+      };
+
+      // Initial UI state
+      updateMuteUI(isMuted);
+
+      if (!muteBtn.dataset.soundWired) {
+        muteBtn.dataset.soundWired = "true";
+        muteBtn.addEventListener("click", () => {
+          const currentlyMuted = sessionStorage.getItem("isMuted") === "true";
+          const newState = !currentlyMuted;
+          sessionStorage.setItem("isMuted", newState);
+          updateMuteUI(newState);
+
+          // Dispatch event for other scripts (like index.js) to sync
+          document.dispatchEvent(
+            new CustomEvent("soundtoggle", { detail: { isMuted: newState } }),
+          );
+        });
+      }
     },
 
     /**
