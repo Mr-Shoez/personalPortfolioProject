@@ -1906,13 +1906,9 @@ html {
   background: var(--accent-primary);
 }
 
-lets-talk-btn:hover span {
-  color: #ffffff !important;
-  margin-left: 18px;
-}
-
-lets-talk-btn:hover svg {
-  transform: translateX(0);
+.lets-talk-btn i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
 }
 
 .lets-talk-btn:active {
