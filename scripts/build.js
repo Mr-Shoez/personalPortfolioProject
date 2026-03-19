@@ -297,11 +297,11 @@ if (projectTemplateBlock && projectsData.length > 0) {
     // Links
     let liveLinkHtml =
       proj.liveLink && proj.liveLink !== "#"
-        ? `<a href="${proj.liveLink}" target="_blank" rel="noopener noreferrer" class="project-link-btn"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>`
+        ? `<a href="${proj.liveLink}" target="_blank" rel="noopener noreferrer" class="lets-talk-btn"><span>Live Demo</span><svg width="15px" height="10px" viewBox="0 0 13 10"><path d="M1,5 L11,5"></path><polyline points="8 1 12 5 8 9"></polyline></svg></a>`
         : "";
     let githubLinkHtml =
       proj.githubLink && proj.githubLink !== "#"
-        ? `<a href="${proj.githubLink}" target="_blank" rel="noopener noreferrer" class="project-link-btn"><i class="fa-brands fa-github"></i> GitHub Repo</a>`
+        ? `<a href="${proj.githubLink}" target="_blank" rel="noopener noreferrer" class="lets-talk-btn"><span>GitHub Repo</span><svg width="15px" height="10px" viewBox="0 0 13 10"><path d="M1,5 L11,5"></path><polyline points="8 1 12 5 8 9"></polyline></svg></a>`
         : "";
     pageHtml = pageHtml.replace(/{{LIVE_LINK_HTML}}/g, liveLinkHtml);
     pageHtml = pageHtml.replace(/{{GITHUB_LINK_HTML}}/g, githubLinkHtml);
@@ -631,8 +631,21 @@ function generateProjectCard(proj, isGallery = false) {
                         </div>
                         <p class="project-row-desc">${proj.description}</p>
                         <div class="project-row-actions">
-                            <a href="${proj.link}" class="project-row-btn primary">Learn More <i class="fa-solid fa-arrow-right"></i></a>
-                            ${proj.githubLink && proj.githubLink !== "#" ? `<a href="${proj.githubLink}" class="project-row-btn secondary" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i> View Source</a>` : ""}
+                            <a href="${proj.link}" class="lets-talk-btn">
+                                <span>Learn More</span>
+                                <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                    <path d="M1,5 L11,5"></path>
+                                    <polyline points="8 1 12 5 8 9"></polyline>
+                                </svg>
+                            </a>
+                            ${proj.githubLink && proj.githubLink !== "#" ? `
+                            <a href="${proj.githubLink}" class="lets-talk-btn" target="_blank" rel="noopener noreferrer">
+                                <span>View Source</span>
+                                <svg width="15px" height="10px" viewBox="0 0 13 10">
+                                    <path d="M1,5 L11,5"></path>
+                                    <polyline points="8 1 12 5 8 9"></polyline>
+                                </svg>
+                            </a>` : ""}
                         </div>
                     </div>
                 </div>`;
