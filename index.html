@@ -445,7 +445,13 @@
                 <div class="st-line st-v st-final-v"><div class="st-fill"></div></div>
                 <div class="st-dot"></div>
                 <div class="st-content about-more-container">
-                    <a href="about.html" class="final-button">More About Me</a>
+                    <a href="about.html" class="lets-talk-btn">
+                        <span>More About Me</span>
+                        <svg width="15px" height="10px" viewBox="0 0 13 10">
+                            <path d="M1,5 L11,5"></path>
+                            <polyline points="8 1 12 5 8 9"></polyline>
+                        </svg>
+                    </a>
                 </div>
             </div>
 
@@ -805,7 +811,19 @@
                         <textarea id="message" name="message" rows="5" placeholder="Tell me about your project or what you need help with..." required></textarea>
                     </div>
                     
-                    <button type="submit" class="contact-submit-btn">Send Message</button>
+                    <!-- Bot Protection (Honeypot) -->
+                    <div style="display:none !important;" aria-hidden="true">
+                        <label for="website">Leave blank</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <button type="submit" class="lets-talk-btn" style="width: 100%; justify-content: center; margin-top: 2rem;">
+                        <span>Send Message</span>
+                        <svg width="15px" height="10px" viewBox="0 0 13 10">
+                            <path d="M1,5 L11,5"></path>
+                            <polyline points="8 1 12 5 8 9"></polyline>
+                        </svg>
+                    </button>
                 </form>
             </div>
         </div>
@@ -830,7 +848,13 @@
                 <div class="modal-tech-stack" id="modalTechStack">
                     <!-- Tech pills injected here -->
                 </div>
-                <a href="#" class="modal-link-btn" id="modalLink" target="_blank">See Details <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="#" class="lets-talk-btn" id="modalLink" target="_blank" style="margin-top: 2rem;">
+                    <span>See Details</span>
+                    <svg width="15px" height="10px" viewBox="0 0 13 10">
+                        <path d="M1,5 L11,5"></path>
+                        <polyline points="8 1 12 5 8 9"></polyline>
+                    </svg>
+                </a>
             </div>
         </div>
     </div>

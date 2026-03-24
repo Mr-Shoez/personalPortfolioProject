@@ -754,11 +754,34 @@ ie &&
   ae &&
   ie.addEventListener("submit", function (e) {
     e.preventDefault();
+
+    // 1. Bot Protection (Honeypot)
+    if (this.querySelector('[name="website"]').value) {
+      console.warn("Spam detected.");
+      return;
+    }
+
+    // 2. Client-side Rate Limiting (1 per minute)
+    const lastSubmit = localStorage.getItem("contact_last_submit");
+    if (lastSubmit && Date.now() - parseInt(lastSubmit) < 60000) {
+      alert("Please wait a moment before sending another message.");
+      return;
+    }
+
+    // 3. Basic Validation
+    const email = this.querySelector('[name="email"]').value;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
     const t = ae.textContent;
     ((ae.textContent = "Sending..."), (ae.disabled = !0));
+    
     emailjs
       .sendForm("service_fklvlrs", "template_zjkrkz8", this)
       .then(() => {
+        localStorage.setItem("contact_last_submit", Date.now().toString());
         (alert("Message sent successfully! I will get back to you soon."),
           ie.reset(),
           (ae.textContent = t),
